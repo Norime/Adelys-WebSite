@@ -4,18 +4,18 @@ using System.Diagnostics;
 
 namespace Adelys_WebSite.Controllers
 {
-    public class GazetteController : Controller
+    public class ArchiveMapsController : Controller
     {
-        private readonly ILogger<GazetteController> _logger;
+        private readonly ILogger<ArchiveMapsController> _logger;
 
-        public GazetteController(ILogger<GazetteController> logger)
+        public ArchiveMapsController(ILogger<ArchiveMapsController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View("ArchiveMapsIndex");
         }
 
 
