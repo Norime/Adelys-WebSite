@@ -29,5 +29,24 @@ namespace Adelys_WebSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public ActionResult GetLawsPartialView()
+        {
+            return PartialView("~/Views/Rules/PartialViews/_laws.cshtml");
+        }
+        public ActionResult GetExceptionsPartialView()
+        {
+            return PartialView("~/Views/Rules/PartialViews/_exceptions.cshtml");
+        }
+
+        public ActionResult GetFactoriesPartialView()
+        {
+            return PartialView("~/Views/Rules/PartialViews/_factories.cshtml");
+        }
+        public ActionResult GetMonopoliesPartialView()
+        {
+            return PartialView("~/Views/Rules/PartialViews/_monopolies.cshtml");
+        }
+        
     }
 }
