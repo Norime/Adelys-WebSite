@@ -1,9 +1,11 @@
 using Adelys_WebSite.BL;
+using Adelys_WebSite.SAL.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IServiceMojangAccess, IServiceMojangAccess>();
 builder.Services.AddTransient<IDataStorageBL, DataStorageBL>();
 var app = builder.Build();
 
