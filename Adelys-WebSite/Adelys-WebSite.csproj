@@ -11,10 +11,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="MojangAPI" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SAL\" />
     <Folder Include="Views\WebMap\" />
     <Folder Include="wwwroot\content\Icons\" />
   </ItemGroup>
