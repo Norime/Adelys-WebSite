@@ -1,0 +1,19 @@
+#playersArticle {
+    background-color: lightgray;
+    height: 80vh;
+    margin: auto;
+    display: flex;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#listGazette{
+    width: 30%;
+    height: 100%;
+}
+
+#displayGazette{
+    width: 70%;
+    height: 100%;
+    background-color:lightcoral;
+}

@@ -1,0 +1,105 @@
+#articleBanner {
+    height: 94vh;
+    background-image: url("/content/Images/TestImage.png");
+}
+
+#bannerWelcomeMessage {
+    margin: 0;
+    text-align: center;
+    font-size: 2em;
+}
+#webSiteName {
+    text-align: center;
+    font-size: 5em;
+}
+#coverPicture {
+    width: 50%;
+    margin-top: 5em;
+    margin: auto;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.carousel {
+    margin: 1em;
+}
+
+.presentationCardIcon {
+    margin-top: -2.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    border-radius: 50px;
+}
+
+.presentationCardHeader {
+    height: 10%;
+    text-align: center;
+    width: 70%;
+    margin: auto;
+    overflow-wrap: break-word;
+}
+
+.presentationCardContent {
+    height: 50%;
+    margin: 2em;
+}
+
+.presentationCardFooter {
+    width: 100%;
+}
+
+.presentationCardButton {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    width: 40%;
+}
+
+#cardSection {
+    display: flex;
+    justify-content: space-around;
+}
+
+#presentationCardArticle {
+    padding-bottom: 2.5em;
+    background-color: #653bef;
+}
+
+.presentationCard {
+    height: 32em;
+    border-radius: 10px;
+    margin-top: -2.5em;
+    background-color: gray;
+    width: 20%;
+}
+
+.infoArticle {
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
+}
+
+.infoSection {
+    display: flex;
+    margin: auto;
+    width: 60%;
+}
+
+.contenerInfoImage {
+    width: 40%;
+}
+
+.contenerInfoDesc {
+    width: 60%;
+}
+
+#imageGazette {
+    width: 80%;
+    margin: auto;
+}
+
+#articleModdedServer{
+    background-color: lightgray;
+}
