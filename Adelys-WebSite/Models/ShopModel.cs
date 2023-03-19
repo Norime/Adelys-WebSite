@@ -2,13 +2,13 @@
 {
     public class ShopModel
     {
-        public string cityName;
-        public string shopCategory;
-        public string shopName;
-        public string ownerName;
-        public int xPosition;
-        public int yPosition;
-        public int zPosition;
+        public string cityName { get; set; }
+        public string shopCategory { get; set; }
+        public string shopName { get; set; }
+        public string ownerName { get; set; }
+        public int xPosition { get; set; }
+        public int yPosition { get; set; }
+        public int zPosition { get; set; }
 
     }
 }

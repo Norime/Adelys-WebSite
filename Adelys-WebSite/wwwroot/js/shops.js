@@ -2,8 +2,8 @@
     loadShopsPage();
 })
 
-function loadShopsPage(cityName) {
-    GetShopsCityView(cityName = "Adelys").promise().done(function (partialView) {
+function loadShopsPage(cityName = "Adelys") {
+    GetShopsCityView(cityName).promise().done(function (partialView) {
         $('#displayInfo').empty();
         $('#displayInfo').append(partialView);
     });

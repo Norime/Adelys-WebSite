@@ -1,0 +1,52 @@
+[
+  {
+    "cityName": "Adelys",
+    "shopCategory": "Lola",
+    "shopName": "Ingram",
+    "ownerName": "Marylou",
+    "xPosition": 208,
+    "yPosition": 256,
+    "zPosition": 335,
+    "eyeColor": "green"
+  },
+  {
+    "cityName": "Adelys",
+    "shopCategory": "Nanette",
+    "shopName": "Gordon",
+    "ownerName": "Bauer",
+    "xPosition": 55,
+    "yPosition": 220,
+    "zPosition": 208,
+    "eyeColor": "green"
+  },
+  {
+    "cityName": "Adelys",
+    "shopCategory": "Osborn",
+    "shopName": "Warren",
+    "ownerName": "Daugherty",
+    "xPosition": 144,
+    "yPosition": 341,
+    "zPosition": 223,
+    "eyeColor": "brown"
+  },
+  {
+    "cityName": "Pristo",
+    "shopCategory": "Maricela",
+    "shopName": "Glenna",
+    "ownerName": "Bethany",
+    "xPosition": 27,
+    "yPosition": 219,
+    "zPosition": 131,
+    "eyeColor": "green"
+  },
+  {
+    "cityName": "Mazadir",
+    "shopCategory": "Tamika",
+    "shopName": "Dolores",
+    "ownerName": "Goff",
+    "xPosition": 222,
+    "yPosition": 236,
+    "zPosition": 303,
+    "eyeColor": "green"
+  }
+]
