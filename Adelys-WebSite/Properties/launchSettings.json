@@ -4,7 +4,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MYSQL_CONNECTIONSTRING": "Server=sql3.minestrator.com;Database=minesr_sXvnn1Ht;Uid=minesr_sXvnn1Ht;Pwd=ZJLhDpn8n5d9sH1c;"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7237;http://localhost:5215"
