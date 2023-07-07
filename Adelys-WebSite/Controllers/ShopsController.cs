@@ -8,13 +8,11 @@ namespace Adelys_WebSite.Controllers
 {
     public class ShopsController : Controller
     {
-        private DataStorageBL _dataStorageBL;
         private readonly ILogger<ShopsController> _logger;
 
         public ShopsController(ILogger<ShopsController> logger)
         {
             _logger = logger;
-            _dataStorageBL = new();
         }
 
         public IActionResult Index()
@@ -36,10 +34,9 @@ namespace Adelys_WebSite.Controllers
 
         public ActionResult GetShopsFromCityPartialView(string cityName)
         {
-            _dataStorageBL.GetListShops();
+            //_dataStorageBL.GetListShops();
             ShopsViewModel viewModel = new()
             {
-                dataStorageBL = _dataStorageBL
             };
             return PartialView("~/Views/Shops/PartialViews/_displayListeShops.cshtml", viewModel);
         }

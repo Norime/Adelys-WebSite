@@ -1,4 +1,5 @@
 using Adelys_WebSite.BL;
+using Adelys_WebSite.DAL;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.SAL;
 using Adelys_WebSite.SAL.Interface;
@@ -7,11 +8,10 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 //BDD
-var connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTIONSTRING");
-if (!String.IsNullOrEmpty(connectionString))
+var connectionString = @"Data Source=(local);Initial Catalog=CodeFirstSQL;Integrated Security=True;TrustServerCertificate=True";
+if (!string.IsNullOrEmpty(connectionString))
 {
-    builder.Services.AddDbContext<DbContext>(options => options.UseSqlServer(connectionString));
-    //Connexion réussi
+    builder.Services.AddDbContext<MySqlDbContext>(option => option.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql")));
 }
 
 // Add services to the container.
