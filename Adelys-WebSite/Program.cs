@@ -1,4 +1,5 @@
 using Adelys_WebSite.BL;
+using Adelys_WebSite.BL.Interfaces;
 using Adelys_WebSite.DAL;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.SAL;
@@ -17,7 +18,12 @@ if (!string.IsNullOrEmpty(connectionString))
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IServiceMojangAccess, ServiceMojangAccess>();
-builder.Services.AddTransient<IDataStorageBL, DataStorageBL>();
+
+//BL
+builder.Services.AddTransient<IPlayerBL, PlayerBL>();
+
+//DAL
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
