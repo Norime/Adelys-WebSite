@@ -1,6 +1,8 @@
 using Adelys_WebSite.BL;
 using Adelys_WebSite.BL.Interfaces;
 using Adelys_WebSite.DAL;
+using Adelys_WebSite.DAL.UnitOfWork.Interfaces;
+using Adelys_WebSite.DAL.UnitOfWork;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.SAL;
 using Adelys_WebSite.SAL.Interface;
@@ -9,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 //BDD
-var connectionString = @"Data Source=(local);Initial Catalog=CodeFirstSQL;Integrated Security=True;TrustServerCertificate=True";
+var connectionString = "server=sql3.minestrator.com;database=minesr_sXvnn1Ht;uid=minesr_sXvnn1Ht;pwd=eJQVoFuveaJdxQpy";
 if (!string.IsNullOrEmpty(connectionString))
 {
     builder.Services.AddDbContext<MySqlDbContext>(option => option.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql")));
@@ -20,9 +22,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IServiceMojangAccess, ServiceMojangAccess>();
 
 //BL
-builder.Services.AddTransient<IPlayerBL, PlayerBL>();
+builder.Services.AddTransient<IPlayerBL, PlayerBL>(); 
+builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 
 //DAL
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

@@ -8,7 +8,8 @@ namespace Adelys_WebSite.DAL.UnitOfWork
     public class UnitOfWork: IUnitOfWork
     {
         private readonly MySqlDbContext context;
-        private PlayerRepository _customer;
+        private PlayerRepository _player;
+        private UserPermissionRepository _userPermission;
 
         public UnitOfWork(MySqlDbContext context) => this.context = context ?? throw new ArgumentNullException("Context not supplied");
 
@@ -30,9 +31,18 @@ namespace Adelys_WebSite.DAL.UnitOfWork
 
         public IPlayerRepository PlayerRepositoryDAO { 
             get {
-                _customer ??= new PlayerRepository(context);
-                return _customer; 
+                _player ??= new PlayerRepository(context);
+                return _player; 
             } 
+        }
+
+        public IUserPermissionRepository UserPermissionRepositoryDAO
+        {
+            get
+            {
+                _userPermission ??= new UserPermissionRepository(context);
+                return _userPermission;
+            }
         }
     }
 }
