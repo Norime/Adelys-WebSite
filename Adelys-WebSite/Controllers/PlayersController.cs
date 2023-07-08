@@ -1,8 +1,12 @@
 ﻿using Adelys_WebSite.BL.Interfaces;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.ViewModels;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace Adelys_WebSite.Controllers
 {
@@ -21,8 +25,8 @@ namespace Adelys_WebSite.Controllers
 
         public IActionResult Index()
         {
-            Dictionary<LuckpermsPlayer, LuckpermsUserPermission> PlayerDico = new Dictionary<LuckpermsPlayer, LuckpermsUserPermission>();
-            Dictionary<LuckpermsPlayer, LuckpermsUserPermission> ParlementDico = new Dictionary<LuckpermsPlayer,LuckpermsUserPermission>();
+            Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerDico = new ();
+            Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico = new ();
             List<LuckpermsPlayer> listPlayer = _playerBL.GetAllPlayers();
             foreach(LuckpermsPlayer player in listPlayer)
             {
@@ -31,17 +35,34 @@ namespace Adelys_WebSite.Controllers
                 {
                     string GroupName = permission.Permission.Split('.')[1];
                     if (GroupName == "parlement") {
-                        ParlementDico.Add(player, permission);
+
+                        var UserSkinEncoded = _playerBL.GetPlayerSkin(player.Uuid);
+                        dynamic SkinEncoded = JObject.Parse(UserSkinEncoded);
+                        string skinUrlEncoded = SkinEncoded.properties[0].value;
+                        byte[] bytes = Convert.FromBase64String(skinUrlEncoded);
+                        string decodedSkinUrl = Encoding.UTF8.GetString(bytes);
+                        JObject skinJson = JObject.Parse(decodedSkinUrl);
+                        string skinUrl = skinJson["textures"]["SKIN"]["url"].ToString();
+                        ParlementDico.Add(player, new Tuple<LuckpermsUserPermission, string>(permission, skinUrl));
+
+                        
                     }
                     else
                     {
-                        PlayerDico.Add(player, permission);
+                        var UserSkinEncoded = _playerBL.GetPlayerSkin(player.Uuid);
+                        dynamic SkinEncoded = JObject.Parse(UserSkinEncoded);
+                        string skinUrlEncoded = SkinEncoded.properties[0].value;
+                        byte[] bytes = Convert.FromBase64String(skinUrlEncoded);
+                        string decodedSkinUrl = Encoding.UTF8.GetString(bytes);
+                        JObject skinJson = JObject.Parse(decodedSkinUrl);
+                        string skinUrl = skinJson["textures"]["SKIN"]["url"].ToString();
+                        PlayerDico.Add(player, new Tuple<LuckpermsUserPermission, string>(permission, skinUrl));
                     }
                 }
             }
             PlayerViewModel viewModel= new PlayerViewModel();
-            viewModel.PlayerPermissionsDico = PlayerDico;
-            viewModel.ParlementDico = ParlementDico;
+            viewModel.PlayerPermissionsDico = PlayerDico.OrderBy(x => x.Key.Username).ToDictionary(x => x.Key, x => x.Value);
+            viewModel.ParlementDico = ParlementDico.OrderBy(x => x.Key.Username).ToDictionary(x => x.Key, x => x.Value);
             return View("PlayersIndex", viewModel);
         }
 

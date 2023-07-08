@@ -6,8 +6,6 @@ namespace Adelys_WebSite.BL.Interfaces
     {
         List<LuckpermsPlayer> GetAllPlayers();
         LuckpermsPlayer GetPlayer(int id);
-        void CreatePlayer(LuckpermsPlayer player);
-        void UpdatePlayer(LuckpermsPlayer player);
-        void DeletePlayer(LuckpermsPlayer player);
+        string GetPlayerSkin(string uuid);
     }
 }

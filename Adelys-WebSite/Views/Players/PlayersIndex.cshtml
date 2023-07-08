@@ -1,4 +1,6 @@
 ﻿@using Adelys_WebSite.ViewModels;
+@using Newtonsoft.Json.Linq;
+@using System.Text;
 @model PlayerViewModel
 @{
     ViewData["Title"] = "Les joueurs";
@@ -6,8 +8,8 @@
 }
 
 @{
-    Dictionary<LuckpermsPlayer, LuckpermsUserPermission> PlayerPermissionsDico = Model.PlayerPermissionsDico;
-    Dictionary<LuckpermsPlayer, LuckpermsUserPermission> ParlementDico = Model.ParlementDico;
+    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerPermissionsDico = Model.PlayerPermissionsDico;
+    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico = Model.ParlementDico;
 }
 
 <div class="">
@@ -15,13 +17,17 @@
         <section id="parliamentPlayers">
             @foreach (var player in ParlementDico.Keys)
             {
+                // Accéder aux valeurs associées à une clé
+                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
+                LuckpermsUserPermission UserPermission = values.Item1;
+                string SkinUrl = values.Item2;
                 <div class="card cardPlayer">
                     <div class="card-body">
                         <h5 class="card-title">@player.Username</h5>
                         <div class="cardPlayerImgContener">
-                            <img src="..." class="cardPlayerImg" alt="...">
+                            <img src="@SkinUrl" class="cardPlayerImg" alt="Skin">
                         </div>
-                        <h5 class="card-title">Pristo</h5>
+                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
                         <button>Voir plus</button>
                     </div>
                 </div>
@@ -30,13 +36,17 @@
         <section id="otherPlayers">
             @foreach (var player in PlayerPermissionsDico.Keys)
             {
+                // Accéder aux valeurs associées à une clé
+                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
+                LuckpermsUserPermission UserPermission = values.Item1;
+                string SkinUrl = values.Item2;
                 <div class="card cardPlayer">
                     <div class="card-body">
                             <h5 class="card-title">@player.Username</h5>
                         <div class="cardPlayerImgContener">
-                            <img src="..." class="cardPlayerImg" alt="...">
+                            <img src="@SkinUrl" class="cardPlayerImg" alt="Skin">
                         </div>
-                        <h5 class="card-title">Pristo</h5>
+                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
                         <button>Voir plus</button>
                     </div>
                 </div>

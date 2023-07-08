@@ -2,15 +2,19 @@
 using Adelys_WebSite.DAL.Repositories.Interfaces;
 using Adelys_WebSite.DAL.UnitOfWork.Interfaces;
 using Adelys_WebSite.Models;
+using Adelys_WebSite.SAL.Interface;
+using System.Threading.Tasks;
 
 namespace Adelys_WebSite.BL
 {
     public class PlayerBL : BaseBL<LuckpermsPlayer>, IPlayerBL
     {
         protected override IPlayerRepository Repository => _unitOfWork.PlayerRepositoryDAO;
+        private readonly IServiceMojangAccess _mojangApi;
 
-        public PlayerBL(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public PlayerBL(IUnitOfWork unitOfWork, IServiceMojangAccess mojangAccess) : base(unitOfWork)
         {
+            _mojangApi = mojangAccess;
         }
 
         /// <summary>
@@ -32,26 +36,11 @@ namespace Adelys_WebSite.BL
             return Repository.GetById(id);
         }
 
-        public void CreatePlayer(LuckpermsPlayer player)
+        public string GetPlayerSkin(string uuid)
         {
-            try
-            {
-                Repository.Create(player);
-            }catch (Exception ex)
-            {
-                throw ex;
-            }
-            
-        }
-
-        public void UpdatePlayer(LuckpermsPlayer player)
-        {
-            Repository.Update(player);
-        }
-
-        public void DeletePlayer(LuckpermsPlayer player)
-        {
-            Repository.Delete(player);
+            Task<string> playerSkin = _mojangApi.GetSkinData(uuid);
+            playerSkin.Wait();
+            return playerSkin.Result;
         }
     }
 }

@@ -2,5 +2,6 @@
 {
     public interface IServiceMojangAccess
     {
+        Task<string> GetSkinData(string uuid);
     }
 }

@@ -6,7 +6,7 @@ namespace Adelys_WebSite.ViewModels
 {
     public class PlayerViewModel
     {
-        public Dictionary<LuckpermsPlayer, LuckpermsUserPermission> PlayerPermissionsDico { get; set; }
-        public Dictionary<LuckpermsPlayer, LuckpermsUserPermission> ParlementDico { get; set; }
+        public Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerPermissionsDico { get; set; }
+        public Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico { get; set; }
     }
 }

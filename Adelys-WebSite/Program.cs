@@ -28,6 +28,9 @@ builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 //DAL
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//SAL
+builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -3,6 +3,7 @@
 
 #parliamentPlayers {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     border: 2px solid Orange;
 }
@@ -19,6 +20,7 @@
 }
 #otherPlayers {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     border: 2px solid Gray;
 }
