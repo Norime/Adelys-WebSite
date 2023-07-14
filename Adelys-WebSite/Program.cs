@@ -29,7 +29,8 @@ builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //SAL
-builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>();
+builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>(); 
+builder.Services.AddScoped<ICrafatarAccess, CrafatarAccess>();
 
 var app = builder.Build();
 

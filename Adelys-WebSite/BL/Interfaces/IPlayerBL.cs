@@ -7,5 +7,6 @@ namespace Adelys_WebSite.BL.Interfaces
         List<LuckpermsPlayer> GetAllPlayers();
         LuckpermsPlayer GetPlayer(int id);
         string GetPlayerSkin(string uuid);
+        string GetPlayerSkinImg(string uuid);
     }
 }

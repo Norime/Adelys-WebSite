@@ -12,15 +12,26 @@
     margin: 1em;
     width: 250px;
     height: 400px;
+    border: 5px solid gray;
+    border-radius: 2rem;
 }
-.cardPlayerImgContener {
-    margin:auto;
+.card-player-img-contener {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
     width: 200px;
     height: 270px;
+    background-color: lightgray;
 }
 #otherPlayers {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     border: 2px solid Gray;
+}
+
+.btn-player-show-more{
+    display: flex;
+    margin: auto;
 }

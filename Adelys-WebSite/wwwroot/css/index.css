@@ -1,6 +1,8 @@
 #articleBanner {
     height: 94vh;
     background-image: url("/content/Images/TestImage.png");
+    background-position: center center;
+    background-size: cover;
 }
 
 #bannerWelcomeMessage {
@@ -36,8 +38,9 @@
     border-radius: 50px;
 }
 
-.presentationCardIcon{
-    margin-top: 50%;
+.presentationCardIcon {
+    margin-top: 25%;
+    font-size: xxx-large;
 }
 
 .presentationCardHeader {

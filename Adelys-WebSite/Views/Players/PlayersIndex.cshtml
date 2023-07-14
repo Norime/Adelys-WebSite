@@ -5,6 +5,9 @@
 @{
     ViewData["Title"] = "Les joueurs";
     <link rel="stylesheet" href="~/css/playersPage.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Shared/card.css" asp-append-version="true" />
+    <script src="~/js/playerModel.js" asp-append-version="true"></script>
+    <script src="~/js/Externe/three.js" asp-append-version="true"></script>
 }
 
 @{
@@ -24,13 +27,16 @@
                 <div class="card cardPlayer">
                     <div class="card-body">
                         <h5 class="card-title">@player.Username</h5>
-                        <div class="cardPlayerImgContener">
-                            <img src="@SkinUrl" class="cardPlayerImg" alt="Skin">
+                        <div class="card-player-img-contener">
+                            <img id="playerParlementImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
                         </div>
                         <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
-                        <button>Voir plus</button>
+                        <button class="btn-player-show-more">Voir plus</button>
                     </div>
                 </div>
+                <script>
+                    createModel("@SkinUrl", "playerParlementImg_@player.Username");
+                </script>
             }
         </section>
         <section id="otherPlayers">
@@ -43,14 +49,19 @@
                 <div class="card cardPlayer">
                     <div class="card-body">
                             <h5 class="card-title">@player.Username</h5>
-                        <div class="cardPlayerImgContener">
-                            <img src="@SkinUrl" class="cardPlayerImg" alt="Skin">
+                        <div class="card-player-img-contener">
+                            <img id="playerImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
                         </div>
                         <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
-                        <button>Voir plus</button>
+                        <button class="btn-player-show-more">Voir plus</button>
                     </div>
                 </div>
+                <script>
+                    createModel("@SkinUrl", "playerImg_@player.Username");
+                </script>
             }
         </section>
     </article>
 </div>
+
+

@@ -11,10 +11,12 @@ namespace Adelys_WebSite.BL
     {
         protected override IPlayerRepository Repository => _unitOfWork.PlayerRepositoryDAO;
         private readonly IServiceMojangAccess _mojangApi;
+        private readonly ICrafatarAccess _crafatarApi;
 
-        public PlayerBL(IUnitOfWork unitOfWork, IServiceMojangAccess mojangAccess) : base(unitOfWork)
+        public PlayerBL(IUnitOfWork unitOfWork, IServiceMojangAccess mojangAccess, ICrafatarAccess crafatarApi) : base(unitOfWork)
         {
             _mojangApi = mojangAccess;
+            _crafatarApi = crafatarApi;
         }
 
         /// <summary>
@@ -39,6 +41,13 @@ namespace Adelys_WebSite.BL
         public string GetPlayerSkin(string uuid)
         {
             Task<string> playerSkin = _mojangApi.GetSkinData(uuid);
+            playerSkin.Wait();
+            return playerSkin.Result;
+        }
+
+        public string GetPlayerSkinImg(string uuid)
+        {
+            Task<string> playerSkin = _crafatarApi.GetPlayerSkin(uuid);
             playerSkin.Wait();
             return playerSkin.Result;
         }
