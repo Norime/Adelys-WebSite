@@ -17,9 +17,12 @@ html {
 body {
     width: 100%;
     margin-bottom: 60px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
 }
 
-#mainDiv {
+#main-div {
     width: 100%;
     padding: 0;
     margin: 0;
@@ -29,18 +32,26 @@ main {
     width: 100%;
 }
 
-#ContentLogoTitleNavBar {
-    display: flex;
+h1 {
+    color: #E48033;
 }
 
-#logoNavBar{
+h2 {
+    color: #E48033;
+}
+
+.logo-website {
+    height: 50px;
+}
+
+#logo-navbar {
     width: 50px;
 }
 
-#titleNavBar{
-    font-size: 1.6em;
+.no-underline {
+    text-decoration: none;
 }
 
-.nav-item {
-    font-size: 1.2em;
+.active{
+    display: block;
 }

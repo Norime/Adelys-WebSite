@@ -1,127 +1,168 @@
-#articleBanner {
+#article-banner {
     height: 94vh;
     background-image: url("/content/Images/TestImage.png");
     background-position: center center;
     background-size: cover;
 }
 
-#bannerWelcomeMessage {
-    margin: 0;
+#banner-welcome-message {
+    padding-top:1em;
     text-align: center;
     font-size: 2em;
 }
-#webSiteName {
+
+    #banner-welcome-message > p {
+        margin: 0;
+    }
+
+.website-name {
     text-align: center;
-    font-size: 5em;
+    font-size: 3em;
+    margin: 0px;
 }
-#coverPicture {
+#cover-picture {
     width: 50%;
-    margin-top: 5em;
+    height: 60%;
     margin: auto;
     overflow: hidden;
     background-color: white;
     border-radius: 10px;
 }
 
-.carousel {
-    margin: 1em;
-}
 
-.presentationCardIconContainer {
+
+.presentation-card-icon-container {
     text-align: center;
     margin-top: -2.5em;
     margin-left: auto;
     margin-right: auto;
     width: 100px;
     height: 100px;
-    background-color: lightgray;
+    background-color: #1F4064;
     border-radius: 50px;
 }
 
-.presentationCardIcon {
+.presentation-card-icon {
     margin-top: 25%;
     font-size: xxx-large;
 }
 
-.presentationCardHeader {
-    height: 10%;
+.presentation-card-header {
+    font-size: 1.6em;
+    height: 16%;
     text-align: center;
-    width: 70%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     overflow-wrap: break-word;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.presentationCardContent {
-    height: 50%;
-    margin: 2em;
+.presentation-card-content {
+    height: 40%;
+    margin-left: 2em;
+    margin-right: 2em;
+    font-size: 1.4em;
 }
 
-.presentationCardFooter {
+.presentation-card-footer {
     width: 100%;
+    display: flex;
 }
 
-.presentationCardButton {
+.presentation-card-button {
+    margin-left:auto;
+    margin-right: auto;
     margin-bottom: 1em;
     margin-top: 1em;
     width: 40%;
+    background-color: #E48033;
+    border-radius: 1em;
+    border: none;
 }
 
-#cardSection {
-    display: flex;
-    justify-content: space-around;
+.presentation-card-link {
+    text-decoration: none;
+    color: black;
+}
+.presentation-card-link-text {
+    margin: 0px;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    font-size: 1.4em;
 }
 
-#presentationCardArticle {
+#card-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    column-gap: 12%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#presentation-card-article {
     padding-bottom: 2.5em;
-    background-color: #653bef;
+    background-color: #35393D;
 }
 
-.presentationCard {
+.presentation-card {
     height: 32em;
     border-radius: 10px;
     margin-top: -2.5em;
-    background-color: gray;
-    width: 20%;
+    background-color: #BAC5CE;
 }
 
-.infoArticle {
+.info-article {
     padding-top: 2.5em;
     padding-bottom: 2.5em;
 }
 
-.infoSection {
-    display: flex;
+.info-section {
     margin: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: auto;
+}
+
+.contener-info-image {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contener-info-desc {
     width: 60%;
+    background-color: #BAC5CE;
+    padding: 2%;
+    border-radius: 10px;
 }
 
-.contenerInfoImage {
-    width: 40%;
-}
-
-.contenerInfoDesc {
+#image-gazette {
     width: 60%;
-}
-
-#imageGazette {
-    width: 80%;
     margin: auto;
 }
 
-#articleModdedServer{
-    background-color: lightgray;
+#article-gazette {
+    background-color: #393C40;
+}
+
+#article-Modded-Server {
+    background-color: #35393D;
 }
 
 @media only screen and (max-width: 1100px) {
-    #articleBanner {
-        height: 34vh;
+    #article-banner {
+        height: 45vh;
     }
 
-    .presentationCard {
+    .presentation-card {
         width: 30%;
     }
 
-    .infoSection {
+    .info-section {
         width: 80%;
     }
 

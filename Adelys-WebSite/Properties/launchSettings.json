@@ -5,7 +5,9 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "MYSQL_CONNECTIONSTRING": "Server=sql3.minestrator.com;Database=minesr_sXvnn1Ht;Uid=minesr_sXvnn1Ht;Pwd=eJQVoFuveaJdxQpy;"
+        "MYSQL_CONNECTIONSTRING": "Server=sql3.minestrator.com;Database=minesr_sXvnn1Ht;Uid=minesr_sXvnn1Ht;Pwd=eJQVoFuveaJdxQpy;",
+        "ADELYS_WEBMAP": "http://91.197.6.152:30640/",
+        "ADELYS_EVENT_WEBMAP": "http://91.197.6.221:30140/"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7237;http://localhost:5215"
@@ -14,7 +16,9 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ADELYS_WEBMAP": "http://91.197.6.152:30640/",
+        "ADELYS_EVENT_WEBMAP": "http://91.197.6.221:30140/"
       }
     },
     "Docker": {

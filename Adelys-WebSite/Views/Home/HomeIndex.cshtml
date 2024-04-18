@@ -1,15 +1,59 @@
 ﻿@model PlayerViewModel
 @using Adelys_WebSite.ViewModels
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Adelys";
     <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shared/carousel.css" asp-append-version="true" />
+    <script src="~/js/home-index.js" asp-append-version="true"></script>
+    <script src="~/js/carousel.js" asp-append-version="true"></script>
 }
-<div class="row mx-0">
-    <article class="indexArticle col-12 justify-content-center" id="articleBanner">
-        <p id="bannerWelcomeMessage">Bienvenue sur</p>
-        <h1 id="webSiteName">Adelys</h1>
-        <div id="coverPicture">
-            <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+<div class="">
+    <article class="index-article justify-content-center" id="article-banner">
+        <div id="banner-welcome-message">
+            <p>Bienvenue sur</p>
+            <h1 class="website-name">Adelys</h1>
+        </div>
+        <div id="cover-picture">
+
+            <div class="carousel">
+                <div class="carousel-navigator">
+                    <a class="carousel-navigator-arrow carousel-navigator-prev">
+                        <i class="fas fa-angle-left"></i>
+                        </a>
+                    <a class="carousel-navigator-arrow carousel-navigator-next">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+                <ul class="slideshow">
+                    <li class="slideshow-item">
+                        <img src="/content/Images/PristoCity.png" class="carousel-custom-image" alt="...">
+                        <div class="carousel-captions">
+                            <h5>Pristo, un empire de confiance !</h5>
+                            <p>Quoi de mieux que rejoindre l'empire le plus puissant ?'</p>
+                        </div>
+                    </li>
+                    <li class="slideshow-item">
+                        <img src="/content/Images/TestImage.png" class="carousel-custom-image" alt="...">
+                        <div class="carousel-captions">
+                            <h5>La gazette du sorc... Yonderred</h5>
+                            <p>Du blabla sympa mais pas utile</p>
+                        </div>
+                    </li>
+                    <li class="slideshow-item">
+                        <img src="/content/Images/TestImage.png" class="carousel-custom-image" alt="...">
+                        <div class="carousel-captions">
+                            <h5>La cible parfaite</h5>
+                            <p>Un problème ? Une erreur ? Dénoncer PiloteWho !</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="carousel-indicators">
+                </div>
+            </div>
+
+
+
+            @* <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -17,21 +61,21 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="/content/Images/PristoCity.png" class="d-block w-100" alt="...">
+                        <img src="/content/Images/PristoCity.png" class="carousel-custom-image" alt="...">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Pristo, un empire de confiance !</h5>
                             <p>Quoi de mieux que rejoindre l'empire le plus puissant ?'</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="/content/Images/TestImage.png" class="d-block w-100" alt="...">
+                        <img src="/content/Images/TestImage.png" class="carousel-custom-image" alt="...">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>La gazette du sorc... Yonderred</h5>
                             <p>Du blabla sympa mais pas utile</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="/content/Images/TestImage.png" class="d-block w-100" alt="...">
+                        <img src="/content/Images/TestImage.png" class="carousel-custom-image" alt="...">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>La cible parfaite</h5>
                             <p>Un problème ? Une erreur ? Dénoncer PiloteWho !</p>
@@ -46,75 +90,91 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
-            </div>
+            </div> *@
+
+
+
+
         </div>
     </article>
-    <article class="indexArticle" id="presentationCardArticle">
-        <section id="cardSection">
-            <div class="presentationCard">
-                <div class="presentationCardIconContainer">
-                    <i class="fa-solid fa-scale-balanced presentationCardIcon"></i>
+    <article class="index-article" id="presentation-card-article">
+        <section id="card-section">
+            <div class="presentation-card">
+                <div class="presentation-card-icon-container">
+                    <i class="fa-solid fa-scale-balanced presentation-card-icon"></i>
                 </div>
-                <div class="presentationCardHeader">
+                <div class="presentation-card-header">
                     <h2>Réglement</h2>
                 </div>
-                <div class="presentationCardContent">
+                <div class="presentation-card-content">
                     <p>Vous retrouverez ici les différentes règles en vigueur sur le serveur</p>
                 </div>
-                <div class="presentationCardFooter text-center">
-                    <a class="presentationCardButton btn btn-info" asp-area="" asp-controller="Rules" asp-action="">Voir plus</a>
+                <div class="presentation-card-footer text-center">
+                    <button class="presentation-card-button">
+                        <a class="presentation-card-link" asp-area="" asp-controller="Rules" asp-action=""><p class="presentation-card-link-text">Voir plus</p></a>
+                    </button>
                 </div>
             </div>
-            <div class="presentationCard">
-                <div class="presentationCardIconContainer">
-                    <i class="fa-solid fa-map-location-dot presentationCardIcon"></i>
+            <div class="presentation-card">
+                <div class="presentation-card-icon-container">
+                    <i class="fa-solid fa-map-location-dot presentation-card-icon"></i>
                 </div>
-                <div class="presentationCardHeader">
+                <div class="presentation-card-header">
                     <h2>WebMap</h2>
                 </div>
-                <div class="presentationCardContent">
+                <div class="presentation-card-content">
                     <p>Une envie de voir le monde sous un autre angle ? découvrer les maps de nos différent serveur ici !</p>
                 </div>
-                <div class="presentationCardFooter text-center">
-                    <a class="presentationCardButton btn btn-info" href="http://51.91.36.176:30510/" role="button">Adelys</a>
-                    <a class="presentationCardButton btn btn-info" href="http://217.182.46.83:30890/"role="button">Adelys-Event</a>
+                <div class="presentation-card-footer text-center">
+                    <button class="presentation-card-button">
+                        <a class="presentation-card-link" href="@Environment.GetEnvironmentVariable("ADELYS_WEBMAP")">
+                            <p class="presentation-card-link-text">Adelys</p>
+                        </a>
+                    </button>
+                    <button class="presentation-card-button">
+                        <a class="presentation-card-link" href="@Environment.GetEnvironmentVariable("ADELYS_EVENT_WEBMAP")">
+                            <p class="presentation-card-link-text" >Adelys-Event</p>
+                        </a>
+                    </button>
                 </div>
             </div>
-            <div class="presentationCard">
-                <div class="presentationCardIconContainer">
-                    <i class="fa-solid fa-universal-access presentationCardIcon"></i>
+            <div class="presentation-card">
+                <div class="presentation-card-icon-container">
+                    <i class="fa-solid fa-universal-access presentation-card-icon"></i>
                 </div>
-                <div class="presentationCardHeader">
+                <div class="presentation-card-header">
                     <h2>Présentation des joueurs</h2>
                 </div>
-                <div class="presentationCardContent">
+                <div class="presentation-card-content">
                     <p>Vous pourrez retrouvez ici les informations de chaque joueurs sur le serveur ainsi que leur domaines, commerce et activité</p>
                 </div>
-                <div class="presentationCardFooter text-center">
-                    <a class="presentationCardButton btn btn-info" asp-area="" asp-controller="Players" asp-action="">Voir plus</a>
+                <div class="presentation-card-footer text-center">
+                    <button class="presentation-card-button">
+                        <a class="presentation-card-link" asp-area="" asp-controller="Players" asp-action=""><p class="presentation-card-link-text">Voir plus</p></a>
+                    </button>
                 </div>
             </div>
         </section>
     </article>
-    <article class="indexArticle infoArticle">
-        <section class="infoSection">
-            <div class="contenerInfoImage">
-                <img src="/content/Images/TestImageVertical.png" class="d-block" id="imageGazette" alt="...">
+    <article class="index-article info-article" id="article-gazette">
+        <section class="info-section">
+            <div class="contener-info-image">
+                <img src="/content/Images/Yonderred-Gazette.png" class="d-block" id="image-gazette" alt="...">
             </div>
-            <div class="contenerInfoDesc">
+            <div class="contener-info-desc">
                 <h2>La Gazette d'Adelys</h2>
                 <p>La Gazette d'Adelys est un journal numérique trimestriel qui présente l'actualité du serveur. Vous pourrez y découvrir entre autre des interviews des joueurs, des présentations des quartiers, les nouveautés de Minecraft et plein d'autres choses ! Elle est écrite par Yonderred et sa rédaction se trouve à Ego Ville.</p>
                 <a class="btn btn-info" role="button" asp-area="" asp-controller="Gazette" asp-action="">Lire en ligne</a>
             </div>
         </section>
     </article>
-    <article class="indexArticle infoArticle" id="articleModdedServer">
-        <section class="infoSection">
-            <div class="contenerInfoDesc">
+    <article class="index-article info-article" id="article-modded-server">
+        <section class="info-section">
+            <div class="contener-info-desc">
                 <h2>Serveur Moddé Adelys-Event</h2>
                 <p>Adelys-event est un serveur moddé spécialement créer pour offrir une aventure différente du minecraft classique.</p>
             </div>
-            <div class="contenerInfoImage">
+            <div class="contener-info-image">
                 <img src="/content/Images/TestImageVertical.png" class="d-block" id="imageGazette" alt="...">
             </div>
         </section>
