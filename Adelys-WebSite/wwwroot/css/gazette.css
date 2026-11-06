@@ -1,19 +1,5 @@
-#gazetteContener {
-    background-color: lightgray;
+#displayGazette {
     height: 80vh;
-    margin: auto;
-    display: flex;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
-
-#listGazette{
-    width: 30%;
-    height: 100%;
-}
-
-#displayGazette{
-    width: 70%;
-    height: 100%;
-    background-color:lightcoral;
+    padding: 0.5rem;
+    clip-path: none;
 }

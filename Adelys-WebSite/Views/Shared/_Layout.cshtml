@@ -1,31 +1,40 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     string? adelysEventWebmap = Configuration["Webmaps:AdelysEvent"];
+    string? currentController = ViewContext.RouteData.Values["controller"]?.ToString();
 }
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Adelys_WebSite</title>
+    <title>@ViewData["Title"] - Adelys</title>
+    <script>
+        try {
+            document.documentElement.dataset.palette = localStorage.getItem("adelys-palette") === "pierre" ? "pierre" : "nuit";
+        } catch (e) {
+            document.documentElement.dataset.palette = "nuit";
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Saira+Condensed:wght@600;700&display=swap" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Shared/navbar.css" asp-append-version="true" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/5bb4db790d.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <nav>
+    <header class="site-header">
+        <nav class="site-nav">
             <div id="content-logo-title-navbar">
-                <img src="/content/Images/LOGO_EUCRYPHIA.png" class="logo-website" alt="Logo Adelys" height="30" />
+                <img src="/content/Images/LOGO_EUCRYPHIA.png" class="logo-website" alt="Logo Adelys" width="44" height="44" />
                 <a id="title-navbar" class="no-underline" asp-area="" asp-controller="Home" asp-action="Index">Adelys</a>
             </div>
-            <button class="navbar-toggler" onclick="openNavbarMenu()">
-                <span class="navbar-toggler-icon">&equiv;</span>
-            </button>
+            <button class="navbar-toggler" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&equiv;</button>
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="Home" asp-action="Index"><p class="nav-text">Accueil</p></a>
+                    <a class="nav-link no-underline @(currentController == "Home" ? "is-current" : "")" asp-area="" asp-controller="Home" asp-action="Index"><p class="nav-text">Accueil</p></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link no-underline dropdown-toggle" asp-area="" asp-controller="" asp-action="" role="button" id="dropDownLink" data-bs-toggle="dropdown" aria-expanded="false"><p class="nav-text">WebMap</p></a>
@@ -38,23 +47,29 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="Players" asp-action="Index"><p class="nav-text">Les joueurs</p></a>
+                    <a class="nav-link no-underline @(currentController == "Players" ? "is-current" : "")" asp-area="" asp-controller="Players" asp-action="Index"><p class="nav-text">Les joueurs</p></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="Shops" asp-action="Index"><p class="nav-text">Les commerces</p></a>
+                    <a class="nav-link no-underline @(currentController == "Shops" ? "is-current" : "")" asp-area="" asp-controller="Shops" asp-action="Index"><p class="nav-text">Les commerces</p></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="Gazette" asp-action="Index"><p class="nav-text">La gazette</p></a>
+                    <a class="nav-link no-underline @(currentController == "Gazette" ? "is-current" : "")" asp-area="" asp-controller="Gazette" asp-action="Index"><p class="nav-text">La gazette</p></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="Rules" asp-action="Index"><p class="nav-text">Le réglement</p></a>
+                    <a class="nav-link no-underline @(currentController == "Rules" ? "is-current" : "")" asp-area="" asp-controller="Rules" asp-action="Index"><p class="nav-text">Le règlement</p></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-underline" asp-area="" asp-controller="ArchiveMaps" asp-action="Index"><p class="nav-text">Archives maps</p></a>
+                    <a class="nav-link no-underline @(currentController == "ArchiveMaps" ? "is-current" : "")" asp-area="" asp-controller="ArchiveMaps" asp-action="Index"><p class="nav-text">Archives maps</p></a>
                 </li>
+            </ul>
+            <div class="nav-tools">
+                <button class="palette-toggle" type="button">
+                    <span class="palette-swatch" aria-hidden="true"></span>
+                    <span class="palette-label">Nuit</span>
+                </button>
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <li class="nav-item">
+                    <div class="nav-account-item">
                         <a class="nav-link no-underline dropdown-toggle" href="#" role="button" id="accountDropDownLink"><p class="nav-text">@User.Identity.Name</p></a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropDownLink">
                             @if (User.IsInRole(SiteRoles.Admin))
@@ -68,25 +83,21 @@
                                 </form>
                             </li>
                         </ul>
-                    </li>
+                    </div>
                 }
                 else
                 {
-                    <li class="nav-item">
-                        <a class="nav-link no-underline" asp-area="" asp-controller="Account" asp-action="Login"><p class="nav-text">Connexion</p></a>
-                    </li>
+                    <a class="nav-login no-underline" asp-area="" asp-controller="Account" asp-action="Login">Connexion</a>
                 }
-            </ul>
+            </div>
         </nav>
     </header>
-    <main role="main" class="">
+    <main role="main">
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Adelys_WebSite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer class="site-footer">
+        &copy; @DateTime.Now.Year Adelys, serveur Minecraft entre amis
     </footer>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/navbar.js" asp-append-version="true"></script>

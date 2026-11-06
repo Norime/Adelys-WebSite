@@ -1,41 +1,23 @@
-﻿@{
+@{
     ViewData["Title"] = "La gazette";
     <link rel="stylesheet" href="~/css/gazette.css" asp-append-version="true" />
 }
-<div class="">
-    <article class="indexArticle col-10" id="gazetteContener">
-        <div id="listGazette">
-            <div class="">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Gazette de Février 2023</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Charger</a>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Gazette spécial noël 2022</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Charger</a>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Gazette de Novembre 2022</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Charger</a>
-                        </div>
-                    </div>
-                </div>
+<div class="page">
+    <h1 class="page-title">La gazette</h1>
+    <div class="split">
+        <div class="split-list">
+            <div class="card">
+                <h2 class="card-title">Gazette de février 2023</h2>
             </div>
-            @*<button>Voir</button>*@
+            <div class="card">
+                <h2 class="card-title">Gazette spéciale Noël 2022</h2>
+            </div>
+            <div class="card">
+                <h2 class="card-title">Gazette de novembre 2022</h2>
+            </div>
         </div>
-        <div id="displayGazette">
-            <embed src="content/Gazette/Gazette_26_02_2023.pdf" width="100%" height="100%" type='application/pdf' />
+        <div class="panel" id="displayGazette">
+            <embed src="content/Gazette/Gazette_26_02_2023.pdf" width="100%" height="100%" type="application/pdf" />
         </div>
-    </article>
+    </div>
 </div>

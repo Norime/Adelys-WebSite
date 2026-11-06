@@ -1,42 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Les lois";
-    <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
+@{
+    ViewData["Title"] = "Le règlement";
 }
-<div class="">
-    <article class="col-10" id="rulesContener">
-        <div class="col-sm-2" id="listInfo">
+<div class="page">
+    <h1 class="page-title">Le règlement</h1>
+    <p class="page-lead">Les règles en vigueur sur le serveur.</p>
+    <div class="split">
+        <div class="split-list">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Lois</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadLawsPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les lois</h2>
+                <p class="card-text">Les règles communes à tous les joueurs</p>
+                <a href="#" class="btn" onclick="loadLawsPage(); return false;">Afficher</a>
             </div>
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Exceptions</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadExceptionsPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les exceptions</h2>
+                <p class="card-text">Les exploitations autorisées par joueur</p>
+                <a href="#" class="btn" onclick="loadExceptionsPage(); return false;">Afficher</a>
             </div>
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Usines</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadFactoriesPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les usines</h2>
+                <p class="card-text">Les règles des usines</p>
+                <a href="#" class="btn" onclick="loadFactoriesPage(); return false;">Afficher</a>
             </div>
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Monopoles</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadMonopoliesPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les monopoles</h2>
+                <p class="card-text">Qui détient quelle ressource</p>
+                <a href="#" class="btn" onclick="loadMonopoliesPage(); return false;">Afficher</a>
             </div>
         </div>
-        <div class="col-sm-10" id="displayInfo">
+        <div class="panel split-content" id="displayInfo">
         </div>
-    </article>
+    </div>
 </div>
 
 @section Scripts{

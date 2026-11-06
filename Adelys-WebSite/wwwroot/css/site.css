@@ -1,57 +1,215 @@
-html {
-    width: 100%;
-    font-size: 14px;
+/* Charte Adelys : les palettes ne changent que les couleurs, le reste est commun */
+:root,
+:root[data-palette="nuit"] {
+    --bg: #04172E;
+    --surface: #0C2A47;
+    --surface-raised: #143856;
+    --text: #E8F1F4;
+    --muted: #A9C4CF;
+    --secondary: #479CB2;
+    --heading: #7CC4D8;
+    --accent: #F28C28;
+    --on-accent: #04172E;
+    --link: #F7A85A;
+    --danger: #FF9B8F;
+    --scrim: 4 23 46;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+:root[data-palette="pierre"] {
+    --bg: #1E2224;
+    --surface: #2E3436;
+    --surface-raised: #3A4143;
+    --text: #EDE6D8;
+    --muted: #BDB7AA;
+    --secondary: #3F9C93;
+    --heading: #F0B066;
+    --accent: #E89A3C;
+    --on-accent: #1E2224;
+    --link: #7FD0C6;
+    --danger: #FF9B8F;
+    --scrim: 30 34 36;
+}
+
+:root {
+    --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
+    --font-body: "Barlow", system-ui, sans-serif;
+    --gutter: clamp(16px, 4vw, 56px);
+    --content: 1200px;
+    --cut: 18px;
+    color-scheme: dark;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    font-size: 16px;
 }
 
 body {
-    width: 100%;
-    margin-bottom: 60px;
-    margin-left: 0px;
-    margin-top: 0px;
-    margin-right: 0px;
-}
-
-#main-div {
-    width: 100%;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 main {
+    flex: 1;
     width: 100%;
 }
 
-h1 {
-    color: #E48033;
+img {
+    max-width: 100%;
 }
 
-h2 {
-    color: #E48033;
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin: 0;
+    color: var(--heading);
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    text-wrap: balance;
 }
 
-.logo-website {
-    height: 50px;
+p {
+    margin: 0;
 }
 
-#logo-navbar {
-    width: 50px;
+a {
+    color: var(--link);
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .no-underline {
     text-decoration: none;
 }
 
-.active{
-    display: block;
+/* Boutons : angles coupés comme les facettes du logo */
+.btn,
+.btn-primary {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border: 0;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.btn:hover,
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--on-accent);
+    outline-offset: -5px;
+}
+
+.btn-ghost {
+    background: var(--secondary);
+    color: var(--on-accent);
+}
+
+/* Pages intérieures */
+.page {
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: var(--content);
+    margin-inline: auto;
+    padding: 2.5rem var(--gutter) 3.5rem;
+}
+
+.page-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    text-transform: uppercase;
+}
+
+.page-lead {
+    max-width: 65ch;
+    color: var(--muted);
+}
+
+.panel,
+.card {
+    padding: 1.25rem;
+    background: var(--surface);
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.card-title {
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
+}
+
+.card-text {
+    margin-bottom: 0.9rem;
+    color: var(--muted);
+}
+
+/* Menu latéral et contenu : règlement, commerces, gazette */
+.split {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.split-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.split-content {
+    min-height: 16rem;
+}
+
+.split-content p {
+    white-space: pre-line;
+}
+
+@media (max-width: 800px) {
+    .split {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.destination-cities {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+}
+
+/* Pied de page */
+.site-footer {
+    padding: 1.25rem var(--gutter);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
 }

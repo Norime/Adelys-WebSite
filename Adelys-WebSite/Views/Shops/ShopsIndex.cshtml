@@ -1,44 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Les lois";
-    <link rel="stylesheet" href="~/css/shops.css" asp-append-version="true" />
+@{
+    ViewData["Title"] = "Les commerces";
 }
-<div class="">
-    <article class="col-12" id="cityContener">
-        <div class="col-sm-2" id="listCity">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Adelys</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Adelys</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Pristo</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Pristo</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Mazadir</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Mazadir</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Grenat</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Grenat</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
+<div class="page">
+    <h1 class="page-title">Les commerces</h1>
+    <p class="page-lead">Les boutiques des joueurs, classées par ville. Cette page sera remplie quand les commerces seront ajoutés.</p>
+    <div class="destination-cities">
+        <div class="card">
+            <h2 class="card-title">Adelys</h2>
+            <p class="card-text">Tous les commerces de Adelys</p>
         </div>
-        <div class="col-sm-10" id="displayInfo">
+        <div class="card">
+            <h2 class="card-title">Pristo</h2>
+            <p class="card-text">Tous les commerces de Pristo</p>
         </div>
-    </article>
+        <div class="card">
+            <h2 class="card-title">Mazadir</h2>
+            <p class="card-text">Tous les commerces de Mazadir</p>
+        </div>
+        <div class="card">
+            <h2 class="card-title">Grenat</h2>
+            <p class="card-text">Tous les commerces de Grenat</p>
+        </div>
+    </div>
 </div>
-
-@section Scripts{
-    <script src="~/js/shops.js"></script>
-}

@@ -1,169 +1,253 @@
-#article-banner {
-    height: 94vh;
-    background-image: url("/content/Images/TestImage.png");
-    background-position: center center;
-    background-size: cover;
+.eyebrow {
+    color: var(--link);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
-#banner-welcome-message {
-    padding-top:1em;
-    text-align: center;
-    font-size: 2em;
+/* Hero : la porte de Pristo, pointe basse reprise de l'emblème */
+.hero {
+    position: relative;
+    display: grid;
+    min-height: min(100vh - 120px, 680px);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 44px), 50% 100%, 0 calc(100% - 44px));
 }
 
-    #banner-welcome-message > p {
-        margin: 0;
-    }
-
-.website-name {
-    text-align: center;
-    font-size: 3em;
-    margin: 0px;
-}
-#cover-picture {
-    width: 50%;
-    height: 60%;
-    margin: auto;
-    overflow: hidden;
-    background-color: white;
-    border-radius: 10px;
-}
-
-
-
-.presentation-card-icon-container {
-    text-align: center;
-    margin-top: -2.5em;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100px;
-    height: 100px;
-    background-color: #1F4064;
-    border-radius: 50px;
-}
-
-.presentation-card-icon {
-    margin-top: 25%;
-    font-size: xxx-large;
-}
-
-.presentation-card-header {
-    font-size: 1.6em;
-    height: 16%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    overflow-wrap: break-word;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.presentation-card-content {
-    height: 40%;
-    margin-left: 2em;
-    margin-right: 2em;
-    font-size: 1.4em;
-}
-
-.presentation-card-footer {
+.hero-image {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+}
+
+.hero-content {
+    position: relative;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2.5rem var(--gutter) 4.5rem;
+    background: linear-gradient(75deg, rgb(var(--scrim) / 0.95) 15%, rgb(var(--scrim) / 0.6) 50%, rgb(var(--scrim) / 0.05) 85%);
 }
 
-.presentation-card-button {
-    margin-left:auto;
-    margin-right: auto;
-    margin-bottom: 1em;
-    margin-top: 1em;
-    width: 40%;
-    background-color: #E48033;
-    border-radius: 1em;
-    border: none;
+.hero-content > * {
+    max-width: 36rem;
 }
 
-.presentation-card-link {
+.hero-title {
+    color: #FFFFFF;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 0.98;
+    text-transform: uppercase;
+}
+
+.hero-lead {
+    font-size: 1.15rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+/* Sections */
+.home-section {
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: var(--content);
+    margin-inline: auto;
+    padding: 3.5rem var(--gutter) 0;
+}
+
+.section-title {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    text-transform: uppercase;
+}
+
+/* Rubriques */
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 1rem;
+}
+
+.destination {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.25rem 1rem;
+    align-content: start;
+    padding: 1.4rem;
+    background: var(--surface);
+    color: var(--text);
     text-decoration: none;
-    color: black;
-}
-.presentation-card-link-text {
-    margin: 0px;
-    padding-top: 0.6em;
-    padding-bottom: 0.6em;
-    font-size: 1.4em;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+    transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-#card-section {
+.destination:hover {
+    background: var(--surface-raised);
+    transform: translateY(-3px);
+}
+
+.destination:focus-visible {
+    outline-offset: -6px;
+}
+
+.destination i {
+    grid-row: span 2;
+    color: var(--accent);
+    font-size: 1.8rem;
+}
+
+.destination h3 {
+    font-size: 1.5rem;
+}
+
+.destination p {
+    color: var(--muted);
+}
+
+/* Vitrine des constructions */
+.showcase {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    column-gap: 12%;
-    margin-left: 10%;
-    margin-right: 10%;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 1rem;
 }
 
-#presentation-card-article {
-    padding-bottom: 2.5em;
-    background-color: #35393D;
-}
-
-.presentation-card {
-    height: 32em;
-    border-radius: 10px;
-    margin-top: -2.5em;
-    background-color: #BAC5CE;
-}
-
-.info-article {
-    padding-top: 2.5em;
-    padding-bottom: 2.5em;
-}
-
-.info-section {
-    margin: auto;
-    margin-left: 10%;
-    margin-right: 10%;
+.showcase-item {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-template-rows: auto;
+    margin: 0;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
 }
 
-.contener-info-image {
-    margin-left: auto;
-    margin-right: auto;
+.showcase-item > * {
+    grid-area: 1 / 1;
 }
 
-.contener-info-desc {
-    width: 60%;
-    background-color: #BAC5CE;
-    padding: 2%;
-    border-radius: 10px;
+.showcase-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
 }
 
-#image-gazette {
-    width: 60%;
-    margin: auto;
+.showcase-item figcaption {
+    align-self: end;
+    display: grid;
+    gap: 0.2rem;
+    padding: 3rem 1.25rem 1.1rem;
+    background: linear-gradient(0deg, rgb(var(--scrim) / 0.95) 35%, rgb(var(--scrim) / 0));
 }
 
-#article-gazette {
-    background-color: #393C40;
+.showcase-item h3 {
+    color: #FFFFFF;
+    font-size: 1.6rem;
 }
 
-#article-Modded-Server {
-    background-color: #35393D;
+/* Gazette */
+.gazette-band {
+    margin-top: 4rem;
+    background: var(--surface);
+    clip-path: polygon(0 0, 50% 36px, 100% 0, 100% 100%, 0 100%);
 }
 
-@media only screen and (max-width: 1100px) {
-    #article-banner {
-        height: 45vh;
+.gazette-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 2rem;
+    align-items: center;
+    max-width: var(--content);
+    margin-inline: auto;
+    padding: 4.5rem var(--gutter) 3rem;
+}
+
+.gazette-portrait {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-inline: auto;
+}
+
+.gazette-text {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    max-width: 65ch;
+}
+
+.gazette-text h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    text-transform: uppercase;
+}
+
+/* Monnaie et serveur moddé */
+.home-duo {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    padding-bottom: 3.5rem;
+}
+
+.ledger,
+.event {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.5rem;
+    background: var(--surface);
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.ledger h2,
+.event h2 {
+    font-size: 1.9rem;
+}
+
+.ledger-rates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-variant-numeric: tabular-nums;
+}
+
+.ledger-rates li + li::before {
+    content: "=";
+    margin-right: 0.6rem;
+    color: var(--muted);
+}
+
+.ledger-rates strong {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+}
+
+@media (max-width: 720px) {
+    .gazette-inner {
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .presentation-card {
-        width: 30%;
+    .gazette-portrait {
+        max-width: 200px;
     }
 
-    .info-section {
-        width: 80%;
+    .hero {
+        min-height: 620px;
     }
 
+    .hero-content {
+        justify-content: flex-end;
+        background: linear-gradient(0deg, rgb(var(--scrim) / 0.96) 42%, rgb(var(--scrim) / 0.55) 68%, rgb(var(--scrim) / 0));
+    }
 }

@@ -1,39 +1,39 @@
-﻿@using Adelys_WebSite.ViewModels;
+@using Adelys_WebSite.ViewModels;
 @model PlayerViewModel
 @{
     ViewData["Title"] = "Les joueurs";
     <link rel="stylesheet" href="~/css/playersPage.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Shared/card.css" asp-append-version="true" />
 }
 
-<div class="">
+<div class="page">
+    <h1 class="page-title">Les joueurs</h1>
     <article id="playersArticle">
-        <section id="parliamentPlayers">
+        <h2 class="players-heading">Le parlement</h2>
+        <section class="players-grid" id="parliamentPlayers">
             @foreach (var player in Model.ParlementPlayers)
             {
                 <div class="card cardPlayer">
                     <div class="card-body">
-                        <h5 class="card-title">@player.Username</h5>
+                        <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
                             <img id="playerParlementImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@player.Rank</h5>
-                        <button class="btn-player-show-more">Voir plus</button>
+                        <p class="player-rank">@player.Rank</p>
                     </div>
                 </div>
             }
         </section>
-        <section id="otherPlayers">
+        <h2 class="players-heading">Les habitants</h2>
+        <section class="players-grid" id="otherPlayers">
             @foreach (var player in Model.OtherPlayers)
             {
                 <div class="card cardPlayer">
                     <div class="card-body">
-                        <h5 class="card-title">@player.Username</h5>
+                        <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
                             <img id="playerImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@player.Rank</h5>
-                        <button class="btn-player-show-more">Voir plus</button>
+                        <p class="player-rank">@player.Rank</p>
                     </div>
                 </div>
             }
