@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mysqlx.Crud;
 
 namespace Adelys_WebSite.Models
 {

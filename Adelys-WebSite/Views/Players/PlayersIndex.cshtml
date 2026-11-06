@@ -1,67 +1,42 @@
 ﻿@using Adelys_WebSite.ViewModels;
-@using Newtonsoft.Json.Linq;
-@using System.Text;
 @model PlayerViewModel
 @{
     ViewData["Title"] = "Les joueurs";
     <link rel="stylesheet" href="~/css/playersPage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Shared/card.css" asp-append-version="true" />
-    <script src="~/js/player-model.js" asp-append-version="true"></script>
-    <script src="~/js/Externe/three.js" asp-append-version="true"></script>
-}
-
-@{
-    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerPermissionsDico = Model.PlayerPermissionsDico;
-    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico = Model.ParlementDico;
 }
 
 <div class="">
     <article id="playersArticle">
         <section id="parliamentPlayers">
-            @foreach (var player in ParlementDico.Keys)
+            @foreach (var player in Model.ParlementPlayers)
             {
-                // Accéder aux valeurs associées à une clé
-                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
-                LuckpermsUserPermission UserPermission = values.Item1;
-                string SkinUrl = values.Item2;
                 <div class="card cardPlayer">
                     <div class="card-body">
                         <h5 class="card-title">@player.Username</h5>
                         <div class="card-player-img-contener">
-                            <img id="playerParlementImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
+                            <img id="playerParlementImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
+                        <h5 class="card-title">@player.Rank</h5>
                         <button class="btn-player-show-more">Voir plus</button>
                     </div>
                 </div>
-                <script>
-                    createModel("@SkinUrl", "playerParlementImg_@player.Username");
-                </script>
             }
         </section>
         <section id="otherPlayers">
-            @foreach (var player in PlayerPermissionsDico.Keys)
+            @foreach (var player in Model.OtherPlayers)
             {
-                // Accéder aux valeurs associées à une clé
-                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
-                LuckpermsUserPermission UserPermission = values.Item1;
-                string SkinUrl = values.Item2;
                 <div class="card cardPlayer">
                     <div class="card-body">
-                            <h5 class="card-title">@player.Username</h5>
+                        <h5 class="card-title">@player.Username</h5>
                         <div class="card-player-img-contener">
-                            <img id="playerImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
+                            <img id="playerImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
+                        <h5 class="card-title">@player.Rank</h5>
                         <button class="btn-player-show-more">Voir plus</button>
                     </div>
                 </div>
-                <script>
-                    createModel("@SkinUrl", "playerImg_@player.Username");
-                </script>
             }
         </section>
     </article>
 </div>
-
-

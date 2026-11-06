@@ -1,4 +1,5 @@
-﻿@model PlayerViewModel
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@model PlayerViewModel
 @using Adelys_WebSite.ViewModels
 @{
     ViewData["Title"] = "Adelys";
@@ -127,15 +128,18 @@
                 </div>
                 <div class="presentation-card-footer text-center">
                     <button class="presentation-card-button">
-                        <a class="presentation-card-link" href="@Environment.GetEnvironmentVariable("ADELYS_WEBMAP")">
+                        <a class="presentation-card-link" href="@Configuration["Webmaps:Adelys"]">
                             <p class="presentation-card-link-text">Adelys</p>
                         </a>
                     </button>
-                    <button class="presentation-card-button">
-                        <a class="presentation-card-link" href="@Environment.GetEnvironmentVariable("ADELYS_EVENT_WEBMAP")">
-                            <p class="presentation-card-link-text" >Adelys-Event</p>
-                        </a>
-                    </button>
+                    @if (!string.IsNullOrEmpty(Configuration["Webmaps:AdelysEvent"]))
+                    {
+                        <button class="presentation-card-button">
+                            <a class="presentation-card-link" href="@Configuration["Webmaps:AdelysEvent"]">
+                                                        <p class="presentation-card-link-text" >Adelys-Event</p>
+                            </a>
+                        </button>
+                    }
                 </div>
             </div>
             <div class="presentation-card">

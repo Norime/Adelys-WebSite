@@ -1,8 +1,8 @@
 $(function () {
-    const $dropdownMenu = $('.dropdown-menu').hide();
-    $(".dropdown-toggle").on("click", function () {
+    $('.dropdown-menu').hide();
+    $(".dropdown-toggle").on("click", function (event) {
         event.preventDefault();
-        $dropdownMenu.toggle();
+        $(this).siblings('.dropdown-menu').toggle();
     });
 });
 

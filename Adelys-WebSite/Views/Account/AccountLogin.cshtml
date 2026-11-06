@@ -1,0 +1,25 @@
+@using Adelys_WebSite.ViewModels;
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Connexion";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+
+<section class="account-panel">
+    <h1>Connexion</h1>
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <div asp-validation-summary="ModelOnly" class="account-error"></div>
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div class="account-field">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" autocomplete="username" autofocus />
+            <span asp-validation-for="Username" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" autocomplete="current-password" />
+            <span asp-validation-for="Password" class="account-error"></span>
+        </div>
+        <button type="submit" class="account-button">Se connecter</button>
+    </form>
+</section>
