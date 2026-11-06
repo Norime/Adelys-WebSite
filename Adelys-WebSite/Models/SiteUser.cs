@@ -19,6 +19,7 @@ namespace Adelys_WebSite.Models
     {
         public const string Admin = "Admin";
         public const string Redacteur = "Redacteur";
+        public const string GazetteEditors = Admin + "," + Redacteur;
         public static readonly string[] All = { Admin, Redacteur };
     }
 }

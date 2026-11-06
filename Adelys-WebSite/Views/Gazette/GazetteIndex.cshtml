@@ -1,23 +1,87 @@
+@using Adelys_WebSite.ViewModels;
+@using System.Globalization;
+@model GazetteLibraryViewModel
 @{
     ViewData["Title"] = "La gazette";
+    CultureInfo french = new CultureInfo("fr-FR");
+    Gazette? latest = Model.Gazettes.FirstOrDefault();
     <link rel="stylesheet" href="~/css/gazette.css" asp-append-version="true" />
 }
+
 <div class="page">
-    <h1 class="page-title">La gazette</h1>
-    <div class="split">
-        <div class="split-list">
-            <div class="card">
-                <h2 class="card-title">Gazette de février 2023</h2>
-            </div>
-            <div class="card">
-                <h2 class="card-title">Gazette spéciale Noël 2022</h2>
-            </div>
-            <div class="card">
-                <h2 class="card-title">Gazette de novembre 2022</h2>
-            </div>
+    <div class="gazette-header">
+        <div>
+            <h1 class="page-title">La gazette</h1>
+            <p class="page-lead">Le journal numérique trimestriel du serveur, écrit par Yonderred à Ego Ville.</p>
         </div>
-        <div class="panel" id="displayGazette">
-            <embed src="content/Gazette/Gazette_26_02_2023.pdf" width="100%" height="100%" type="application/pdf" />
-        </div>
+        @if (Model.CanManage)
+        {
+            <a class="btn" asp-controller="Gazette" asp-action="Deposer">Déposer un numéro</a>
+        }
     </div>
+
+    @if (latest == null)
+    {
+        <div class="panel">
+            <h2 class="card-title">Aucun numéro pour l'instant</h2>
+            <p class="card-text">Les gazettes apparaîtront ici dès leur dépôt.</p>
+        </div>
+    }
+    else
+    {
+        <article class="gazette-latest">
+            <a class="gazette-cover-link" asp-action="Lire" asp-route-slug="@latest.Slug">
+                @if (latest.CoverFileName != null)
+                {
+                    <img class="gazette-cover" src="@Url.Action("Couverture", new { slug = latest.Slug })" alt="Couverture de @latest.Title" />
+                }
+                else
+                {
+                    <span class="gazette-cover gazette-cover-empty">@latest.Title</span>
+                }
+            </a>
+            <div class="gazette-latest-text">
+                <p class="gazette-kicker">Dernier numéro</p>
+                <h2>@latest.Title</h2>
+                <p class="gazette-date">@latest.PublishedOn.ToString("d MMMM yyyy", french)</p>
+                @if (!string.IsNullOrEmpty(latest.Description))
+                {
+                    <p>@latest.Description</p>
+                }
+                <a class="btn" asp-action="Lire" asp-route-slug="@latest.Slug">Lire ce numéro</a>
+                @if (Model.CanManage)
+                {
+                    <partial name="_GazetteManage" model="latest" />
+                }
+            </div>
+        </article>
+
+        @if (Model.Gazettes.Count > 1)
+        {
+            <h2 class="gazette-section-title">Anciens numéros</h2>
+            <div class="gazette-grid">
+                @foreach (Gazette gazette in Model.Gazettes.Skip(1))
+                {
+                    <article class="gazette-item">
+                        <a class="gazette-cover-link" asp-action="Lire" asp-route-slug="@gazette.Slug">
+                            @if (gazette.CoverFileName != null)
+                            {
+                                <img class="gazette-cover" src="@Url.Action("Couverture", new { slug = gazette.Slug })" loading="lazy" alt="Couverture de @gazette.Title" />
+                            }
+                            else
+                            {
+                                <span class="gazette-cover gazette-cover-empty">@gazette.Title</span>
+                            }
+                        </a>
+                        <h3><a asp-action="Lire" asp-route-slug="@gazette.Slug">@gazette.Title</a></h3>
+                        <p class="gazette-date">@gazette.PublishedOn.ToString("d MMMM yyyy", french)</p>
+                        @if (Model.CanManage)
+                        {
+                            <partial name="_GazetteManage" model="gazette" />
+                        }
+                    </article>
+                }
+            </div>
+        }
+    }
 </div>

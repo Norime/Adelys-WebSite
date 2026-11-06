@@ -1,0 +1,8 @@
+@model Gazette
+
+<div class="gazette-manage">
+    <a asp-controller="Gazette" asp-action="Modifier" asp-route-slug="@Model.Slug" asp-route-fromLibrary="true">Modifier</a>
+    <form asp-controller="Gazette" asp-action="Supprimer" asp-route-slug="@Model.Slug" method="post" onsubmit="return confirm('Supprimer définitivement ce numéro ?');">
+        <button type="submit">Supprimer</button>
+    </form>
+</div>

@@ -5,6 +5,10 @@
     background: var(--surface);
 }
 
+.account-panel h1 {
+    margin-bottom: 1.25rem;
+}
+
 .account-panel-wide {
     max-width: 900px;
 }

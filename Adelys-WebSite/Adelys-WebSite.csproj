@@ -10,6 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="App_Data\**" />
+    <Content Remove="App_Data\**" />
+    <None Remove="App_Data\**" />
     <Compile Remove="wwwroot\lib\bootstrap\**" />
     <Compile Remove="wwwroot\lib\jquery-validation\**" />
     <Content Remove="wwwroot\lib\bootstrap\**" />

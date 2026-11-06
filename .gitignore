@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Fichiers déposés sur le site
+Adelys-WebSite/App_Data/

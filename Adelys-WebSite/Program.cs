@@ -31,15 +31,19 @@ builder.Services.AddTransient<IServiceMojangAccess, ServiceMojangAccess>();
 builder.Services.AddTransient<IPlayerBL, PlayerBL>(); 
 builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 builder.Services.AddScoped<ISiteUserBL, SiteUserBL>();
+builder.Services.AddScoped<IGazetteBL, GazetteBL>();
+builder.Services.AddScoped<IGazetteImportBL, GazetteImportBL>();
 builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>();
 
 //DAL
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISiteUserRepository, SiteUserRepository>();
+builder.Services.AddScoped<IGazetteRepository, GazetteRepository>();
 
 //SAL
 builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>(); 
 builder.Services.AddScoped<ICrafatarAccess, CrafatarAccess>();
+builder.Services.AddSingleton<IGazetteFileStorage, GazetteFileStorage>();
 
 //Authentification
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -71,6 +75,8 @@ if (!string.IsNullOrEmpty(siteConnectionString))
     {
         using IServiceScope scope = app.Services.CreateScope();
         scope.ServiceProvider.GetRequiredService<SiteDbContext>().Database.Migrate();
+        scope.ServiceProvider.GetRequiredService<IGazetteImportBL>()
+            .ImportExistingGazettes(Path.Combine(app.Environment.WebRootPath, "content", "Gazette"));
     }
     catch (Exception ex)
     {
