@@ -1,70 +1,17 @@
-﻿$(document).ready(function () {
-    loadLawsPage();
-})
+// Chaque carte charge sa partie du règlement, l'ancre de l'adresse garde la partie ouverte
+const sections = [...document.querySelectorAll("[data-rules-section]")];
+const display = document.getElementById("displayInfo");
 
-function loadLawsPage() {
-    GetLawsView().promise().done(function (partialView) {
-        $('#displayInfo').empty();
-        $('#displayInfo').append(partialView);
-    });
+async function loadSection(name) {
+    const link = sections.find(s => s.dataset.rulesSection === name) ?? sections[0];
+    sections.forEach(s => s.closest(".card").classList.toggle("is-selected", s === link));
+    try {
+        const response = await fetch(link.dataset.url);
+        display.innerHTML = response.ok ? await response.text() : "<p>Impossible de charger cette partie du règlement.</p>";
+    } catch {
+        display.innerHTML = "<p>Impossible de charger cette partie du règlement.</p>";
+    }
 }
 
-function GetLawsView() {
-    return $.ajax({
-        url: '/Rules/GetLawsPartialView',
-        success: function (partialView) {
-            return partialView;
-        }
-    });
-}
-
-function loadExceptionsPage() {
-    GetExceptionsView().promise().done(function (partialView) {
-        $('#displayInfo').empty();
-        $('#displayInfo').append(partialView);
-    });
-}
-
-function GetExceptionsView() {
-    return $.ajax({
-        url: '/Rules/GetExceptionsPartialView',
-        success: function (partialView) {
-            return partialView;
-        }
-    });
-}
-
-function loadFactoriesPage() {
-    GetFactoriesView().promise().done(function (partialView) {
-        $('#displayInfo').empty();
-        $('#displayInfo').append(partialView);
-    });
-}
-
-function GetFactoriesView() {
-    return $.ajax({
-        url: '/Rules/GetFactoriesPartialView',
-        success: function (partialView) {
-            return partialView;
-        }
-    });
-}
-
-function loadMonopoliesPage() {
-    GetMonopoliesView().promise().done(function (partialView) {
-        $('#displayInfo').empty();
-        $('#displayInfo').append(partialView);
-    });
-}
-
-function GetMonopoliesView() {
-    return $.ajax({
-        url: '/Rules/GetMonopoliesPartialView',
-        success: function (partialView) {
-            return partialView;
-        }
-    });
-}
-
-
-
+window.addEventListener("hashchange", () => loadSection(location.hash.slice(1)));
+loadSection(location.hash.slice(1));

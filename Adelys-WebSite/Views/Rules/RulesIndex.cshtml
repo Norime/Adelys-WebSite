@@ -1,5 +1,7 @@
 @{
     ViewData["Title"] = "Le règlement";
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
 }
 <div class="page">
     <h1 class="page-title">Le règlement</h1>
@@ -9,29 +11,19 @@
             <div class="card">
                 <h2 class="card-title">Les lois</h2>
                 <p class="card-text">Les règles communes à tous les joueurs</p>
-                <a href="#" class="btn" onclick="loadLawsPage(); return false;">Afficher</a>
+                <a href="#lois" class="btn" data-rules-section="lois" data-url="@Url.Action("GetLawsPartialView", "Rules")">Afficher</a>
             </div>
             <div class="card">
-                <h2 class="card-title">Les exceptions</h2>
-                <p class="card-text">Les exploitations autorisées par joueur</p>
-                <a href="#" class="btn" onclick="loadExceptionsPage(); return false;">Afficher</a>
-            </div>
-            <div class="card">
-                <h2 class="card-title">Les usines</h2>
-                <p class="card-text">Les règles des usines</p>
-                <a href="#" class="btn" onclick="loadFactoriesPage(); return false;">Afficher</a>
-            </div>
-            <div class="card">
-                <h2 class="card-title">Les monopoles</h2>
-                <p class="card-text">Qui détient quelle ressource</p>
-                <a href="#" class="btn" onclick="loadMonopoliesPage(); return false;">Afficher</a>
+                <h2 class="card-title">Les réunions du parlement</h2>
+                <p class="card-text">L'historique des décisions sur les règles</p>
+                <a href="#reunions" class="btn" data-rules-section="reunions" data-url="@Url.Action("GetMeetingsPartialView", "Rules")">Afficher</a>
             </div>
         </div>
-        <div class="panel split-content" id="displayInfo">
+        <div class="panel split-content" id="displayInfo" aria-live="polite">
         </div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/rules.js"></script>
+    <script src="~/js/rules.js" asp-append-version="true"></script>
 }

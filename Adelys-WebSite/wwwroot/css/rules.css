@@ -1,0 +1,175 @@
+/* Règlement : lois, réunions du parlement et leurs formulaires */
+.card.is-selected {
+    box-shadow: inset 4px 0 0 var(--accent);
+}
+
+.rules-section {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.rules-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.rules-section-header .card-title {
+    margin: 0;
+}
+
+.rules-empty {
+    color: var(--muted);
+}
+
+.rules-laws {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.rules-law {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--surface-raised);
+}
+
+.rules-law:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.rules-law-title {
+    margin-bottom: 0.35rem;
+    font-size: 1.2rem;
+}
+
+.rules-amendment {
+    margin-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.rules-manage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.rules-manage button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rules-meeting {
+    padding: 0.75rem 1rem;
+    background: var(--surface-raised);
+}
+
+.rules-meeting summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    cursor: pointer;
+}
+
+.rules-meeting summary time {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.rules-meeting-title {
+    font-weight: 600;
+}
+
+.rules-meeting[open] summary {
+    margin-bottom: 0.75rem;
+}
+
+/* Formulaires */
+.rules-form .account-field textarea,
+.rules-form input[type="text"],
+.rules-form input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.rules-number-field {
+    max-width: 12rem;
+}
+
+.rules-meeting-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 12rem);
+    gap: 0 1rem;
+}
+
+@media (max-width: 600px) {
+    .rules-meeting-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.rules-form-group {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem 1rem;
+    border: 1px solid var(--surface-raised);
+}
+
+.rules-form-group .btn {
+    justify-self: start;
+}
+
+.rules-amendment-row {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .rules-amendment-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .rules-amendment-row input[type="text"] {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+}
+
+.rules-amendment-remove {
+    padding: 0 0.75rem;
+    border: 0;
+    background: var(--surface-raised);
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.rules-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}

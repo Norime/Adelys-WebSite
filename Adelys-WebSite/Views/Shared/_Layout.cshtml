@@ -56,6 +56,9 @@
                     <a class="nav-link no-underline @(currentController == "Gazette" ? "is-current" : "")" asp-area="" asp-controller="Gazette" asp-action="Index"><p class="nav-text">La gazette</p></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link no-underline @(currentController == "Events" ? "is-current" : "")" asp-area="" asp-controller="Events" asp-action="Index"><p class="nav-text">Les events</p></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link no-underline @(currentController == "Rules" ? "is-current" : "")" asp-area="" asp-controller="Rules" asp-action="Index"><p class="nav-text">Le règlement</p></a>
                 </li>
                 <li class="nav-item">

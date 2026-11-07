@@ -35,6 +35,9 @@ builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 builder.Services.AddScoped<ISiteUserBL, SiteUserBL>();
 builder.Services.AddScoped<IGazetteBL, GazetteBL>();
 builder.Services.AddScoped<IShopBL, ShopBL>();
+builder.Services.AddScoped<IRulesBL, RulesBL>();
+builder.Services.AddScoped<IEventBL, EventBL>();
+builder.Services.AddSingleton<IMarkdownBL, MarkdownBL>();
 builder.Services.AddScoped<IGazetteImportBL, GazetteImportBL>();
 builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>();
 
@@ -43,11 +46,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISiteUserRepository, SiteUserRepository>();
 builder.Services.AddScoped<IGazetteRepository, GazetteRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<IRulesRepository, RulesRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 //SAL
 builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>(); 
 builder.Services.AddScoped<ICrafatarAccess, CrafatarAccess>();
 builder.Services.AddSingleton<IGazetteFileStorage, GazetteFileStorage>();
+builder.Services.AddSingleton<IContentImageStorage, ContentImageStorage>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<MinecraftItemCatalog>();
 builder.Services.AddSingleton<IMinecraftItemCatalog>(services => services.GetRequiredService<MinecraftItemCatalog>());

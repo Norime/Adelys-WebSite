@@ -1,0 +1,56 @@
+@using Adelys_WebSite.ViewModels;
+@model LawFormViewModel
+@{
+    bool isEdit = Model.Id != null;
+    string action = isEdit ? "ModifierLoi" : "AjouterLoi";
+    ViewData["Title"] = isEdit ? $"Modifier la loi n°{Model.Number}" : "Ajouter une loi";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form class="rules-form" asp-controller="Rules" asp-action="@action" asp-route-id="@Model.Id" method="post">
+        <div class="account-field rules-number-field">
+            <label asp-for="Number"></label>
+            <input asp-for="Number" maxlength="10" placeholder="13bis" />
+            <span asp-validation-for="Number" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Content"></label>
+            <partial name="_MarkdownEditor" model="@(new MarkdownEditorViewModel { Name = nameof(Model.Content), Value = Model.Content, MaxLength = 5000, Rows = 8 })" />
+            <span asp-validation-for="Content" class="account-error"></span>
+        </div>
+        <fieldset class="rules-form-group">
+            <legend>Historique des modifications</legend>
+            <div id="lawAmendments">
+                @for (int i = 0; i < Model.Amendments.Count; i++)
+                {
+                    <partial name="PartialViews/_LawAmendmentRow" model="@(new LawAmendmentRowViewModel { Index = i, Amendment = Model.Amendments[i] })" />
+                }
+            </div>
+            @foreach (var state in ViewData.ModelState.Where(s => s.Key.StartsWith("Amendments")))
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    <span class="account-error">@error.ErrorMessage</span>
+                }
+            }
+            <button type="button" class="btn btn-ghost" id="lawAmendmentAdd">Ajouter une modification</button>
+        </fieldset>
+        <div class="rules-form-actions">
+            <button type="submit" class="account-button">@(isEdit ? "Enregistrer" : "Ajouter la loi")</button>
+            <a class="btn btn-ghost" href="@Url.Action("Index", "Rules")#lois">Annuler</a>
+        </div>
+    </form>
+</section>
+
+<template id="lawAmendmentTemplate">
+    <partial name="PartialViews/_LawAmendmentRow" model="@(new LawAmendmentRowViewModel { Amendment = new LawAmendmentFormViewModel { AmendedOn = DateTime.Today } })" />
+</template>
+
+@section Scripts{
+    <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+    <script src="~/js/law-form.js" asp-append-version="true"></script>
+}

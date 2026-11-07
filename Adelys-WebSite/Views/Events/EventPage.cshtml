@@ -1,0 +1,45 @@
+@using Adelys_WebSite.BL;
+@using Adelys_WebSite.ViewModels;
+@model EventPageViewModel
+@{
+    ViewData["Title"] = Model.Event.Title;
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+}
+
+<article class="page event-page">
+    <a class="event-back" asp-controller="Events" asp-action="Categorie" asp-route-slug="@Model.Event.Category.Slug">&larr; @Model.Event.Category.Name</a>
+
+    @if (Model.Event.CoverFileName != null)
+    {
+        <img class="event-page-cover" src="@(MarkdownBL.ImageRequestPath + Model.Event.CoverFileName)" alt="" />
+    }
+
+    <header class="event-page-header">
+        <p class="eyebrow">@Model.Event.Category.Name@(Model.IsOver ? " · Terminé" : "")</p>
+        <h1 class="page-title">@Model.Event.Title</h1>
+        <ul class="event-facts">
+            <li><i class="fa-regular fa-calendar" aria-hidden="true"></i> @EventDates.Format(Model.Event)</li>
+            @if (Model.Event.Location != null)
+            {
+                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @Model.Event.Location</li>
+            }
+        </ul>
+        <p class="page-lead">@Model.Event.Summary</p>
+    </header>
+
+    @if (Model.Event.Content != null)
+    {
+        <div class="panel markdown-body">@Model.Html</div>
+    }
+
+    @if (Model.CanManage)
+    {
+        <div class="events-manage">
+            <a asp-controller="Events" asp-action="Modifier" asp-route-slug="@Model.Event.Slug">Modifier</a>
+            <form asp-controller="Events" asp-action="Supprimer" asp-route-slug="@Model.Event.Slug" method="post" onsubmit="return confirm('Supprimer définitivement cet event et ses images ?');">
+                <button type="submit">Supprimer</button>
+            </form>
+        </div>
+    }
+</article>

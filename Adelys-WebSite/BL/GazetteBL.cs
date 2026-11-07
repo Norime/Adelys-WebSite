@@ -3,7 +3,6 @@ using Adelys_WebSite.DAL.Repositories.Interfaces;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.SAL.Interface;
 using Adelys_WebSite.ViewModels;
-using System.Globalization;
 using System.Text;
 
 namespace Adelys_WebSite.BL
@@ -165,35 +164,7 @@ namespace Adelys_WebSite.BL
 
         private string BuildUniqueSlug(string title)
         {
-            string baseSlug = Slugify(title);
-            string slug = baseSlug;
-            for (int suffix = 2; _repository.GetBySlug(slug) != null; suffix++)
-            {
-                slug = $"{baseSlug}-{suffix}";
-            }
-            return slug;
-        }
-
-        private static string Slugify(string title)
-        {
-            StringBuilder slug = new StringBuilder();
-            foreach (char c in title.Normalize(NormalizationForm.FormD).ToLowerInvariant())
-            {
-                if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
-                {
-                    continue;
-                }
-                if (char.IsAsciiLetterOrDigit(c))
-                {
-                    slug.Append(c);
-                }
-                else if (slug.Length > 0 && slug[^1] != '-')
-                {
-                    slug.Append('-');
-                }
-            }
-            string result = slug.ToString().Trim('-');
-            return result.Length > 0 ? result : "gazette";
+            return SlugHelper.MakeUnique(SlugHelper.Slugify(title, "gazette"), slug => _repository.GetBySlug(slug) != null);
         }
 
         private static bool StartsWith(IFormFile file, byte[] signature)

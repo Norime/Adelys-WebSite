@@ -1,3 +1,6 @@
+@using Adelys_WebSite.BL;
+@using Adelys_WebSite.ViewModels;
+@model HomeViewModel
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = "Accueil";
@@ -21,6 +24,26 @@
         </div>
     </div>
 </section>
+
+@if (Model.FeaturedEvent is { } featured)
+{
+    bool started = featured.StartsAt <= DateTime.Now;
+    <section class="home-section" aria-labelledby="featured-event-title">
+        <a class="featured-event" asp-controller="Events" asp-action="Voir" asp-route-slug="@featured.Slug">
+            @if (featured.CoverFileName != null)
+            {
+                <img class="featured-event-image" src="@(MarkdownBL.ImageRequestPath + featured.CoverFileName)" alt="" />
+            }
+            <div class="featured-event-content">
+                <p class="eyebrow">@(started ? "En ce moment" : "Prochain event") · @featured.Category.Name</p>
+                <h2 class="featured-event-title" id="featured-event-title">@featured.Title</h2>
+                <p class="featured-event-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i> @EventDates.Format(featured)</p>
+                <p>@featured.Summary</p>
+                <span class="btn">Voir l'event</span>
+            </div>
+        </a>
+    </section>
+}
 
 <section class="home-section" aria-labelledby="discover-title">
     <h2 class="section-title" id="discover-title">Découvrir le serveur</h2>
@@ -51,7 +74,12 @@
         <a class="destination" asp-controller="Rules" asp-action="Index">
             <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
             <h3>Le règlement</h3>
-            <p>Les lois, les exceptions, les usines et les monopoles.</p>
+            <p>Les lois et les réunions du parlement.</p>
+        </a>
+        <a class="destination" asp-controller="Events" asp-action="Index">
+            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            <h3>Les events</h3>
+            <p>Les jeux de la mort, les events de saison et les prochains rendez-vous.</p>
         </a>
         <a class="destination" asp-controller="ArchiveMaps" asp-action="Index">
             <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
