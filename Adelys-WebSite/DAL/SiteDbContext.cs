@@ -19,6 +19,10 @@ namespace Adelys_WebSite.DAL
 
         public virtual DbSet<Gazette> Gazettes { get; set; }
 
+        public virtual DbSet<Shop> Shops { get; set; }
+
+        public virtual DbSet<ShopCategory> ShopCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SiteUser>(entity =>
@@ -46,6 +50,48 @@ namespace Adelys_WebSite.DAL
                 entity.Property(e => e.PdfFileName).HasMaxLength(64);
                 entity.Property(e => e.CoverFileName).HasMaxLength(64);
                 entity.Property(e => e.UploadedBy).HasMaxLength(32);
+            });
+
+            modelBuilder.Entity<Shop>(entity =>
+            {
+                entity.ToTable("site_shops");
+
+                entity.Property(e => e.Name).HasMaxLength(100);
+                entity.Property(e => e.City).HasMaxLength(32);
+                entity.Property(e => e.Description).HasMaxLength(1000);
+                entity.Property(e => e.Owner).HasMaxLength(64);
+            });
+
+            modelBuilder.Entity<ShopType>(entity =>
+            {
+                entity.ToTable("site_shop_types");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ShopItem>(entity =>
+            {
+                entity.ToTable("site_shop_items");
+
+                entity.Property(e => e.ItemId).HasMaxLength(64);
+                entity.Property(e => e.Name).HasMaxLength(100);
+                entity.Property(e => e.Currency).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<ShopCategory>(entity =>
+            {
+                entity.ToTable("site_shop_categories");
+
+                entity.HasIndex(e => e.Name).IsUnique();
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+                // Types de départ, les admins peuvent ensuite en ajouter ou en supprimer
+                entity.HasData(
+                    new ShopCategory { Id = 1, Name = "Matériaux de construction" },
+                    new ShopCategory { Id = 2, Name = "Nourriture" },
+                    new ShopCategory { Id = 3, Name = "Utilitaires" },
+                    new ShopCategory { Id = 4, Name = "Redstone" });
             });
 
             base.OnModelCreating(modelBuilder);

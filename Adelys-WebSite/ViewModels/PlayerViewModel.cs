@@ -4,6 +4,7 @@
     {
         public List<PlayerCardViewModel> ParlementPlayers { get; set; } = new();
         public List<PlayerCardViewModel> OtherPlayers { get; set; } = new();
+        public List<string> Groups { get; set; } = new();
     }
 
     public class PlayerCardViewModel

@@ -8,14 +8,31 @@
 <div class="page">
     <h1 class="page-title">Les joueurs</h1>
     <article id="playersArticle">
+        <div class="players-filters">
+            <div class="players-filter">
+                <label for="playersGroupFilter">Groupe</label>
+                <select id="playersGroupFilter">
+                    <option value="">Tous les groupes</option>
+                    @foreach (var group in Model.Groups)
+                    {
+                        <option value="@group">@(char.ToUpper(group[0]) + group.Substring(1))</option>
+                    }
+                </select>
+            </div>
+            <div class="players-filter players-filter-search">
+                <label for="playersSearch">Recherche</label>
+                <input type="search" id="playersSearch" placeholder="Pseudo ou groupe" autocomplete="off" />
+            </div>
+        </div>
         <h2 class="players-heading">Le parlement</h2>
         <section class="players-grid" id="parliamentPlayers">
             @foreach (var player in Model.ParlementPlayers)
             {
-                <div class="card cardPlayer">
+                <div class="card cardPlayer" role="button" tabindex="0" aria-haspopup="dialog" data-rank="@player.Rank" data-search="@player.Username @player.Rank parlement">
                     <div class="card-body">
                         <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
+                            <span class="player-badge" title="Membre du parlement" aria-label="Membre du parlement">P</span>
                             <img id="playerParlementImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
                         <p class="player-rank">@player.Rank</p>
@@ -23,11 +40,12 @@
                 </div>
             }
         </section>
+        <p class="players-empty" hidden>Aucun joueur trouvé</p>
         <h2 class="players-heading">Les habitants</h2>
         <section class="players-grid" id="otherPlayers">
             @foreach (var player in Model.OtherPlayers)
             {
-                <div class="card cardPlayer">
+                <div class="card cardPlayer" role="button" tabindex="0" aria-haspopup="dialog" data-rank="@player.Rank" data-search="@player.Username @player.Rank">
                     <div class="card-body">
                         <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
@@ -38,5 +56,17 @@
                 </div>
             }
         </section>
+        <p class="players-empty" hidden>Aucun joueur trouvé</p>
     </article>
+    <dialog id="playerDialog" class="player-dialog" aria-labelledby="playerDialogTitle">
+        <h2 id="playerDialogTitle">Coming soon</h2>
+        <form method="dialog">
+            <button class="btn" type="submit">Fermer</button>
+        </form>
+    </dialog>
 </div>
+
+@section Scripts{
+    <script src="~/js/players-filter.js" asp-append-version="true"></script>
+    <script src="~/js/players-dialog.js" asp-append-version="true"></script>
+}

@@ -12,38 +12,33 @@ namespace Adelys_WebSite.Controllers
 {
     public class PlayersController : Controller
     {
-        private const string GroupPrefix = "group.";
-        private const string DefaultGroup = "default";
         private const string ParlementGroup = "parlement";
 
         private readonly IPlayerBL _playerBL;
-        private readonly IUserPermissionBL _userPermissionBL;
         private readonly ILogger<PlayersController> _logger;
 
-        public PlayersController(ILogger<PlayersController> logger, IPlayerBL playerBL, IUserPermissionBL userPermissionBL)
+        public PlayersController(ILogger<PlayersController> logger, IPlayerBL playerBL)
         {
             _logger = logger;
             _playerBL = playerBL;
-            _userPermissionBL = userPermissionBL;
         }
 
         public IActionResult Index()
         {
-            ILookup<string, LuckpermsUserPermission> permissionsByPlayer = _userPermissionBL.GetAllUsersPermissions().ToLookup(p => p.Uuid);
             PlayerViewModel viewModel = new PlayerViewModel();
 
-            foreach (LuckpermsPlayer player in _playerBL.GetAllPlayers().OrderBy(p => p.Username))
+            foreach (PlayerRank playerRank in _playerBL.GetPlayerRanks())
             {
-                List<string> groups = GetActiveGroups(permissionsByPlayer[player.Uuid]);
+                LuckpermsPlayer player = playerRank.Player;
                 PlayerCardViewModel card = new PlayerCardViewModel
                 {
                     Uuid = player.Uuid,
                     Username = player.Username,
-                    Rank = GetRank(player, groups),
+                    Rank = playerRank.Rank,
                     SkinUrl = GetSkinUrl(player)
                 };
 
-                if (groups.Contains(ParlementGroup) || player.PrimaryGroup == ParlementGroup)
+                if (playerRank.IsParlement)
                 {
                     viewModel.ParlementPlayers.Add(card);
                 }
@@ -53,33 +48,14 @@ namespace Adelys_WebSite.Controllers
                 }
             }
 
-            return View("PlayersIndex", viewModel);
-        }
-
-        /// <summary>
-        /// Récupère les groupes LuckPerms actifs d'un joueur, les autres permissions ne sont pas des rangs
-        /// </summary>
-        private static List<string> GetActiveGroups(IEnumerable<LuckpermsUserPermission> permissions)
-        {
-            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            return permissions
-                .Where(p => p.Value && p.Permission.StartsWith(GroupPrefix) && (p.Expiry == 0 || p.Expiry > now))
-                .Select(p => p.Permission.Substring(GroupPrefix.Length))
+            viewModel.Groups = viewModel.ParlementPlayers.Concat(viewModel.OtherPlayers)
+                .Select(p => p.Rank)
+                .Where(g => g != ParlementGroup)
                 .Distinct()
                 .OrderBy(g => g)
                 .ToList();
-        }
 
-        /// <summary>
-        /// Le groupe principal est le rang du joueur, sauf s'il est resté sur default alors qu'il a un autre groupe
-        /// </summary>
-        private static string GetRank(LuckpermsPlayer player, List<string> groups)
-        {
-            if (player.PrimaryGroup != DefaultGroup)
-            {
-                return player.PrimaryGroup;
-            }
-            return groups.FirstOrDefault(g => g != DefaultGroup) ?? DefaultGroup;
+            return View("PlayersIndex", viewModel);
         }
 
         /// <summary>

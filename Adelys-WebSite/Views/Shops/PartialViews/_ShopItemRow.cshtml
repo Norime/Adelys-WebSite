@@ -1,0 +1,20 @@
+@using Adelys_WebSite.ViewModels;
+@model ShopItemRowViewModel
+
+<div class="shop-item-row">
+    <div class="item-picker">
+        <img class="item-picker-icon" src="@Model.IconUrl" alt="" hidden="@(Model.IconUrl == null)" />
+        <input class="item-picker-input" data-field="Name" name="@Model.FieldName("Name")" value="@Model.Item.Name" placeholder="Chercher un item" aria-label="Item" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" />
+        <input type="hidden" data-field="ItemId" name="@Model.FieldName("ItemId")" value="@Model.Item.ItemId" />
+        <ul class="item-picker-list" role="listbox" hidden></ul>
+    </div>
+    <input class="shop-item-number" type="number" data-field="Quantity" name="@Model.FieldName("Quantity")" value="@Model.Item.Quantity" min="1" max="100000" placeholder="Quantité" aria-label="Quantité" />
+    <input class="shop-item-number" type="number" data-field="Price" name="@Model.FieldName("Price")" value="@Model.Item.Price" min="1" max="1000000" placeholder="Prix" aria-label="Prix" />
+    <select data-field="Currency" name="@Model.FieldName("Currency")" aria-label="Monnaie">
+        @foreach (string currency in ShopCurrencies.All)
+        {
+            <option value="@currency" selected="@(Model.Item.Currency == currency)">@ShopCurrencies.GetLabel(currency)</option>
+        }
+    </select>
+    <button type="button" class="shop-item-remove">Retirer</button>
+</div>

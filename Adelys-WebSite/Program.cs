@@ -8,10 +8,12 @@ using Adelys_WebSite.DAL.UnitOfWork;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.SAL;
 using Adelys_WebSite.SAL.Interface;
+using Adelys_WebSite.SAL.Minecraft;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,7 @@ builder.Services.AddTransient<IPlayerBL, PlayerBL>();
 builder.Services.AddTransient<IUserPermissionBL, UserPermissionBL>();
 builder.Services.AddScoped<ISiteUserBL, SiteUserBL>();
 builder.Services.AddScoped<IGazetteBL, GazetteBL>();
+builder.Services.AddScoped<IShopBL, ShopBL>();
 builder.Services.AddScoped<IGazetteImportBL, GazetteImportBL>();
 builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>();
 
@@ -39,11 +42,16 @@ builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISiteUserRepository, SiteUserRepository>();
 builder.Services.AddScoped<IGazetteRepository, GazetteRepository>();
+builder.Services.AddScoped<IShopRepository, ShopRepository>();
 
 //SAL
 builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>(); 
 builder.Services.AddScoped<ICrafatarAccess, CrafatarAccess>();
 builder.Services.AddSingleton<IGazetteFileStorage, GazetteFileStorage>();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<MinecraftItemCatalog>();
+builder.Services.AddSingleton<IMinecraftItemCatalog>(services => services.GetRequiredService<MinecraftItemCatalog>());
+builder.Services.AddHostedService<MinecraftCatalogUpdater>();
 
 //Authentification
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -125,6 +133,13 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// Icônes des items, rangées par version : une adresse ne change jamais de contenu
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(app.Services.GetRequiredService<MinecraftItemCatalog>().RootPath),
+    RequestPath = MinecraftItemCatalog.IconsRequestPath,
+    OnPrepareResponse = context => context.Context.Response.Headers.CacheControl = "public, max-age=2592000, immutable"
+});
 
 app.UseRouting();
 
