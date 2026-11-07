@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+// Réglages propres à la machine, ignorés par git : coordonnées des mentions légales
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 //BDD
 var mySqlVersion = new MySqlServerVersion(new Version(8, 4, 0));
@@ -27,6 +29,7 @@ builder.Services.AddDbContext<SiteDbContext>(option => option.UseMySql(siteConne
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<LegalInfo>(builder.Configuration.GetSection("Legal"));
 builder.Services.AddTransient<IServiceMojangAccess, ServiceMojangAccess>();
 
 //BL
@@ -37,6 +40,8 @@ builder.Services.AddScoped<IGazetteBL, GazetteBL>();
 builder.Services.AddScoped<IShopBL, ShopBL>();
 builder.Services.AddScoped<IRulesBL, RulesBL>();
 builder.Services.AddScoped<IEventBL, EventBL>();
+builder.Services.AddScoped<IHomeSlideBL, HomeSlideBL>();
+builder.Services.AddScoped<IHomeHeroBL, HomeHeroBL>();
 builder.Services.AddSingleton<IMarkdownBL, MarkdownBL>();
 builder.Services.AddScoped<IGazetteImportBL, GazetteImportBL>();
 builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>();
@@ -48,6 +53,8 @@ builder.Services.AddScoped<IGazetteRepository, GazetteRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IRulesRepository, RulesRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IHomeSlideRepository, HomeSlideRepository>();
+builder.Services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
 
 //SAL
 builder.Services.AddScoped<IServiceMojangAccess, ServiceMojangAccess>(); 

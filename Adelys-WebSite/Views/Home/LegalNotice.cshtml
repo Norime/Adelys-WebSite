@@ -1,0 +1,69 @@
+@using Microsoft.Extensions.Options;
+@inject IOptions<LegalInfo> LegalOptions
+@{
+    ViewData["Title"] = "Mentions légales";
+    LegalInfo legal = LegalOptions.Value;
+    <link rel="stylesheet" href="~/css/legal.css" asp-append-version="true" />
+}
+@functions {
+    // Une information manquante reste visible pour être complétée dans la configuration (section Legal)
+    private static object Field(string value) => string.IsNullOrWhiteSpace(value)
+        ? new Microsoft.AspNetCore.Html.HtmlString("<span class=\"legal-missing\">à compléter</span>")
+        : value;
+}
+
+<article class="page legal-page">
+    <h1 class="page-title">Mentions légales</h1>
+    <p class="page-lead">Informations prévues par l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN).</p>
+
+    <section>
+        <h2>Éditeur du site</h2>
+        <p>Le site Adelys est un site personnel et non commercial, consacré au serveur Minecraft Adelys, un serveur privé entre amis.</p>
+        @if (string.IsNullOrWhiteSpace(legal.EditorName))
+        {
+            <p>Il est édité par une personne physique agissant à titre non professionnel qui, conformément à l'article 6, III, 2 de la LCEN, a choisi de ne pas rendre public son nom. Son identité a été communiquée à l'hébergeur.</p>
+        }
+        else
+        {
+            <p>Il est édité par @legal.EditorName, personne physique agissant à titre non professionnel.</p>
+        }
+        <p>Contact : @if (string.IsNullOrWhiteSpace(legal.ContactEmail)) { @Field(legal.ContactEmail) } else { <a href="mailto:@legal.ContactEmail">@legal.ContactEmail</a> }</p>
+        @* Un éditeur anonyme n'a pas à nommer de directeur de la publication, l'hébergeur connaît son identité *@
+        @if (!string.IsNullOrWhiteSpace(legal.PublicationDirector) || !string.IsNullOrWhiteSpace(legal.EditorName))
+        {
+            <p>Directeur ou directrice de la publication : @(string.IsNullOrWhiteSpace(legal.PublicationDirector) ? legal.EditorName : legal.PublicationDirector)</p>
+        }
+    </section>
+
+    <section>
+        <h2>Hébergeur</h2>
+        <p>@Field(legal.HostName)<br />@Field(legal.HostAddress)<br />Téléphone : @Field(legal.HostPhone)</p>
+    </section>
+
+    <section>
+        <h2>Propriété intellectuelle</h2>
+        <p>Les textes, les numéros de la gazette, les captures d'écran et les constructions présentées sur le site appartiennent à leurs auteurs, joueurs et joueuses du serveur Adelys. Toute reproduction ou réutilisation en dehors d'un usage privé demande l'accord de leur auteur.</p>
+        <p>Minecraft est une marque de Mojang AB. Adelys n'est pas un produit officiel Minecraft : il n'est ni approuvé par Mojang ou Microsoft, ni associé à eux. Les icônes d'items et les rendus de skins proviennent du jeu Minecraft et restent la propriété de Mojang AB.</p>
+    </section>
+
+    <section>
+        <h2>Responsabilité</h2>
+        <p>Le site est fourni gratuitement et sans garantie de disponibilité. Il contient des liens vers des sites externes, comme la carte du serveur, dont l'éditeur ne contrôle pas le contenu.</p>
+        <p>Pour signaler un contenu illicite ou demander son retrait, écris à l'adresse de contact ci-dessus en précisant la page concernée.</p>
+    </section>
+
+    <section>
+        <h2>Données personnelles</h2>
+        <p>Le traitement des données personnelles et l'usage des cookies sont décrits dans la <a asp-controller="Home" asp-action="Confidentialite">politique de confidentialité</a>.</p>
+    </section>
+
+    <section>
+        <h2>Droit applicable</h2>
+        <p>Le site et les présentes mentions sont soumis au droit français.</p>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(legal.LastUpdated))
+    {
+        <p class="legal-updated">Dernière mise à jour : @legal.LastUpdated</p>
+    }
+</article>

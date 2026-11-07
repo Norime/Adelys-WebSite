@@ -1,0 +1,36 @@
+@using Adelys_WebSite.ViewModels;
+@model HomeHeroFormViewModel
+@{
+    ViewData["Title"] = "Image de fond de l'accueil";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <img class="hero-form-current" src="@Model.Current.ImageUrl" alt="Image de fond actuelle" />
+    <form asp-controller="Home" asp-action="ImageDeFond" method="post" enctype="multipart/form-data">
+        <div class="account-field">
+            <label asp-for="Image"></label>
+            <input asp-for="Image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" />
+            <span class="carousel-hint">Laisse vide pour ne changer que la description. Une grande image en paysage, au moins 1920 px de large, 10 Mo maximum. Le titre s'affiche par-dessus sur la gauche.</span>
+            <span asp-validation-for="Image" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="AltText"></label>
+            <input asp-for="AltText" maxlength="200" />
+            <span class="carousel-hint">Lue par les lecteurs d'écran à la place de l'image.</span>
+            <span asp-validation-for="AltText" class="account-error"></span>
+        </div>
+        <div class="carousel-admin-actions">
+            <button type="submit" class="account-button">Enregistrer</button>
+            <a class="btn btn-ghost" asp-controller="Home" asp-action="Index">Annuler</a>
+        </div>
+    </form>
+    @if (!Model.Current.IsDefault)
+    {
+        <form asp-controller="Home" asp-action="ImageDeFondParDefaut" method="post" onsubmit="return confirm('Remettre la porte de Pristo en image de fond ?');">
+            <button type="submit" class="hero-form-reset">Remettre l'image d'origine</button>
+        </form>
+    }
+</section>

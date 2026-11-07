@@ -1,0 +1,129 @@
+@using Microsoft.Extensions.Options;
+@inject IOptions<LegalInfo> LegalOptions
+@{
+    ViewData["Title"] = "Confidentialité et cookies";
+    LegalInfo legal = LegalOptions.Value;
+    <link rel="stylesheet" href="~/css/legal.css" asp-append-version="true" />
+}
+
+<article class="page legal-page">
+    <h1 class="page-title">Confidentialité et cookies</h1>
+    <p class="page-lead">Comment le site Adelys utilise les données personnelles, conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.</p>
+
+    <section>
+        <h2>Responsable du traitement</h2>
+        <p>
+            Le responsable du traitement est l'éditeur du site, présenté dans les <a asp-controller="Home" asp-action="MentionsLegales">mentions légales</a>.
+            Pour toute question ou demande :
+            @if (string.IsNullOrWhiteSpace(legal.ContactEmail))
+            {
+                <span class="legal-missing">adresse de contact à compléter</span>
+            }
+            else
+            {
+                <a href="mailto:@legal.ContactEmail">@legal.ContactEmail</a>
+            }
+        </p>
+    </section>
+
+    <section>
+        <h2>Ce que le site ne fait pas</h2>
+        <p>Le site n'affiche aucune publicité, ne mesure pas l'audience, ne vend aucune donnée et ne propose pas de formulaire d'inscription aux visiteurs.</p>
+    </section>
+
+    <section>
+        <h2>Données traitées</h2>
+        <div class="legal-table-wrapper">
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Qui</th>
+                        <th scope="col">Données</th>
+                        <th scope="col">Pourquoi</th>
+                        <th scope="col">Base légale</th>
+                        <th scope="col">Durée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Joueurs et joueuses du serveur</td>
+                        <td>Pseudo Minecraft, identifiant (UUID), rang sur le serveur, skin</td>
+                        <td>Présenter la communauté sur la page Les joueurs et dans les pages du site (commerces, events, gazette)</td>
+                        <td>Intérêt légitime du serveur à présenter ses membres</td>
+                        <td>Tant que le joueur figure sur le serveur</td>
+                    </tr>
+                    <tr>
+                        <td>Administrateurs et rédacteurs du site</td>
+                        <td>Identifiant, mot de passe chiffré (jamais conservé en clair), dates de connexion, tentatives de connexion échouées</td>
+                        <td>Gérer les comptes et protéger l'accès à l'administration</td>
+                        <td>Exécution du service demandé</td>
+                        <td>Tant que le compte existe</td>
+                    </tr>
+                    <tr>
+                        <td>Tous les visiteurs</td>
+                        <td>Adresse IP, page demandée, date et heure</td>
+                        <td>Journaux techniques du serveur : sécurité et résolution des pannes</td>
+                        <td>Intérêt légitime et obligation légale de conservation</td>
+                        <td>Un an au maximum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Pour retrouver les pseudos à partir des identifiants, le serveur du site interroge les services de Mojang. Ces données ne sont transmises à personne d'autre.</p>
+    </section>
+
+    <section>
+        <h2>Cookies et stockage dans le navigateur</h2>
+        <p>Le site n'utilise que des traceurs indispensables à son fonctionnement ou demandés par le visiteur. Ils sont dispensés de consentement (article 82 de la loi Informatique et Libertés), c'est pourquoi aucun bandeau ne s'affiche.</p>
+        <div class="legal-table-wrapper">
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Rôle</th>
+                        <th scope="col">Durée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Adelys.Auth</code></td>
+                        <td>Garde la connexion des administrateurs et rédacteurs. Absent pour les autres visiteurs.</td>
+                        <td>Fermeture du navigateur, 8 heures d'inactivité au plus</td>
+                    </tr>
+                    <tr>
+                        <td><code>.AspNetCore.Antiforgery.*</code></td>
+                        <td>Protège les formulaires contre les envois frauduleux.</td>
+                        <td>Fermeture du navigateur</td>
+                    </tr>
+                    <tr>
+                        <td><code>adelys-palette</code> (stockage local)</td>
+                        <td>Retient les couleurs choisies avec le bouton Nuit / Pierre.</td>
+                        <td>Jusqu'à ce que tu l'effaces dans ton navigateur</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>Services externes</h2>
+        <p>Pour afficher certaines pages, ton navigateur contacte directement des services tiers, qui reçoivent alors ton adresse IP. Certains sont situés hors de l'Union européenne, notamment aux États-Unis.</p>
+        <ul>
+            <li><strong>Google Fonts et Google Hosted Libraries</strong> (Google, États-Unis) : polices d'écriture et bibliothèque jQuery.</li>
+            <li><strong>Font Awesome</strong> (Fonticons, États-Unis) : icônes.</li>
+            <li><strong>mc-heads.net et Crafatar</strong> : images des skins des joueurs.</li>
+            <li><strong>BlueMap</strong>, hébergée par le serveur Adelys : carte du monde et carte des commerces.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Tes droits</h2>
+        <p>Tu peux demander l'accès à tes données, leur rectification, leur effacement ou la limitation de leur traitement, et t'opposer à leur affichage sur le site, par exemple pour que ton pseudo ou ton skin n'apparaisse plus sur la page Les joueurs. Écris à l'adresse de contact ci-dessus, une réponse te sera apportée dans un délai d'un mois.</p>
+        <p>Si tu estimes que tes droits ne sont pas respectés, tu peux adresser une réclamation à la CNIL sur <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">cnil.fr</a>.</p>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(legal.LastUpdated))
+    {
+        <p class="legal-updated">Dernière mise à jour : @legal.LastUpdated</p>
+    }
+</article>

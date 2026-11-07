@@ -35,6 +35,10 @@ namespace Adelys_WebSite.DAL
 
         public virtual DbSet<EventImage> EventImages { get; set; }
 
+        public virtual DbSet<HomeSlide> HomeSlides { get; set; }
+
+        public virtual DbSet<SiteSetting> SiteSettings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SiteUser>(entity =>
@@ -199,6 +203,31 @@ namespace Adelys_WebSite.DAL
 
                 entity.HasOne<ServerEvent>().WithMany().HasForeignKey(e => e.EventId).OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne<EventCategory>().WithMany().HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<HomeSlide>(entity =>
+            {
+                entity.ToTable("site_home_slides");
+
+                entity.Property(e => e.Title).HasMaxLength(100);
+                entity.Property(e => e.Caption).HasMaxLength(300);
+                entity.Property(e => e.ImageUrl).HasMaxLength(200);
+                entity.Property(e => e.AltText).HasMaxLength(200);
+
+                // Les deux constructions affichées avant le carrousel
+                entity.HasData(
+                    new HomeSlide { Id = 1, Title = "Pristo, un empire de confiance !", Caption = "Quoi de mieux que rejoindre l'empire le plus puissant ?", ImageUrl = "/content/Images/Home/palais-pristo.jpg", AltText = "Le palais de Pristo, en cuivre oxydé et en bois", SortOrder = 1 },
+                    new HomeSlide { Id = 2, Title = "Le Centre Adelys", Caption = "Un problème ? Une erreur ? Dénoncez PiloteWho !", ImageUrl = "/content/Images/Home/centre-adelys.jpg", AltText = "Le Centre Adelys et son parking", SortOrder = 2 });
+            });
+
+            modelBuilder.Entity<SiteSetting>(entity =>
+            {
+                entity.ToTable("site_settings");
+
+                entity.HasKey(e => e.Key);
+
+                entity.Property(e => e.Key).HasMaxLength(64);
+                entity.Property(e => e.Value).HasMaxLength(500);
             });
 
             base.OnModelCreating(modelBuilder);

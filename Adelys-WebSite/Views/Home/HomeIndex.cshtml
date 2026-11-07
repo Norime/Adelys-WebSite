@@ -7,10 +7,15 @@
     string? webmap = Configuration["Webmaps:Adelys"];
     string? eventWebmap = Configuration["Webmaps:AdelysEvent"];
     <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
 }
 
 <section class="hero">
-    <img class="hero-image" src="/content/Images/Home/hero-pristo.jpg" width="1920" height="1027" alt="La porte fortifiée de Pristo et ses quatre tours" />
+    <img class="hero-image" src="@Model.Hero.ImageUrl" alt="@Model.Hero.AltText" />
+    @if (Model.CanManage)
+    {
+        <a class="hero-edit" asp-controller="Home" asp-action="ImageDeFond"><i class="fa-solid fa-image" aria-hidden="true"></i> Changer l'image de fond</a>
+    }
     <div class="hero-content">
         <p class="eyebrow">Serveur Minecraft entre amis</p>
         <h1 class="hero-title">Bienvenue sur Adelys</h1>
@@ -89,25 +94,54 @@
     </div>
 </section>
 
-<section class="home-section" aria-labelledby="cities-title">
-    <h2 class="section-title" id="cities-title">Un monde bâti par ses joueurs</h2>
-    <div class="showcase">
-        <figure class="showcase-item">
-            <img src="/content/Images/Home/palais-pristo.jpg" width="1100" height="521" loading="lazy" alt="Le palais de Pristo, en cuivre oxydé et en bois" />
-            <figcaption>
-                <h3>Pristo, un empire de confiance !</h3>
-                <p>Quoi de mieux que rejoindre l'empire le plus puissant ?</p>
-            </figcaption>
-        </figure>
-        <figure class="showcase-item">
-            <img src="/content/Images/Home/centre-adelys.jpg" width="1100" height="578" loading="lazy" alt="Le Centre Adelys et son parking" />
-            <figcaption>
-                <h3>Le Centre Adelys</h3>
-                <p>Un problème ? Une erreur ? Dénoncez PiloteWho !</p>
-            </figcaption>
-        </figure>
-    </div>
-</section>
+@if (Model.Slides.Count > 0 || Model.CanManage)
+{
+    <section class="home-section" id="carrousel" aria-labelledby="cities-title">
+        <div class="carousel-header">
+            <h2 class="section-title" id="cities-title">Un monde bâti par ses joueurs</h2>
+            @if (Model.CanManage)
+            {
+                <a class="btn btn-ghost" asp-controller="Carousel" asp-action="Index">Gérer le carrousel</a>
+            }
+        </div>
+        @if (Model.Slides.Count > 0)
+        {
+            <div class="carousel" data-carousel aria-roledescription="carrousel" aria-label="Constructions des joueurs">
+                <div class="carousel-track" tabindex="0">
+                    @for (int i = 0; i < Model.Slides.Count; i++)
+                    {
+                        var slide = Model.Slides[i];
+                        <figure class="carousel-slide" role="group" aria-roledescription="diapositive" aria-label="@(i + 1) sur @Model.Slides.Count">
+                            <img src="@slide.ImageUrl" alt="@slide.AltText" loading="@(i == 0 ? "eager" : "lazy")" />
+                            <figcaption>
+                                <h3>@slide.Title</h3>
+                                @if (slide.Caption != null)
+                                {
+                                    <p>@slide.Caption</p>
+                                }
+                            </figcaption>
+                        </figure>
+                    }
+                </div>
+                @if (Model.Slides.Count > 1)
+                {
+                    <button type="button" class="carousel-arrow carousel-prev" aria-label="Image précédente"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+                    <button type="button" class="carousel-arrow carousel-next" aria-label="Image suivante"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+                    <div class="carousel-dots">
+                        @for (int i = 0; i < Model.Slides.Count; i++)
+                        {
+                            <button type="button" class="carousel-dot" aria-label="Voir l'image @(i + 1) : @Model.Slides[i].Title"></button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="carousel-empty">Le carrousel est vide et reste masqué pour les visiteurs.</p>
+        }
+    </section>
+}
 
 <section class="gazette-band" aria-labelledby="gazette-title">
     <div class="gazette-inner">
@@ -142,3 +176,7 @@
         }
     </div>
 </section>
+
+@section Scripts{
+    <script src="~/js/carousel.js" asp-append-version="true"></script>
+}

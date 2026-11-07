@@ -35,6 +35,7 @@
     --font-body: "Barlow", system-ui, sans-serif;
     --gutter: clamp(16px, 4vw, 56px);
     --content: 1200px;
+    --content-wide: 1680px;
     --cut: 18px;
     color-scheme: dark;
 }
@@ -139,6 +140,11 @@ a {
     padding: 2.5rem var(--gutter) 3.5rem;
 }
 
+/* Pages qui ont besoin de toute la largeur d'un écran d'ordinateur : commerces, règlement, events */
+.page-wide {
+    max-width: var(--content-wide);
+}
+
 .page-title {
     font-size: clamp(2.2rem, 5vw, 3.2rem);
     text-transform: uppercase;
@@ -206,6 +212,23 @@ a {
     color: var(--muted);
     font-size: 0.9rem;
     text-align: center;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.5rem;
+}
+
+.footer-links a {
+    color: var(--text);
+}
+
+.footer-disclaimer {
+    font-size: 0.8rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

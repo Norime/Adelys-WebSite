@@ -49,6 +49,9 @@ namespace Adelys_WebSite.ViewModels
     public class HomeViewModel
     {
         public ServerEvent? FeaturedEvent { get; set; }
+        public List<HomeSlide> Slides { get; set; } = new();
+        public HomeHero Hero { get; set; } = Adelys_WebSite.BL.HomeHeroBL.DefaultHero;
+        public bool CanManage { get; set; }
     }
 
     public class EventFormViewModel : IValidatableObject

@@ -1,0 +1,52 @@
+@using Adelys_WebSite.ViewModels;
+@model HomeSlidesViewModel
+@{
+    ViewData["Title"] = "Carrousel de l'accueil";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <p class="carousel-admin-lead">Les images de la partie « Un monde bâti par ses joueurs », dans leur ordre d'affichage.</p>
+    <div class="carousel-admin-actions">
+        <a class="btn" asp-controller="Carousel" asp-action="Ajouter">Ajouter une image</a>
+        <a class="btn btn-ghost" href="@Url.Action("Index", "Home")#carrousel">Voir l'accueil</a>
+    </div>
+
+    @if (Model.Slides.Count == 0)
+    {
+        <p class="carousel-admin-lead">Aucune image : la partie est masquée sur l'accueil.</p>
+    }
+
+    <ol class="carousel-admin-list">
+        @for (int i = 0; i < Model.Slides.Count; i++)
+        {
+            var slide = Model.Slides[i];
+            <li class="carousel-admin-item">
+                <img src="@slide.ImageUrl" alt="@slide.AltText" loading="lazy" />
+                <div class="carousel-admin-text">
+                    <strong>@slide.Title</strong>
+                    @if (slide.Caption != null)
+                    {
+                        <span>@slide.Caption</span>
+                    }
+                </div>
+                <div class="carousel-admin-buttons">
+                    <form asp-controller="Carousel" asp-action="Deplacer" asp-route-id="@slide.Id" method="post">
+                        <input type="hidden" name="direction" value="-1" />
+                        <button type="submit" aria-label="Monter @slide.Title" disabled="@(i == 0)">&uarr;</button>
+                    </form>
+                    <form asp-controller="Carousel" asp-action="Deplacer" asp-route-id="@slide.Id" method="post">
+                        <input type="hidden" name="direction" value="1" />
+                        <button type="submit" aria-label="Descendre @slide.Title" disabled="@(i == Model.Slides.Count - 1)">&darr;</button>
+                    </form>
+                    <a asp-controller="Carousel" asp-action="Modifier" asp-route-id="@slide.Id">Modifier</a>
+                    <form asp-controller="Carousel" asp-action="Supprimer" asp-route-id="@slide.Id" method="post" onsubmit="return confirm('Retirer cette image du carrousel ?');">
+                        <button type="submit" class="carousel-admin-delete">Supprimer</button>
+                    </form>
+                </div>
+            </li>
+        }
+    </ol>
+</section>
