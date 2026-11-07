@@ -1,0 +1,12 @@
+@using Adelys_WebSite.ViewModels;
+@model LawAmendmentRowViewModel
+@{
+    // Le modèle de ligne garde un index factice remplacé en JavaScript
+    string index = Model.Index?.ToString() ?? "__index__";
+}
+
+<div class="rules-amendment-row">
+    <input type="date" name="Amendments[@index].AmendedOn" value="@Model.Amendment.AmendedOn?.ToString("yyyy-MM-dd")" aria-label="Date de la modification" required />
+    <input type="text" name="Amendments[@index].Note" value="@Model.Amendment.Note" maxlength="300" placeholder="Ce qui a changé" aria-label="Description de la modification" required />
+    <button type="button" class="rules-amendment-remove" aria-label="Retirer cette modification">&times;</button>
+</div>

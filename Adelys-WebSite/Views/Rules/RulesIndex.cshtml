@@ -1,44 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Les lois";
+@{
+    ViewData["Title"] = "Le règlement";
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
 }
-<div class="">
-    <article class="col-10" id="rulesContener">
-        <div class="col-sm-2" id="listInfo">
+<div class="page page-wide">
+    <h1 class="page-title">Le règlement</h1>
+    <p class="page-lead">Les règles en vigueur sur le serveur.</p>
+    <div class="split">
+        <div class="split-list">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Lois</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadLawsPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les lois</h2>
+                <p class="card-text">Les règles communes à tous les joueurs</p>
+                <a href="#lois" class="btn" data-rules-section="lois" data-url="@Url.Action("GetLawsPartialView", "Rules")">Afficher</a>
             </div>
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Exceptions</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadExceptionsPage()">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Usines</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadFactoriesPage()">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Les Monopoles</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary" onclick="loadMonopoliesPage()">Charger</a>
-                </div>
+                <h2 class="card-title">Les réunions du parlement</h2>
+                <p class="card-text">L'historique des décisions sur les règles</p>
+                <a href="#reunions" class="btn" data-rules-section="reunions" data-url="@Url.Action("GetMeetingsPartialView", "Rules")">Afficher</a>
             </div>
         </div>
-        <div class="col-sm-10" id="displayInfo">
+        <div class="panel split-content" id="displayInfo" aria-live="polite">
         </div>
-    </article>
+    </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/rules.js"></script>
+    <script src="~/js/rules.js" asp-append-version="true"></script>
 }

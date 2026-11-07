@@ -1,0 +1,38 @@
+@using Adelys_WebSite.ViewModels;
+@model MeetingsViewModel
+
+<div class="rules-section">
+    <div class="rules-section-header">
+        <h2 class="card-title">Les réunions du parlement</h2>
+        @if (Model.CanManage)
+        {
+            <a class="btn" asp-controller="Rules" asp-action="AjouterReunion">Ajouter une réunion</a>
+        }
+    </div>
+
+    @if (Model.Meetings.Count == 0)
+    {
+        <p class="rules-empty">Aucune réunion enregistrée pour le moment.</p>
+    }
+
+    @for (int i = 0; i < Model.Meetings.Count; i++)
+    {
+        MeetingViewModel item = Model.Meetings[i];
+        <details class="rules-meeting" id="reunion-@item.Meeting.Id" open="@(i == 0)">
+            <summary>
+                <time datetime="@item.Meeting.HeldOn.ToString("yyyy-MM-dd")">@item.Meeting.HeldOn.ToString("dd/MM/yyyy")</time>
+                <span class="rules-meeting-title">@item.Meeting.Title</span>
+            </summary>
+            <div class="markdown-body">@item.Html</div>
+            @if (Model.CanManage)
+            {
+                <div class="rules-manage">
+                    <a asp-controller="Rules" asp-action="ModifierReunion" asp-route-id="@item.Meeting.Id">Modifier</a>
+                    <form asp-controller="Rules" asp-action="SupprimerReunion" asp-route-id="@item.Meeting.Id" method="post" onsubmit="return confirm('Supprimer définitivement cette réunion et ses images ?');">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </div>
+            }
+        </details>
+    }
+</div>

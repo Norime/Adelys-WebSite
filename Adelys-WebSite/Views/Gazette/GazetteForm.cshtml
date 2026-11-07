@@ -1,0 +1,66 @@
+@using Adelys_WebSite.ViewModels;
+@model GazetteFormViewModel
+@{
+    bool isEdit = Model.Slug != null;
+    string action = isEdit ? "Modifier" : "Deposer";
+    ViewData["Title"] = isEdit ? "Modifier un numéro" : "Déposer un numéro";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/gazette.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form id="gazette-form" asp-controller="Gazette" asp-action="@action" asp-route-slug="@Model.Slug" method="post" enctype="multipart/form-data">
+        <div class="gazette-form-grid">
+            <div>
+                <div class="account-field">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" maxlength="150" />
+                    <span asp-validation-for="Title" class="account-error"></span>
+                </div>
+                <div class="account-field">
+                    <label asp-for="PublishedOn"></label>
+                    <input asp-for="PublishedOn" type="date" />
+                    <span asp-validation-for="PublishedOn" class="account-error"></span>
+                </div>
+                <div class="account-field">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" rows="4" maxlength="500"></textarea>
+                    <span asp-validation-for="Description" class="account-error"></span>
+                </div>
+                <div class="account-field">
+                    <label asp-for="Pdf"></label>
+                    <input asp-for="Pdf" type="file" accept="application/pdf,.pdf" />
+                    <span class="gazette-hint">
+                        @(isEdit ? "Laisse vide pour garder le PDF actuel. " : "")100 Mo maximum. La couverture est créée à partir de la page 1.
+                    </span>
+                    <span asp-validation-for="Pdf" class="account-error"></span>
+                    <span class="account-error" id="gazette-file-error"></span>
+                </div>
+                <input asp-for="Cover" type="file" hidden />
+                <input asp-for="FromLibrary" type="hidden" />
+                <div class="gazette-form-actions">
+                    <button type="submit" class="account-button" id="gazette-submit">@(isEdit ? "Enregistrer" : "Publier le numéro")</button>
+                    @if (isEdit)
+                    {
+                        @if (Model.FromLibrary)
+                        {
+                            <a class="btn btn-ghost" asp-controller="Gazette" asp-action="Index">Annuler</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-ghost" asp-controller="Gazette" asp-action="Lire" asp-route-slug="@Model.Slug">Annuler</a>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="gazette-preview" id="gazette-preview" hidden>
+                <img id="gazette-preview-image" alt="Aperçu de la couverture" />
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts{
+    <script type="module" src="~/js/gazette-upload.js" asp-append-version="true"></script>
+}

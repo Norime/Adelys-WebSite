@@ -1,0 +1,58 @@
+@using Adelys_WebSite.ViewModels;
+@model EventCategoryFormViewModel
+@{
+    bool isEdit = Model.Id != null;
+    string action = isEdit ? "ModifierCategorie" : "AjouterCategorie";
+    ViewData["Title"] = isEdit ? $"Modifier « {Model.Name} »" : "Ajouter une catégorie d'events";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form class="events-form" asp-controller="Events" asp-action="@action" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+        <div class="account-field">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" maxlength="80" placeholder="Les jeux de la mort" />
+            <span asp-validation-for="Name" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Summary"></label>
+            <textarea asp-for="Summary" rows="3" maxlength="500"></textarea>
+            <span class="md-hint">Affiché à côté de l'image sur la page des events, au-dessus du bouton « En savoir plus ».</span>
+            <span asp-validation-for="Summary" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Cover"></label>
+            @if (Model.CurrentCoverUrl != null)
+            {
+                <img class="events-form-cover" src="@Model.CurrentCoverUrl" alt="Image actuelle" />
+                <label class="events-checkbox"><input asp-for="RemoveCover" /> Retirer l'image</label>
+            }
+            <input asp-for="Cover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" />
+            <span class="md-hint">@(Model.CurrentCoverUrl != null ? "Choisis une image pour remplacer l'actuelle. " : "")JPEG, PNG, GIF ou WebP, 10 Mo maximum.</span>
+            <span asp-validation-for="Cover" class="account-error"></span>
+        </div>
+        <div class="account-field events-order-field">
+            <label asp-for="SortOrder"></label>
+            <input asp-for="SortOrder" type="number" min="0" max="999" />
+            <span class="md-hint">Les blocs s'affichent du plus petit au plus grand nombre.</span>
+            <span asp-validation-for="SortOrder" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Description"></label>
+            <partial name="_MarkdownEditor" model="@(new MarkdownEditorViewModel { Name = nameof(Model.Description), Value = Model.Description, MaxLength = 100000, Rows = 16, UploadUrl = Url.Action("EnvoyerImage", "Events") })" />
+            <span class="md-hint">Affichée sur la page « En savoir plus » : le principe, les règles, le déroulement.</span>
+            <span asp-validation-for="Description" class="account-error"></span>
+        </div>
+        <div class="events-form-actions">
+            <button type="submit" class="account-button">@(isEdit ? "Enregistrer" : "Ajouter la catégorie")</button>
+            <a class="btn btn-ghost" asp-controller="Events" asp-action="Index">Annuler</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts{
+    <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+}

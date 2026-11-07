@@ -1,0 +1,80 @@
+@using Adelys_WebSite.ViewModels;
+@model UsersViewModel
+@{
+    ViewData["Title"] = "Utilisateurs";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>Utilisateurs</h1>
+
+    @if (Model.GeneratedPassword != null)
+    {
+        <div class="account-generated">
+            <p>Mot de passe de <strong>@Model.GeneratedForUsername</strong>, à transmettre maintenant. Il ne sera plus affiché :</p>
+            <code>@Model.GeneratedPassword</code>
+        </div>
+    }
+
+    <h2>Ajouter un utilisateur</h2>
+    <form asp-controller="Users" asp-action="Create" method="post" class="account-inline-form">
+        <div asp-validation-summary="All" class="account-error"></div>
+        <div class="account-field">
+            <label asp-for="NewUser.Username"></label>
+            <input asp-for="NewUser.Username" autocomplete="off" />
+        </div>
+        <div class="account-field">
+            <label asp-for="NewUser.Role"></label>
+            <select asp-for="NewUser.Role">
+                <option value="@SiteRoles.Redacteur">Rédacteur : la gazette</option>
+                <option value="@SiteRoles.Moderateur">Modérateur : commerces, gazette, règlement et events</option>
+                <option value="@SiteRoles.Admin">Administrateur : tout le site</option>
+            </select>
+        </div>
+        <button type="submit" class="account-button">Créer et générer le mot de passe</button>
+    </form>
+
+    <h2>Comptes</h2>
+    <div class="account-table-wrapper">
+        <table class="account-table">
+            <thead>
+                <tr>
+                    <th>Identifiant</th>
+                    <th>Rôle</th>
+                    <th>État</th>
+                    <th>Dernière connexion</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SiteUser user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Username</td>
+                        <td>@SiteRoles.DisplayName(user.Role)</td>
+                        <td>@(user.IsActive ? "Actif" : "Désactivé")</td>
+                        <td>@(user.LastLoginUtc?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Jamais")</td>
+                        <td class="account-actions">
+                            @if (user.Id == Model.CurrentUserId)
+                            {
+                                <span>Ton compte</span>
+                            }
+                            else
+                            {
+                                <form asp-controller="Users" asp-action="ResetPassword" asp-route-id="@user.Id" method="post">
+                                    <button type="submit">Nouveau mot de passe</button>
+                                </form>
+                                <form asp-controller="Users" asp-action="SetActive" asp-route-id="@user.Id" asp-route-isActive="@(!user.IsActive)" method="post">
+                                    <button type="submit">@(user.IsActive ? "Désactiver" : "Réactiver")</button>
+                                </form>
+                                <form asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" method="post" onsubmit="return confirm('Supprimer ce compte ?');">
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

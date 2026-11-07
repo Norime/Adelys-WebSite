@@ -15,7 +15,7 @@ namespace Adelys_WebSite.BL
             _unitOfWork = unitOfWork;
         }
 
-        public TObject GetById(int id)
+        public TObject? GetById(int id)
         {
             try
             {

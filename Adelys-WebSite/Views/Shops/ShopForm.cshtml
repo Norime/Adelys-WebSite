@@ -1,0 +1,103 @@
+@using Adelys_WebSite.ViewModels;
+@model ShopFormViewModel
+@inject Adelys_WebSite.SAL.Interface.IMinecraftItemCatalog ItemCatalog
+@{
+    bool isEdit = Model.Id != null;
+    string action = isEdit ? "Modifier" : "Ajouter";
+    ViewData["Title"] = isEdit ? "Modifier un commerce" : "Ajouter un commerce";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shopsPage.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form class="shop-form" asp-controller="Shops" asp-action="@action" asp-route-id="@Model.Id" method="post">
+        <div class="account-field">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" maxlength="100" />
+            <span asp-validation-for="Name" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="City"></label>
+            <select asp-for="City" asp-items="@(new SelectList(ShopCatalog.Cities))">
+                <option value="">Choisir une ville</option>
+            </select>
+            <span asp-validation-for="City" class="account-error"></span>
+        </div>
+        <fieldset class="shop-form-group">
+            <legend>Types</legend>
+            <div class="shop-type-options">
+                @foreach (string type in Model.AvailableTypes)
+                {
+                    <label><input type="checkbox" name="Types" value="@type" checked="@Model.Types.Contains(type)" /> @type</label>
+                }
+            </div>
+            <span asp-validation-for="Types" class="account-error"></span>
+        </fieldset>
+        <div class="account-field">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="4" maxlength="1000"></textarea>
+            <span asp-validation-for="Description" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Owner"></label>
+            <input asp-for="Owner" maxlength="64" list="shopOwners" autocomplete="off" />
+            <datalist id="shopOwners">
+                @foreach (string player in Model.Players)
+                {
+                    <option value="@player"></option>
+                }
+            </datalist>
+            <span asp-validation-for="Owner" class="account-error"></span>
+        </div>
+        <fieldset class="shop-form-group">
+            <legend>Localisation</legend>
+            <div class="shop-position">
+                <div class="account-field">
+                    <label asp-for="X"></label>
+                    <input asp-for="X" />
+                    <span asp-validation-for="X" class="account-error"></span>
+                </div>
+                <div class="account-field">
+                    <label asp-for="Y"></label>
+                    <input asp-for="Y" />
+                    <span asp-validation-for="Y" class="account-error"></span>
+                </div>
+                <div class="account-field">
+                    <label asp-for="Z"></label>
+                    <input asp-for="Z" />
+                    <span asp-validation-for="Z" class="account-error"></span>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="shop-form-group">
+            <legend>Items et prix</legend>
+            <div id="shopItems" data-catalog-url="@Url.Action("Items", "Shops")">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <partial name="PartialViews/_ShopItemRow" model="@(new ShopItemRowViewModel { Index = i, Item = Model.Items[i], IconUrl = ItemCatalog.GetIconUrl(Model.Items[i].ItemId) })" />
+                }
+            </div>
+            @if (ViewData.ModelState.TryGetValue(nameof(Model.Items), out var itemsState))
+            {
+                foreach (var error in itemsState.Errors)
+                {
+                    <span class="account-error">@error.ErrorMessage</span>
+                }
+            }
+            <button type="button" class="btn btn-ghost" id="shopItemAdd">Ajouter un item</button>
+        </fieldset>
+        <div class="shop-form-actions">
+            <button type="submit" class="account-button">@(isEdit ? "Enregistrer" : "Ajouter le commerce")</button>
+            <a class="btn btn-ghost" asp-controller="Shops" asp-action="Index">Annuler</a>
+        </div>
+    </form>
+</section>
+
+<template id="shopItemTemplate">
+    <partial name="PartialViews/_ShopItemRow" model="@(new ShopItemRowViewModel { Item = new ShopItemFormViewModel { Currency = ShopCurrencies.Copper } })" />
+</template>
+
+@section Scripts{
+    <script src="~/js/shop-form.js" asp-append-version="true"></script>
+}

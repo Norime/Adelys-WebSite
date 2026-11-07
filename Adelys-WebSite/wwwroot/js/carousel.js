@@ -1,71 +1,65 @@
-// Récupère le nombre d'enfant de slideshow
-// Affiche un enfant du slideshow à la fois
+// Carrousel de l'accueil : flÃ¨ches, points, glissement au doigt et dÃ©filement automatique
+document.querySelectorAll("[data-carousel]").forEach(carousel => {
+    const track = carousel.querySelector(".carousel-track");
+    const slides = [...track.children];
+    const dots = [...carousel.querySelectorAll(".carousel-dot")];
+    if (slides.length < 2) {
+        return;
+    }
 
-//$(document).ready(function () {
-//    // Itération sur chaque élément possédant la classe "carousel"
-//    $(".carousel").each(function () {
-//        var $carousel = $(this);
-//        var $slideshow = $carousel.find(".slideshow");
-//        var nbSliderItemInCarousel = $slideshow.children().length;
-//        var $carouselIndicators = $carousel.find(".carousel-indicators");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 0;
+    let timer = null;
 
-//        for (var x = 0; x < nbSliderItemInCarousel; x++) {
-//            var $button = $("<button></button>", {
-//                "data-slide-to": x,
-//                text: x + 1,
-//                click: function () {
-//                    $slideshow.carousel(parseInt($(this).attr("data-slide-to")));
-//                }
-//            });
+    function goTo(index) {
+        current = (index + slides.length) % slides.length;
+        track.scrollTo({ left: slides[current].offsetLeft, behavior: reduceMotion ? "auto" : "smooth" });
+    }
 
-//            $carouselIndicators.append($button);
-//        }
-//        $carousel.append($carouselIndicators);
-//    });
-//});
-
-//$(".slideshow-item").addClass("active");
-
-$(document).ready(function () {
-    $(".carousel").each(function () {
-        var $carousel = $(this);
-        var $slideshow = $carousel.find(".slideshow");
-        var nbSliderItemInCarousel = $slideshow.children().length;
-        var $carouselIndicators = $carousel.find(".carousel-indicators");
-
-        for (var x = 0; x < nbSliderItemInCarousel; x++) {
-            var $button = $("<button></button>", {
-                "data-slide-to": x,
-                text: x + 1,
-                click: function () {
-                    $slideshow.carousel(parseInt($(this).attr("data-slide-to")));
-                }
-            });
-
-            $carouselIndicators.append($button);
-        }
-        $carousel.append($carouselIndicators);
-
-        // Ajout de la classe "active" au premier élément
-        $slideshow.find('.slideshow-item').first().addClass('active');
-
-        // Modification de l'élément actif toutes les 5 secondes
-        setInterval(function () {
-            var currentActiveSlide = $slideshow.find('.slideshow-item.active');
-            var nextActiveSlideIndex = currentActiveSlide.index() + 1;
-            if (nextActiveSlideIndex >= nbSliderItemInCarousel) {
-                nextActiveSlideIndex = 0;
-            }
-            var nextActiveSlide = $slideshow.find('.slideshow-item').eq(nextActiveSlideIndex);
-            currentActiveSlide.removeClass('active');
-            nextActiveSlide.addClass('active');
-        }, 5000);
-
-        // Activation de l'élément souhaité lorsqu'on clique sur un indicateur
-        $carouselIndicators.on('click', 'button[data-slide-to]', function () {
-            var slideToIndex = parseInt($(this).attr('data-slide-to'));
-            $slideshow.find('.slideshow-item.active').removeClass('active');
-            $slideshow.find('.slideshow-item').eq(slideToIndex).addClass('active');
+    function showDot(index) {
+        current = index;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("is-active", i === index);
+            dot.setAttribute("aria-current", i === index ? "true" : "false");
         });
+    }
+
+    // Le point actif suit l'image visible, y compris quand on glisse au doigt
+    const observer = new IntersectionObserver(entries => {
+        entries.filter(entry => entry.isIntersecting).forEach(entry => showDot(slides.indexOf(entry.target)));
+    }, { root: track, threshold: 0.6 });
+    slides.forEach(slide => observer.observe(slide));
+
+    carousel.querySelector(".carousel-prev").addEventListener("click", () => goTo(current - 1));
+    carousel.querySelector(".carousel-next").addEventListener("click", () => goTo(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+    track.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            event.preventDefault();
+            goTo(current + (event.key === "ArrowRight" ? 1 : -1));
+        }
     });
+
+    function start() {
+        if (!reduceMotion && timer === null) {
+            timer = setInterval(() => goTo(current + 1), 6000);
+        }
+    }
+
+    function stop() {
+        clearInterval(timer);
+        timer = null;
+    }
+
+    // Pas de dÃ©filement pendant qu'on regarde ou qu'on manipule le carrousel
+    carousel.addEventListener("mouseenter", stop);
+    carousel.addEventListener("mouseleave", start);
+    carousel.addEventListener("focusin", stop);
+    carousel.addEventListener("focusout", start);
+    track.addEventListener("touchstart", stop, { passive: true });
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+
+    showDot(0);
+    start();
 });

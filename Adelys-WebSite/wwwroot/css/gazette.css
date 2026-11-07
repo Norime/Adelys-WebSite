@@ -1,19 +1,286 @@
-#gazetteContener {
-    background-color: lightgray;
-    height: 80vh;
-    margin: auto;
+.gazette-header {
     display: flex;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-#listGazette{
-    width: 30%;
-    height: 100%;
+.gazette-cover-link {
+    display: block;
 }
 
-#displayGazette{
-    width: 70%;
-    height: 100%;
-    background-color:lightcoral;
+.gazette-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 210 / 297;
+    object-fit: cover;
+    background: var(--surface-raised);
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+    transition: transform 0.15s ease;
+}
+
+.gazette-cover-link:hover .gazette-cover {
+    transform: translateY(-3px);
+}
+
+.gazette-cover-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: var(--heading);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.gazette-latest {
+    display: grid;
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--surface);
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.gazette-latest-text {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    max-width: 65ch;
+}
+
+.gazette-latest-text h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    text-transform: uppercase;
+}
+
+.gazette-kicker {
+    color: var(--link);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gazette-date {
+    color: var(--muted);
+}
+
+.gazette-section-title {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+}
+
+.gazette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 1.25rem;
+}
+
+.gazette-item {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+}
+
+.gazette-item h3 {
+    font-size: 1.25rem;
+}
+
+.gazette-item h3 a {
+    color: var(--heading);
+    text-decoration: none;
+}
+
+.gazette-manage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.gazette-manage button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Formulaire de dépôt */
+.gazette-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.gazette-form-grid:has(.gazette-preview:not([hidden])) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 220px);
+}
+
+.gazette-form-grid textarea {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    resize: vertical;
+}
+
+.gazette-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.gazette-hint {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.gazette-preview img {
+    display: block;
+    width: 100%;
+}
+
+/* Lecteur */
+.reader {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+    min-height: 420px;
+    background: var(--bg);
+}
+
+.reader-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    padding: 0.5rem var(--gutter);
+    background: var(--surface);
+}
+
+.reader-back {
+    font-size: 0.9rem;
+}
+
+.reader-title {
+    flex: 1 1 200px;
+    min-width: 0;
+    font-size: 1.3rem;
+}
+
+.reader-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.reader-controls button,
+.reader-download {
+    min-width: 2.3rem;
+    padding: 0.3rem 0.6rem;
+    border: 0;
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.reader-controls button:hover:not(:disabled),
+.reader-download:hover {
+    background: var(--secondary);
+    color: var(--on-accent);
+}
+
+.reader-controls button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.reader-position {
+    min-width: 6.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.reader-stage {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    padding: 0.75rem;
+    overflow: auto;
+    outline-offset: -2px;
+}
+
+.reader-pages {
+    display: flex;
+    margin: auto;
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.45);
+}
+
+.reader-pages canvas {
+    display: block;
+    background: #FFFFFF;
+}
+
+.reader-message {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 1rem;
+    color: var(--muted);
+    text-align: center;
+}
+
+.reader-message[hidden] {
+    display: none;
+}
+
+.reader:fullscreen {
+    height: 100vh;
+}
+
+@media (max-width: 720px) {
+    .gazette-latest {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .gazette-latest .gazette-cover-link {
+        max-width: 240px;
+        margin-inline: auto;
+    }
+
+    .gazette-form-grid:has(.gazette-preview:not([hidden])) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reader-title {
+        flex-basis: 100%;
+        order: -1;
+    }
+
+    .reader-stage {
+        padding: 0.25rem;
+    }
 }

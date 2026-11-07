@@ -1,0 +1,82 @@
+@using Adelys_WebSite.BL;
+@using Adelys_WebSite.ViewModels;
+@model EventCategoryPageViewModel
+@{
+    ViewData["Title"] = Model.Category.Name;
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+}
+
+<div class="events-page">
+    <a class="event-back" asp-controller="Events" asp-action="Index">&larr; Tous les events</a>
+
+    <section class="events-block events-category-header">
+        <div class="events-block-media">
+            @if (Model.Category.CoverFileName != null)
+            {
+                <img src="@(MarkdownBL.ImageRequestPath + Model.Category.CoverFileName)" alt="" />
+            }
+            else
+            {
+                <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            }
+        </div>
+        <div class="events-block-text">
+            <p class="eyebrow">@(Model.Upcoming.Count + Model.Past.Count == 0 ? "Aucune édition pour le moment" : Model.Upcoming.Count + Model.Past.Count == 1 ? "1 édition" : $"{Model.Upcoming.Count + Model.Past.Count} éditions")</p>
+            <h1 class="events-block-title">@Model.Category.Name</h1>
+            <p class="events-block-summary">@Model.Category.Summary</p>
+            @if (Model.CanManage)
+            {
+                <div class="events-block-actions">
+                    <a class="btn" asp-controller="Events" asp-action="Ajouter" asp-route-categoryId="@Model.Category.Id">Ajouter une édition</a>
+                    <a class="btn btn-ghost" asp-controller="Events" asp-action="ModifierCategorie" asp-route-id="@Model.Category.Id">Modifier la présentation</a>
+                    @if (Model.Upcoming.Count + Model.Past.Count == 0)
+                    {
+                        <form class="events-manage" asp-controller="Events" asp-action="SupprimerCategorie" asp-route-id="@Model.Category.Id" method="post" onsubmit="return confirm('Supprimer cette catégorie ?');">
+                            <button type="submit">Supprimer la catégorie</button>
+                        </form>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Category.Description))
+    {
+        <section class="events-section" aria-labelledby="events-presentation">
+            <h2 class="events-section-title" id="events-presentation">Présentation</h2>
+            <div class="panel markdown-body">@Model.Description</div>
+        </section>
+    }
+    else if (Model.CanManage)
+    {
+        <p class="events-empty">Pas encore de présentation : ajoute le principe, les règles et le déroulement avec « Modifier la présentation ».</p>
+    }
+
+    @if (Model.Upcoming.Count > 0)
+    {
+        <section class="events-section" aria-labelledby="events-upcoming">
+            <h2 class="events-section-title" id="events-upcoming">Prochaines éditions</h2>
+            <div class="events-grid">
+                @foreach (var serverEvent in Model.Upcoming)
+                {
+                    <partial name="PartialViews/_EventCard" model="@(new EventCardViewModel { Event = serverEvent, CanManage = Model.CanManage })" />
+                }
+            </div>
+        </section>
+    }
+
+    <section class="events-section" aria-labelledby="events-past">
+        <h2 class="events-section-title" id="events-past">Les anciennes éditions</h2>
+        @if (Model.Past.Count == 0)
+        {
+            <p class="events-empty">Aucune édition passée pour le moment.</p>
+        }
+        <div class="events-grid">
+            @foreach (var serverEvent in Model.Past)
+            {
+                <partial name="PartialViews/_EventCard" model="@(new EventCardViewModel { Event = serverEvent, IsOver = true, CanManage = Model.CanManage })" />
+            }
+        </div>
+    </section>
+</div>

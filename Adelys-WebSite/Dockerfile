@@ -1,11 +1,15 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+# Heure de Paris pour les dates des events et des réunions, l'image est en UTC par défaut
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends tzdata \
+    && rm -rf /var/lib/apt/lists/*
+ENV TZ=Europe/Paris
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["Adelys-WebSite/Adelys-WebSite.csproj", "Adelys-WebSite/"]
 RUN dotnet restore "Adelys-WebSite/Adelys-WebSite.csproj"
@@ -19,4 +23,7 @@ RUN dotnet publish "Adelys-WebSite.csproj" -c Release -o /app/publish /p:UseAppH
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# Gazettes, images, catalogue Minecraft et clés de session : à monter sur un volume pour les garder
+RUN mkdir -p /app/App_Data && chown -R $APP_UID /app/App_Data
+USER $APP_UID
 ENTRYPOINT ["dotnet", "Adelys-WebSite.dll"]

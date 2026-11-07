@@ -2,7 +2,7 @@
 {
     public interface IRepository<TObject>
     {
-        TObject GetById(int id);
+        TObject? GetById(int id);
         List<TObject> GetAll();
         void Create(TObject entity);
         void Update(TObject entity);

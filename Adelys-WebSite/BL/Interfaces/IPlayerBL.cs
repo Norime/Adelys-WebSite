@@ -5,7 +5,8 @@ namespace Adelys_WebSite.BL.Interfaces
     public interface IPlayerBL
     {
         List<LuckpermsPlayer> GetAllPlayers();
-        LuckpermsPlayer GetPlayer(int id);
+        List<PlayerRank> GetPlayerRanks();
+        LuckpermsPlayer? GetPlayer(int id);
         string GetPlayerSkin(string uuid);
         string GetPlayerSkinImg(string uuid);
     }

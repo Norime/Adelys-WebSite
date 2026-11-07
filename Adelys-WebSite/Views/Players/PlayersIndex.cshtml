@@ -1,67 +1,72 @@
-﻿@using Adelys_WebSite.ViewModels;
-@using Newtonsoft.Json.Linq;
-@using System.Text;
+@using Adelys_WebSite.ViewModels;
 @model PlayerViewModel
 @{
     ViewData["Title"] = "Les joueurs";
     <link rel="stylesheet" href="~/css/playersPage.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Shared/card.css" asp-append-version="true" />
-    <script src="~/js/player-model.js" asp-append-version="true"></script>
-    <script src="~/js/Externe/three.js" asp-append-version="true"></script>
 }
 
-@{
-    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerPermissionsDico = Model.PlayerPermissionsDico;
-    Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico = Model.ParlementDico;
-}
-
-<div class="">
+<div class="page page-wide">
+    <h1 class="page-title">Les joueurs</h1>
     <article id="playersArticle">
-        <section id="parliamentPlayers">
-            @foreach (var player in ParlementDico.Keys)
+        <div class="players-filters">
+            <div class="players-filter">
+                <label for="playersGroupFilter">Groupe</label>
+                <select id="playersGroupFilter">
+                    <option value="">Tous les groupes</option>
+                    @foreach (var group in Model.Groups)
+                    {
+                        <option value="@group">@(char.ToUpper(group[0]) + group.Substring(1))</option>
+                    }
+                </select>
+            </div>
+            <div class="players-filter players-filter-search">
+                <label for="playersSearch">Recherche</label>
+                <input type="search" id="playersSearch" placeholder="Pseudo ou groupe" autocomplete="off" />
+            </div>
+        </div>
+        <h2 class="players-heading">Le parlement</h2>
+        <section class="players-grid" id="parliamentPlayers">
+            @foreach (var player in Model.ParlementPlayers)
             {
-                // Accéder aux valeurs associées à une clé
-                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
-                LuckpermsUserPermission UserPermission = values.Item1;
-                string SkinUrl = values.Item2;
-                <div class="card cardPlayer">
+                <div class="card cardPlayer" role="button" tabindex="0" aria-haspopup="dialog" data-rank="@player.Rank" data-search="@player.Username @player.Rank parlement">
                     <div class="card-body">
-                        <h5 class="card-title">@player.Username</h5>
+                        <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
-                            <img id="playerParlementImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
+                            <span class="player-badge" title="Membre du parlement" aria-label="Membre du parlement">P</span>
+                            <img id="playerParlementImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
-                        <button class="btn-player-show-more">Voir plus</button>
+                        <p class="player-rank">@player.Rank</p>
                     </div>
                 </div>
-                <script>
-                    createModel("@SkinUrl", "playerParlementImg_@player.Username");
-                </script>
             }
         </section>
-        <section id="otherPlayers">
-            @foreach (var player in PlayerPermissionsDico.Keys)
+        <p class="players-empty" hidden>Aucun joueur trouvé</p>
+        <h2 class="players-heading">Les habitants</h2>
+        <section class="players-grid" id="otherPlayers">
+            @foreach (var player in Model.OtherPlayers)
             {
-                // Accéder aux valeurs associées à une clé
-                Tuple<LuckpermsUserPermission, string> values = PlayerPermissionsDico[player];
-                LuckpermsUserPermission UserPermission = values.Item1;
-                string SkinUrl = values.Item2;
-                <div class="card cardPlayer">
+                <div class="card cardPlayer" role="button" tabindex="0" aria-haspopup="dialog" data-rank="@player.Rank" data-search="@player.Username @player.Rank">
                     <div class="card-body">
-                            <h5 class="card-title">@player.Username</h5>
+                        <h3 class="card-title">@player.Username</h3>
                         <div class="card-player-img-contener">
-                            <img id="playerImg_@player.Username" src="https://crafatar.com/renders/body/@player.Uuid" class="cardPlayerImg" alt="Skin">
+                            <img id="playerImg_@player.Username" src="@player.SkinUrl" onerror="this.onerror=null;this.src='https://crafatar.com/renders/body/@player.Uuid'" class="cardPlayerImg" alt="Skin de @player.Username">
                         </div>
-                        <h5 class="card-title">@UserPermission.Permission.Split(".")[1]</h5>
-                        <button class="btn-player-show-more">Voir plus</button>
+                        <p class="player-rank">@player.Rank</p>
                     </div>
                 </div>
-                <script>
-                    createModel("@SkinUrl", "playerImg_@player.Username");
-                </script>
             }
         </section>
+        <p class="players-empty" hidden>Aucun joueur trouvé</p>
     </article>
+    <dialog id="playerDialog" class="player-dialog" aria-labelledby="playerDialogTitle">
+        <h2 id="playerDialogTitle">Coming soon</h2>
+        <form method="dialog">
+            <button class="btn" type="submit">Fermer</button>
+        </form>
+    </dialog>
 </div>
 
-
+@section Scripts{
+    <script src="~/js/players-filter.js" asp-append-version="true"></script>
+    <script src="~/js/players-dialog.js" asp-append-version="true"></script>
+}

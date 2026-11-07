@@ -2,86 +2,71 @@
 using Adelys_WebSite.BL.Interfaces;
 using Adelys_WebSite.Models;
 using Adelys_WebSite.ViewModels;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Diagnostics;
 using System.Text;
 
 namespace Adelys_WebSite.Controllers
 {
     public class PlayersController : Controller
     {
-        private readonly IPlayerBL _playerBL;
-        private readonly IUserPermissionBL _userPermissionBL;
-        private readonly ILogger<PlayersController> _logger;
+        private const string ParlementGroup = "parlement";
 
-        public PlayersController(ILogger<PlayersController> logger, IPlayerBL playerBL, IUserPermissionBL userPermissionBL)
+        private readonly IPlayerBL _playerBL;
+
+        public PlayersController(IPlayerBL playerBL)
         {
-            _logger = logger;
             _playerBL = playerBL;
-            _userPermissionBL = userPermissionBL;
         }
 
         public IActionResult Index()
         {
-            Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> PlayerDico = new();
-            Dictionary<LuckpermsPlayer, Tuple<LuckpermsUserPermission, string>> ParlementDico = new();
-            List<LuckpermsPlayer> listPlayer = _playerBL.GetAllPlayers();
-            foreach (LuckpermsPlayer player in listPlayer)
+            PlayerViewModel viewModel = new PlayerViewModel();
+
+            foreach (PlayerRank playerRank in _playerBL.GetPlayerRanks())
             {
-                List<LuckpermsUserPermission> playerPermissions = _userPermissionBL.GetUserPermissionByPlayerUuid(player.Uuid);
-                foreach (var permission in playerPermissions)
+                LuckpermsPlayer player = playerRank.Player;
+                PlayerCardViewModel card = new PlayerCardViewModel
                 {
-                    string GroupName = permission.Permission.Split('.')[1];
-                    if (GroupName == "parlement")
-                    {
-                        //var t = _playerBL.GetPlayerSkinImg(player.Uuid);
-                        //var UserSkinEncoded = _playerBL.GetPlayerSkin(player.Uuid);
-                        //dynamic SkinEncoded = JObject.Parse(UserSkinEncoded);
-                        //string skinUrlEncoded = SkinEncoded.properties[0].value;
-                        //byte[] bytes = Convert.FromBase64String(skinUrlEncoded);
-                        //string decodedSkinUrl = Encoding.UTF8.GetString(bytes);
-                        //JObject skinJson = JObject.Parse(decodedSkinUrl);
-                        //string skinUrl = skinJson["textures"]["SKIN"]["url"].ToString();
-                        ParlementDico.Add(player, new Tuple<LuckpermsUserPermission, string>(permission, ""));
+                    Uuid = player.Uuid,
+                    Username = player.Username,
+                    Rank = playerRank.Rank,
+                    SkinUrl = GetSkinUrl(player)
+                };
 
-
-                    }
-                    else if (GroupName.Split(".")[0] != "lp-editor-key")
-                    {
-                        //var t = _playerBL.GetPlayerSkinImg(player.Uuid);
-                        //var UserSkinEncoded = _playerBL.GetPlayerSkin(player.Uuid);
-                        //dynamic SkinEncoded = JObject.Parse(UserSkinEncoded);
-                        //string skinUrlEncoded = SkinEncoded.properties[0].value;
-                        //byte[] bytes = Convert.FromBase64String(skinUrlEncoded);
-                        //string decodedSkinUrl = Encoding.UTF8.GetString(bytes);
-                        //JObject skinJson = JObject.Parse(decodedSkinUrl);
-                        //string skinUrl = skinJson["textures"]["SKIN"]["url"].ToString();
-                        PlayerDico.Add(player, new Tuple<LuckpermsUserPermission, string>(permission, ""));
-                    }
+                if (playerRank.IsParlement)
+                {
+                    viewModel.ParlementPlayers.Add(card);
+                }
+                else
+                {
+                    viewModel.OtherPlayers.Add(card);
                 }
             }
-            PlayerViewModel viewModel = new PlayerViewModel();
-            viewModel.PlayerPermissionsDico = PlayerDico.OrderBy(x => x.Key.Username).ToDictionary(x => x.Key, x => x.Value);
-            viewModel.ParlementDico = ParlementDico.OrderBy(x => x.Key.Username).ToDictionary(x => x.Key, x => x.Value);
+
+            viewModel.Groups = viewModel.ParlementPlayers.Concat(viewModel.OtherPlayers)
+                .Select(p => p.Rank)
+                .Where(g => g != ParlementGroup)
+                .Distinct()
+                .OrderBy(g => g)
+                .ToList();
+
             return View("PlayersIndex", viewModel);
+        }
+
+        /// <summary>
+        /// Un UUID version 4 est un compte Mojang, sinon le serveur est en offline et seul le pseudo permet de retrouver le skin
+        /// </summary>
+        private static string GetSkinUrl(LuckpermsPlayer player)
+        {
+            string identifier = player.Uuid.Length > 14 && player.Uuid[14] == '4' ? player.Uuid : player.Username;
+            return $"https://mc-heads.net/body/{Uri.EscapeDataString(identifier)}/200";
         }
 
         public string GetAllUserSkin()
         {
             return "";
-        }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

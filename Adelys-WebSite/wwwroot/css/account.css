@@ -1,0 +1,91 @@
+.account-panel {
+    max-width: 420px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--surface);
+}
+
+.account-panel h1 {
+    margin-bottom: 1.25rem;
+}
+
+.account-panel-wide {
+    max-width: 900px;
+}
+
+.account-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.account-field input,
+.account-field select {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.account-inline-form {
+    margin-bottom: 1.5rem;
+}
+
+.account-button {
+    padding: 0.6rem 1.3rem;
+    border: 0;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.account-error {
+    color: var(--danger);
+}
+
+.account-generated {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.account-generated code {
+    font-size: 1.2rem;
+    user-select: all;
+}
+
+.account-table-wrapper {
+    overflow-x: auto;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-table th,
+.account-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--surface-raised);
+    text-align: left;
+}
+
+.account-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.account-actions button {
+    padding: 0.25rem 0.6rem;
+    border: 0;
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}

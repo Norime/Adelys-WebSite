@@ -396,3 +396,13 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Fichiers déposés sur le site
+Adelys-WebSite/App_Data/
+
+# Réglages propres à cette machine (coordonnées des mentions légales), jamais publiés
+**/appsettings.Local.json
+
+# Déploiement sur le Pi : mots de passe et identifiants du tunnel, jamais publiés
+.env
+cloudflared/

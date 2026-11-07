@@ -1,0 +1,257 @@
+/* Carrousel « Un monde bâti par ses joueurs » et sa page de gestion */
+.carousel-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.carousel-empty {
+    color: var(--muted);
+}
+
+.carousel {
+    position: relative;
+}
+
+.carousel-track {
+    display: grid;
+    grid-auto-columns: 100%;
+    grid-auto-flow: column;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-track:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -4px;
+}
+
+.carousel-slide {
+    display: grid;
+    margin: 0;
+    scroll-snap-align: start;
+}
+
+.carousel-slide > * {
+    grid-area: 1 / 1;
+}
+
+.carousel-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+}
+
+.carousel-slide figcaption {
+    align-self: end;
+    display: grid;
+    gap: 0.2rem;
+    padding: 4rem clamp(1.25rem, 4vw, 2.5rem) 2.75rem;
+    background: linear-gradient(0deg, rgb(var(--scrim) / 0.95) 35%, rgb(var(--scrim) / 0));
+}
+
+.carousel-slide h3 {
+    color: #FFFFFF;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    background: rgb(var(--scrim) / 0.75);
+    color: var(--text);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background-color 0.15s ease;
+}
+
+.carousel-arrow:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.carousel-prev {
+    left: 0.75rem;
+}
+
+.carousel-next {
+    right: 0.75rem;
+}
+
+.carousel-dots {
+    position: absolute;
+    right: 0;
+    bottom: 1rem;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.carousel-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    padding: 0;
+    border: 2px solid #FFFFFF;
+    background: transparent;
+    cursor: pointer;
+    pointer-events: auto;
+    transform: rotate(45deg);
+}
+
+.carousel-dot.is-active {
+    border-color: var(--accent);
+    background: var(--accent);
+}
+
+@media (max-width: 600px) {
+    .carousel-slide img {
+        aspect-ratio: 4 / 3;
+    }
+
+    .carousel-arrow {
+        top: 35%;
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+        scroll-behavior: auto;
+    }
+}
+
+/* Page de gestion */
+.carousel-admin-lead,
+.carousel-hint {
+    color: var(--muted);
+}
+
+.carousel-hint {
+    font-size: 0.9rem;
+}
+
+.carousel-admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.carousel-admin-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.carousel-admin-item {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.6rem;
+    background: var(--surface-raised);
+}
+
+.carousel-admin-item img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.carousel-admin-text {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.carousel-admin-text span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.carousel-admin-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.carousel-admin-buttons button {
+    padding: 0.25rem 0.6rem;
+    border: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+}
+
+.carousel-admin-buttons button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.carousel-admin-buttons .carousel-admin-delete {
+    padding: 0;
+    background: none;
+    color: var(--danger);
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .carousel-admin-item {
+        grid-template-columns: 6rem minmax(0, 1fr);
+    }
+
+    .carousel-admin-buttons {
+        grid-column: 1 / -1;
+    }
+}
+
+.carousel-form-current {
+    display: block;
+    max-width: 360px;
+    margin-bottom: 0.5rem;
+}
+
+/* Formulaire de l'image de fond de l'accueil */
+.hero-form-current {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    margin-bottom: 1.25rem;
+    object-fit: cover;
+}
+
+.hero-form-reset {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,44 +1,151 @@
-﻿@{
-    ViewData["Title"] = "Les lois";
-    <link rel="stylesheet" href="~/css/shops.css" asp-append-version="true" />
+@using Adelys_WebSite.ViewModels;
+@model ShopsViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject Adelys_WebSite.SAL.Interface.IMinecraftItemCatalog ItemCatalog
+@{
+    ViewData["Title"] = "Les commerces";
+    string? webmap = Configuration["Webmaps:Adelys"];
+    bool hasMap = !string.IsNullOrEmpty(webmap);
+    <link rel="stylesheet" href="~/css/shopsPage.css" asp-append-version="true" />
 }
-<div class="">
-    <article class="col-12" id="cityContener">
-        <div class="col-sm-2" id="listCity">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Adelys</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Adelys</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Pristo</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Pristo</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Mazadir</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Mazadir</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Grenat</h5>
-                    <p class="card-text">Tout les commerces actuellement présent à Grenat</p>
-                    <a href="#" class="btn btn-primary" onclick="GetShopsFromCityPartialView('Adelys')">Charger</a>
-                </div>
-            </div>
+<div class="page page-wide">
+    <div class="shops-header">
+        <div>
+            <h1 class="page-title">Les commerces</h1>
+            <p class="page-lead">Les boutiques des joueurs, classées par ville.</p>
         </div>
-        <div class="col-sm-10" id="displayInfo">
+        @if (Model.CanManage)
+        {
+            <div class="shops-admin">
+                <a class="btn btn-ghost" asp-controller="Shops" asp-action="Types">Gérer les types</a>
+                <a class="btn" asp-controller="Shops" asp-action="Ajouter">Ajouter un commerce</a>
+            </div>
+        }
+    </div>
+    <div class="shops-filters">
+        <div class="shops-filter">
+            <label for="shopTypeFilter">Type</label>
+            <select id="shopTypeFilter">
+                <option value="">Tous les types</option>
+                @foreach (string type in Model.Types)
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
         </div>
-    </article>
+        <div class="shops-filter">
+            <label for="shopOwnerFilter">Propriétaire</label>
+            <select id="shopOwnerFilter">
+                <option value="">Tous les propriétaires</option>
+                @foreach (string owner in Model.Owners)
+                {
+                    <option value="@owner.ToLowerInvariant()">@owner</option>
+                }
+            </select>
+        </div>
+        <div class="shops-filter">
+            <label for="shopGroupFilter">Groupe</label>
+            <select id="shopGroupFilter">
+                <option value="">Tous les groupes</option>
+                @foreach (string group in Model.Groups)
+                {
+                    <option value="@group">@(char.ToUpper(group[0]) + group.Substring(1))</option>
+                }
+            </select>
+        </div>
+        <div class="shops-filter shops-filter-search">
+            <label for="shopItemSearch">Trouver un item</label>
+            <input type="search" id="shopItemSearch" placeholder="Nom de l'item" autocomplete="off" />
+        </div>
+    </div>
+    <div class="shops-layout">
+        <div class="shops-list">
+            @foreach (string city in ShopCatalog.Cities)
+            {
+                <section class="shops-city">
+                    <h2 class="shops-heading">@city</h2>
+                    <div class="shops-grid">
+                        @foreach (Shop shop in Model.Shops.Where(s => s.City == city))
+                        {
+                            <div class="card shop-card @(hasMap ? "shop-card-map" : "")" tabindex="@(hasMap ? "0" : null)" data-types="@string.Join("|", shop.Types.Select(t => t.Name))" data-owner="@shop.Owner.ToLowerInvariant()" data-group="@Model.OwnerGroups.GetValueOrDefault(shop.Owner)" data-name="@shop.Name" data-x="@shop.X" data-y="@shop.Y" data-z="@shop.Z">
+                                <h3 class="card-title">@shop.Name</h3>
+                                <p class="shop-owner">Propriétaire : @shop.Owner</p>
+                                <ul class="shop-types">
+                                    @foreach (ShopType type in shop.Types)
+                                    {
+                                        <li>@type.Name</li>
+                                    }
+                                </ul>
+                                @if (!string.IsNullOrEmpty(shop.Description))
+                                {
+                                    <p class="card-text">@shop.Description</p>
+                                }
+                                @if (shop.Items.Count > 0)
+                                {
+                                    <ul class="shop-items">
+                                        @foreach (ShopItem item in shop.Items)
+                                        {
+                                            string itemName = ItemCatalog.Find(item.ItemId)?.Name ?? item.Name;
+                                            string? itemIcon = ItemCatalog.GetIconUrl(item.ItemId);
+                                            string? currencyIcon = ItemCatalog.GetIconUrl(ShopCurrencies.GetIconItemId(item.Currency));
+                                            <li data-item="@itemName">
+                                                <span class="shop-item-name">
+                                                    @if (itemIcon != null)
+                                                    {
+                                                        <img class="mc-icon" src="@itemIcon" alt="" loading="lazy" />
+                                                    }
+                                                    <span>@item.Quantity × @itemName</span>
+                                                </span>
+                                                <span class="shop-item-price">
+                                                    @item.Price
+                                                    @if (currencyIcon != null)
+                                                    {
+                                                        <img class="mc-icon mc-icon-small" src="@currencyIcon" alt="" />
+                                                    }
+                                                    @ShopCurrencies.GetLabel(item.Currency).ToLowerInvariant()
+                                                </span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                @if (Model.CanManage)
+                                {
+                                    <div class="shop-manage">
+                                        <a asp-controller="Shops" asp-action="Modifier" asp-route-id="@shop.Id">Modifier</a>
+                                        <form asp-controller="Shops" asp-action="Supprimer" asp-route-id="@shop.Id" method="post" onsubmit="return confirm('Supprimer définitivement ce commerce ?');">
+                                            <button type="submit">Supprimer</button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <p class="shops-empty" hidden>Aucun commerce trouvé</p>
+                </section>
+            }
+        </div>
+        @if (hasMap)
+        {
+            <aside class="shop-map-panel" id="shopMapPanel" hidden>
+                <p class="shop-map-label" id="shopMapLabel"></p>
+                <div class="shop-map" id="shopMap" data-map-url="@webmap">
+                    <iframe id="shopMapFrame" title="Position du commerce sur la carte" tabindex="-1"></iframe>
+                    <div class="shop-map-shield"></div>
+                    <span class="shop-map-pin" aria-hidden="true"></span>
+                    <div class="shop-map-zoom">
+                        <button type="button" id="shopMapZoomIn" aria-label="Zoomer">+</button>
+                        <button type="button" id="shopMapZoomOut" aria-label="Dézoomer">−</button>
+                    </div>
+                </div>
+            </aside>
+        }
+    </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/shops.js"></script>
+    <script src="~/js/shops-filter.js" asp-append-version="true"></script>
+    @if (hasMap)
+    {
+        <script src="~/js/shops-map.js" asp-append-version="true"></script>
+    }
 }

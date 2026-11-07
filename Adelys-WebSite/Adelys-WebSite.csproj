@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Adelys_WebSite</RootNamespace>
@@ -10,35 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\lib\bootstrap\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation\**" />
-    <Content Remove="wwwroot\lib\bootstrap\**" />
-    <Content Remove="wwwroot\lib\jquery-validation\**" />
-    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation\**" />
-    <None Remove="wwwroot\lib\bootstrap\**" />
-    <None Remove="wwwroot\lib\jquery-validation\**" />
+    <Compile Remove="App_Data\**" />
+    <Content Remove="App_Data\**" />
+    <None Remove="App_Data\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="jQuery" Version="3.7.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
+    <PackageReference Include="Markdig" Version="1.4.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.22">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="MojangAPI" Version="1.2.1" />
-    <PackageReference Include="MySql.Data" Version="8.0.32.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\WebMap\" />
-    <Folder Include="wwwroot\content\Icons\" />
-    <Folder Include="wwwroot\lib\" />
+    <PackageReference Include="MySqlConnector" Version="2.6.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
   </ItemGroup>
 
 </Project>
