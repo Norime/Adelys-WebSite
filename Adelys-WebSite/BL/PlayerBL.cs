@@ -85,7 +85,7 @@ namespace Adelys_WebSite.BL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public LuckpermsPlayer GetPlayer(int id)
+        public LuckpermsPlayer? GetPlayer(int id)
         {
             return Repository.GetById(id);
         }

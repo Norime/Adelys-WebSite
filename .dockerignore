@@ -22,4 +22,7 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 LICENSE
-README.md
+README.md**/App_Data
+**/appsettings.Local.json
+**/.env
+**/cloudflared

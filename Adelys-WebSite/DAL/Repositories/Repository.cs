@@ -6,7 +6,7 @@ namespace Adelys_WebSite.DAL.Repositories
 {
     public class Repository<TObject> : IRepository<TObject> where TObject : class
     {
-        protected readonly MySqlDbContext _context = null;
+        protected readonly MySqlDbContext _context;
 
         public Repository(MySqlDbContext context)
         {
@@ -19,14 +19,7 @@ namespace Adelys_WebSite.DAL.Repositories
                 return _context.Set<TObject>();
             }
         }
-        //private bool IsInModelNamespace(TObject entity)
-        //{
-        //    string modelNamespace = typeof(TObject).Namespace;
-        //    string modelFolderName = "Model";
-        //    return modelNamespace != null && modelNamespace.Contains(modelFolderName);
-        //}
-
-        public TObject GetById(int id)
+        public TObject? GetById(int id)
         {
             return DbSet.Find(id);
         }
@@ -36,9 +29,8 @@ namespace Adelys_WebSite.DAL.Repositories
         }
         public virtual void Create(TObject entity)
         {
-            DbSet.Add(entity);//Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TObject> newEntry = DbSet.Add(entity);
+            DbSet.Add(entity);
             _context.SaveChanges();
-            //return newEntry.Entity;
         }
         public virtual void Update(TObject entity)
         {

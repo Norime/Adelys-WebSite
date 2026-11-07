@@ -5,7 +5,6 @@ using Adelys_WebSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Diagnostics;
 using System.Text;
 
 namespace Adelys_WebSite.Controllers
@@ -15,11 +14,9 @@ namespace Adelys_WebSite.Controllers
         private const string ParlementGroup = "parlement";
 
         private readonly IPlayerBL _playerBL;
-        private readonly ILogger<PlayersController> _logger;
 
-        public PlayersController(ILogger<PlayersController> logger, IPlayerBL playerBL)
+        public PlayersController(IPlayerBL playerBL)
         {
-            _logger = logger;
             _playerBL = playerBL;
         }
 
@@ -70,16 +67,6 @@ namespace Adelys_WebSite.Controllers
         public string GetAllUserSkin()
         {
             return "";
-        }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

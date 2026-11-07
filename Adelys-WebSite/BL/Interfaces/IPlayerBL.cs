@@ -6,7 +6,7 @@ namespace Adelys_WebSite.BL.Interfaces
     {
         List<LuckpermsPlayer> GetAllPlayers();
         List<PlayerRank> GetPlayerRanks();
-        LuckpermsPlayer GetPlayer(int id);
+        LuckpermsPlayer? GetPlayer(int id);
         string GetPlayerSkin(string uuid);
         string GetPlayerSkinImg(string uuid);
     }

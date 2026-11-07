@@ -11,7 +11,6 @@ namespace Adelys_WebSite.BL.Interfaces
         bool IsPdf(IFormFile file);
         bool IsJpeg(IFormFile file);
         Task<Gazette> CreateGazette(GazetteFormViewModel form, string uploadedBy);
-        void ImportGazette(string pdfPath, string? coverPath, string title, DateTime publishedOn);
         Task UpdateGazette(Gazette gazette, GazetteFormViewModel form);
         void DeleteGazette(Gazette gazette);
     }

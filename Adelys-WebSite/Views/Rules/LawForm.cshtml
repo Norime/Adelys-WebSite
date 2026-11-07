@@ -30,12 +30,9 @@
                     <partial name="PartialViews/_LawAmendmentRow" model="@(new LawAmendmentRowViewModel { Index = i, Amendment = Model.Amendments[i] })" />
                 }
             </div>
-            @foreach (var state in ViewData.ModelState.Where(s => s.Key.StartsWith("Amendments")))
+            @foreach (var error in ViewData.ModelState.Where(s => s.Key.StartsWith("Amendments")).SelectMany(s => s.Value!.Errors))
             {
-                foreach (var error in state.Value.Errors)
-                {
-                    <span class="account-error">@error.ErrorMessage</span>
-                }
+                <span class="account-error">@error.ErrorMessage</span>
             }
             <button type="button" class="btn btn-ghost" id="lawAmendmentAdd">Ajouter une modification</button>
         </fieldset>

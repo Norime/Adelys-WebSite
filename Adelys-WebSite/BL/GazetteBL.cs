@@ -81,35 +81,6 @@ namespace Adelys_WebSite.BL
             return gazette;
         }
 
-        public void ImportGazette(string pdfPath, string? coverPath, string title, DateTime publishedOn)
-        {
-            Gazette gazette = new Gazette
-            {
-                Title = title,
-                Slug = BuildUniqueSlug(title),
-                PublishedOn = publishedOn,
-                UploadedBy = "Import",
-                CreatedAtUtc = DateTime.UtcNow,
-                PdfSizeBytes = new FileInfo(pdfPath).Length,
-                PdfFileName = _fileStorage.ImportFile(pdfPath)
-            };
-
-            try
-            {
-                if (coverPath != null)
-                {
-                    gazette.CoverFileName = _fileStorage.ImportFile(coverPath);
-                }
-                _repository.Create(gazette);
-            }
-            catch
-            {
-                _fileStorage.Delete(gazette.PdfFileName);
-                _fileStorage.Delete(gazette.CoverFileName);
-                throw;
-            }
-        }
-
         /// <summary>
         /// Modifie un numéro, l'adresse reste la même pour ne pas casser les liens déjà partagés
         /// </summary>

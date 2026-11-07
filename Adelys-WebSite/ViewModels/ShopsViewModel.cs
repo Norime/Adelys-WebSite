@@ -8,7 +8,6 @@ namespace Adelys_WebSite.ViewModels
 {
     public class ShopsViewModel
     {
-        public IPlayerBL PlayerBL { get; set; }
         public List<Shop> Shops { get; set; } = new();
         public List<string> Types { get; set; } = new();
         public List<string> Owners { get; set; } = new();

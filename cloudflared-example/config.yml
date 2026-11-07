@@ -1,0 +1,14 @@
+# Copier dans cloudflared/config.yml sur le Pi et remplacer UUID-DU-TUNNEL (deux fois)
+tunnel: UUID-DU-TUNNEL
+credentials-file: /etc/cloudflared/UUID-DU-TUNNEL.json
+
+ingress:
+  # Le site, servi par le conteneur « site » du docker-compose
+  - hostname: eucryphia.fr
+    service: http://site:8080
+  - hostname: www.eucryphia.fr
+    service: http://site:8080
+  # La carte BlueMap passe en HTTPS, sinon les navigateurs la bloquent dans la page des commerces
+  - hostname: map.eucryphia.fr
+    service: http://91.197.6.152:30640
+  - service: http_status:404

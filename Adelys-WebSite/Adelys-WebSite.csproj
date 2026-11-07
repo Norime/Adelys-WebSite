@@ -13,18 +13,9 @@
     <Compile Remove="App_Data\**" />
     <Content Remove="App_Data\**" />
     <None Remove="App_Data\**" />
-    <Compile Remove="wwwroot\lib\bootstrap\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation\**" />
-    <Content Remove="wwwroot\lib\bootstrap\**" />
-    <Content Remove="wwwroot\lib\jquery-validation\**" />
-    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation\**" />
-    <None Remove="wwwroot\lib\bootstrap\**" />
-    <None Remove="wwwroot\lib\jquery-validation\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="jQuery" Version="3.7.1" />
     <PackageReference Include="Markdig" Version="1.4.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.22">
@@ -36,12 +27,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="MySqlConnector" Version="2.6.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\WebMap\" />
-    <Folder Include="wwwroot\content\Icons\" />
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>

@@ -27,7 +27,7 @@ namespace Adelys_WebSite.BL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public LuckpermsUserPermission GetUserPermission(int id)
+        public LuckpermsUserPermission? GetUserPermission(int id)
         {
             return Repository.GetById(id);
         }

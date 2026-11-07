@@ -4,7 +4,6 @@ using Adelys_WebSite.Models;
 using Adelys_WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Adelys_WebSite.Controllers
 {
@@ -14,15 +13,13 @@ namespace Adelys_WebSite.Controllers
         private const string LawsSection = "lois";
         private const string MeetingsSection = "reunions";
 
-        private readonly ILogger<RulesController> _logger;
         private readonly IRulesBL _rulesBL;
         private readonly IMarkdownBL _markdownBL;
 
         private bool CanManage => SiteRoles.CanEditContent(User);
 
-        public RulesController(ILogger<RulesController> logger, IRulesBL rulesBL, IMarkdownBL markdownBL)
+        public RulesController(IRulesBL rulesBL, IMarkdownBL markdownBL)
         {
-            _logger = logger;
             _rulesBL = rulesBL;
             _markdownBL = markdownBL;
         }
@@ -30,18 +27,6 @@ namespace Adelys_WebSite.Controllers
         public IActionResult Index()
         {
             return View("RulesIndex");
-        }
-
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public ActionResult GetLawsPartialView()

@@ -26,13 +26,6 @@ namespace Adelys_WebSite.SAL
             return Save(file, ".jpg");
         }
 
-        public string ImportFile(string sourcePath)
-        {
-            string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(sourcePath);
-            File.Copy(sourcePath, GetPath(fileName));
-            return fileName;
-        }
-
         public string GetPath(string fileName)
         {
             return Path.Combine(_rootPath, fileName);

@@ -5,21 +5,18 @@ using Adelys_WebSite.SAL.Interface;
 using Adelys_WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Adelys_WebSite.Controllers
 {
     [AutoValidateAntiforgeryToken]
     public class ShopsController : Controller
     {
-        private readonly ILogger<ShopsController> _logger;
         private readonly IShopBL _shopBL;
         private readonly IPlayerBL _playerBL;
         private readonly IMinecraftItemCatalog _itemCatalog;
 
-        public ShopsController(ILogger<ShopsController> logger, IShopBL shopBL, IPlayerBL playerBL, IMinecraftItemCatalog itemCatalog)
+        public ShopsController(IShopBL shopBL, IPlayerBL playerBL, IMinecraftItemCatalog itemCatalog)
         {
-            _logger = logger;
             _shopBL = shopBL;
             _playerBL = playerBL;
             _itemCatalog = itemCatalog;
@@ -236,17 +233,6 @@ namespace Adelys_WebSite.Controllers
                     ModelState.AddModelError(nameof(model.Items), row + "choisis cuivre, fer ou or");
                 }
             }
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public ActionResult GetShopsFromCityPartialView(string cityName)

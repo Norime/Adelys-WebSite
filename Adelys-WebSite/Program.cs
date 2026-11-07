@@ -11,6 +11,8 @@ using Adelys_WebSite.SAL.Interface;
 using Adelys_WebSite.SAL.Minecraft;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -30,7 +32,6 @@ builder.Services.AddDbContext<SiteDbContext>(option => option.UseMySql(siteConne
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<LegalInfo>(builder.Configuration.GetSection("Legal"));
-builder.Services.AddTransient<IServiceMojangAccess, ServiceMojangAccess>();
 
 //BL
 builder.Services.AddTransient<IPlayerBL, PlayerBL>(); 
@@ -43,7 +44,6 @@ builder.Services.AddScoped<IEventBL, EventBL>();
 builder.Services.AddScoped<IHomeSlideBL, HomeSlideBL>();
 builder.Services.AddScoped<IHomeHeroBL, HomeHeroBL>();
 builder.Services.AddSingleton<IMarkdownBL, MarkdownBL>();
-builder.Services.AddScoped<IGazetteImportBL, GazetteImportBL>();
 builder.Services.AddScoped<IPasswordHasher<SiteUser>, PasswordHasher<SiteUser>>();
 
 //DAL
@@ -65,6 +65,25 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<MinecraftItemCatalog>();
 builder.Services.AddSingleton<IMinecraftItemCatalog>(services => services.GetRequiredService<MinecraftItemCatalog>());
 builder.Services.AddHostedService<MinecraftCatalogUpdater>();
+
+// Clés de chiffrement des cookies gardées hors du conteneur : sans elles, chaque redémarrage déconnecte tout le monde
+string keysPath = Path.GetFullPath(builder.Configuration["DataProtection:KeysPath"] ?? "App_Data/Keys", builder.Environment.ContentRootPath);
+builder.Services.AddDataProtection()
+    .SetApplicationName("Adelys-WebSite")
+    .PersistKeysToFileSystem(new DirectoryInfo(keysPath));
+
+// Derrière le tunnel Cloudflare : le site reçoit du HTTP, l'en-tête X-Forwarded-Proto dit que le visiteur est en HTTPS
+bool behindProxy = builder.Configuration.GetValue<bool>("ReverseProxy:Enabled");
+if (behindProxy)
+{
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        // Le port du site n'est joignable que par cloudflared, sur le réseau Docker
+        options.KnownIPNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+}
 
 //Authentification
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -96,8 +115,6 @@ if (!string.IsNullOrEmpty(siteConnectionString))
     {
         using IServiceScope scope = app.Services.CreateScope();
         scope.ServiceProvider.GetRequiredService<SiteDbContext>().Database.Migrate();
-        scope.ServiceProvider.GetRequiredService<IGazetteImportBL>()
-            .ImportExistingGazettes(Path.Combine(app.Environment.WebRootPath, "content", "Gazette"));
     }
     catch (Exception ex)
     {
@@ -133,6 +150,10 @@ if (args.Length == 2 && args[0] == "create-admin")
 }
 
 // Configure the HTTP request pipeline.
+if (behindProxy)
+{
+    app.UseForwardedHeaders();
+}
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

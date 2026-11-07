@@ -8,8 +8,8 @@ namespace Adelys_WebSite.DAL.UnitOfWork
     public class UnitOfWork: IUnitOfWork
     {
         private readonly MySqlDbContext context;
-        private PlayerRepository _player;
-        private UserPermissionRepository _userPermission;
+        private PlayerRepository? _player;
+        private UserPermissionRepository? _userPermission;
 
         public UnitOfWork(MySqlDbContext context) => this.context = context ?? throw new ArgumentNullException("Context not supplied");
 
