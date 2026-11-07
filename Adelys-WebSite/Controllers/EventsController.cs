@@ -16,7 +16,7 @@ namespace Adelys_WebSite.Controllers
         private readonly IEventBL _eventBL;
         private readonly IMarkdownBL _markdownBL;
 
-        private bool CanManage => User.IsInRole(SiteRoles.Admin);
+        private bool CanManage => SiteRoles.CanEditContent(User);
 
         public EventsController(IEventBL eventBL, IMarkdownBL markdownBL)
         {
@@ -79,14 +79,14 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult Ajouter(int? categoryId)
         {
             return ShowEventForm(new EventFormViewModel { CategoryId = categoryId, StartsAt = DateTime.Today.AddDays(7).AddHours(21) });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         [RequestSizeLimit(MaxRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = MaxRequestBytes)]
@@ -102,7 +102,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Voir), new { slug = serverEvent.Slug });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet("Events/Modifier/{slug}")]
         public IActionResult Modifier(string slug)
         {
@@ -125,7 +125,7 @@ namespace Adelys_WebSite.Controllers
             }, serverEvent);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost("Events/Modifier/{slug}")]
         [RequestSizeLimit(MaxRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = MaxRequestBytes)]
@@ -148,7 +148,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Voir), new { slug });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost("Events/Supprimer/{slug}")]
         public IActionResult Supprimer(string slug)
         {
@@ -161,14 +161,14 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Categorie), new { slug = serverEvent.Category.Slug });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult AjouterCategorie()
         {
             return View("EventCategoryForm", new EventCategoryFormViewModel { SortOrder = _eventBL.GetAllCategories().Select(c => c.SortOrder).DefaultIfEmpty(0).Max() + 1 });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         [RequestSizeLimit(MaxRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = MaxRequestBytes)]
@@ -184,7 +184,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Categorie), new { slug = category.Slug });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult ModifierCategorie(int id)
         {
@@ -204,7 +204,7 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         [RequestSizeLimit(MaxRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = MaxRequestBytes)]
@@ -228,7 +228,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Categorie), new { slug = category.Slug });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult SupprimerCategorie(int id)
         {
@@ -243,7 +243,7 @@ namespace Adelys_WebSite.Controllers
         /// <summary>
         /// Image collée ou déposée dans l'éditeur, renvoie l'adresse à insérer dans le markdown
         /// </summary>
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         [RequestSizeLimit(MaxRequestBytes)]
         [RequestFormLimits(MultipartBodyLengthLimit = MaxRequestBytes)]

@@ -51,7 +51,7 @@ namespace Adelys_WebSite.Controllers
         /// <summary>
         /// Rendu du markdown pour l'onglet Aperçu de l'éditeur, identique à celui des pages publiques
         /// </summary>
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult Apercu(string? markdown)
         {

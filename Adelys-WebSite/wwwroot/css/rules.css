@@ -24,8 +24,10 @@
     color: var(--muted);
 }
 
+/* Les lois se rangent sur deux colonnes quand l'écran est assez large */
 .rules-laws {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr));
     gap: 1rem;
     margin: 0;
     padding: 0;
@@ -33,13 +35,8 @@
 }
 
 .rules-law {
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--surface-raised);
-}
-
-.rules-law:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
+    padding: 1rem 1.1rem;
+    background: var(--surface-raised);
 }
 
 .rules-law-title {

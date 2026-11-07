@@ -44,18 +44,18 @@ namespace Adelys_WebSite.Controllers
                 Owners = shops.Select(s => s.Owner).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o, StringComparer.OrdinalIgnoreCase).ToList(),
                 Groups = ownerGroups.Values.Distinct().OrderBy(g => g).ToList(),
                 OwnerGroups = ownerGroups,
-                CanManage = User.IsInRole(SiteRoles.Admin)
+                CanManage = SiteRoles.CanEditContent(User)
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult Ajouter()
         {
             return ShowForm(new ShopFormViewModel());
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult Ajouter(ShopFormViewModel model)
         {
@@ -69,7 +69,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult Modifier(int id)
         {
@@ -100,7 +100,7 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult Modifier(int id, ShopFormViewModel model)
         {
@@ -121,7 +121,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult Supprimer(int id)
         {
@@ -136,21 +136,21 @@ namespace Adelys_WebSite.Controllers
         /// <summary>
         /// Liste des items pour le sélecteur du formulaire
         /// </summary>
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult Items()
         {
             return Json(_itemCatalog.Items.Select(i => new { id = i.Id, name = i.Name, icon = _itemCatalog.GetIconUrl(i.Id) }));
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult Types()
         {
             return ShowCategories(new ShopCategoriesViewModel());
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult AjouterType(ShopCategoriesViewModel model)
         {
@@ -167,7 +167,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Types));
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult SupprimerType(int id)
         {

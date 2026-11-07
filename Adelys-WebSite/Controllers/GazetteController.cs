@@ -12,7 +12,7 @@ namespace Adelys_WebSite.Controllers
     {
         private readonly IGazetteBL _gazetteBL;
 
-        private bool CanManage => User.IsInRole(SiteRoles.Admin) || User.IsInRole(SiteRoles.Redacteur);
+        private bool CanManage => SiteRoles.CanEditGazette(User);
 
         public GazetteController(IGazetteBL gazetteBL)
         {

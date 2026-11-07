@@ -18,7 +18,7 @@ namespace Adelys_WebSite.Controllers
         private readonly IRulesBL _rulesBL;
         private readonly IMarkdownBL _markdownBL;
 
-        private bool CanManage => User.IsInRole(SiteRoles.Admin);
+        private bool CanManage => SiteRoles.CanEditContent(User);
 
         public RulesController(ILogger<RulesController> logger, IRulesBL rulesBL, IMarkdownBL markdownBL)
         {
@@ -62,14 +62,14 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult AjouterLoi()
         {
             return View("LawForm", new LawFormViewModel());
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult AjouterLoi(LawFormViewModel model)
         {
@@ -83,7 +83,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index), null, LawsSection);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult ModifierLoi(int id)
         {
@@ -104,7 +104,7 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult ModifierLoi(int id, LawFormViewModel model)
         {
@@ -125,7 +125,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index), null, LawsSection);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult SupprimerLoi(int id)
         {
@@ -137,14 +137,14 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index), null, LawsSection);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult AjouterReunion()
         {
             return View("MeetingForm", new MeetingFormViewModel { HeldOn = DateTime.Today });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult AjouterReunion(MeetingFormViewModel model)
         {
@@ -157,7 +157,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index), null, MeetingsSection);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpGet]
         public IActionResult ModifierReunion(int id)
         {
@@ -175,7 +175,7 @@ namespace Adelys_WebSite.Controllers
             });
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult ModifierReunion(int id, MeetingFormViewModel model)
         {
@@ -195,7 +195,7 @@ namespace Adelys_WebSite.Controllers
             return RedirectToAction(nameof(Index), null, MeetingsSection);
         }
 
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         public IActionResult SupprimerReunion(int id)
         {
@@ -210,7 +210,7 @@ namespace Adelys_WebSite.Controllers
         /// <summary>
         /// Image collée ou déposée dans l'éditeur, renvoie l'adresse à insérer dans le markdown
         /// </summary>
-        [Authorize(Roles = SiteRoles.Admin)]
+        [Authorize(Roles = SiteRoles.ContentEditors)]
         [HttpPost]
         [RequestSizeLimit(MarkdownBL.MaxImageBytes + 1024 * 1024)]
         [RequestFormLimits(MultipartBodyLengthLimit = MarkdownBL.MaxImageBytes + 1024 * 1024)]

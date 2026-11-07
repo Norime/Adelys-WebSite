@@ -26,8 +26,9 @@
         <div class="account-field">
             <label asp-for="NewUser.Role"></label>
             <select asp-for="NewUser.Role">
-                <option value="@SiteRoles.Redacteur">Rédacteur</option>
-                <option value="@SiteRoles.Admin">Administrateur</option>
+                <option value="@SiteRoles.Redacteur">Rédacteur : la gazette</option>
+                <option value="@SiteRoles.Moderateur">Modérateur : commerces, gazette, règlement et events</option>
+                <option value="@SiteRoles.Admin">Administrateur : tout le site</option>
             </select>
         </div>
         <button type="submit" class="account-button">Créer et générer le mot de passe</button>
@@ -50,7 +51,7 @@
                 {
                     <tr>
                         <td>@user.Username</td>
-                        <td>@(user.Role == SiteRoles.Admin ? "Administrateur" : "Rédacteur")</td>
+                        <td>@SiteRoles.DisplayName(user.Role)</td>
                         <td>@(user.IsActive ? "Actif" : "Désactivé")</td>
                         <td>@(user.LastLoginUtc?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Jamais")</td>
                         <td class="account-actions">
