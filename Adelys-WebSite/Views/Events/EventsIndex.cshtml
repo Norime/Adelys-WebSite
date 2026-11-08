@@ -1,0 +1,90 @@
+@using Adelys_WebSite.BL;
+@using Adelys_WebSite.ViewModels;
+@model EventsIndexViewModel
+@{
+    ViewData["Title"] = "Les events";
+    <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+    string? currentCover = Model.Current?.CoverFileName ?? Model.Current?.Category.CoverFileName;
+}
+
+<div class="events-page">
+    @if (Model.CanManage)
+    {
+        <div class="events-admin">
+            <a class="btn" asp-controller="Events" asp-action="Ajouter">Ajouter un event</a>
+            <a class="btn btn-ghost" asp-controller="Events" asp-action="AjouterCategorie">Ajouter une catégorie</a>
+        </div>
+    }
+
+    <section class="events-current" aria-labelledby="events-current-title">
+        <p class="eyebrow">@(Model.Current == null ? "Les events d'Adelys" : Model.Current.StartsAt <= DateTime.Now ? "En ce moment" : "Prochain event")</p>
+        @if (Model.Current == null)
+        {
+            <h1 class="events-current-title" id="events-current-title">Les events</h1>
+            <p class="events-current-lead">Aucun event n'est prévu pour le moment. Les prochains seront annoncés ici et sur la page d'accueil.</p>
+        }
+        else
+        {
+            <h1 class="events-current-title" id="events-current-title">@Model.Current.Title</h1>
+            <div class="events-current-media">
+                @if (currentCover != null)
+                {
+                    <img src="@(MarkdownBL.ImageRequestPath + currentCover)" alt="" />
+                }
+                else
+                {
+                    <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
+                }
+            </div>
+            <div class="events-current-text">
+                <ul class="event-facts">
+                    <li><i class="fa-regular fa-calendar" aria-hidden="true"></i> @EventDates.Format(Model.Current)</li>
+                    @if (Model.Current.Location != null)
+                    {
+                        <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @Model.Current.Location</li>
+                    }
+                    <li><i class="fa-solid fa-tag" aria-hidden="true"></i> @Model.Current.Category.Name</li>
+                </ul>
+                <p class="events-current-lead">@Model.Current.Summary</p>
+                <a class="btn" asp-controller="Events" asp-action="Voir" asp-route-slug="@Model.Current.Slug">En savoir plus</a>
+            </div>
+        }
+    </section>
+
+    @foreach (EventCategoryBlockViewModel block in Model.Categories)
+    {
+        <section class="events-block" aria-labelledby="events-block-@block.Category.Slug">
+            <div class="events-block-media">
+                @if (block.Category.CoverFileName != null)
+                {
+                    <img src="@(MarkdownBL.ImageRequestPath + block.Category.CoverFileName)" alt="" loading="lazy" />
+                }
+                else
+                {
+                    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+                }
+            </div>
+            <div class="events-block-text">
+                <p class="eyebrow">
+                    @if (block.NextEvent != null)
+                    {
+                        <text>Prochaine édition : @EventDates.Day(block.NextEvent.StartsAt)</text>
+                    }
+                    else
+                    {
+                        @(block.EditionCount == 0 ? "Bientôt" : block.EditionCount == 1 ? "1 édition" : $"{block.EditionCount} éditions")
+                    }
+                </p>
+                <h2 class="events-block-title" id="events-block-@block.Category.Slug">@block.Category.Name</h2>
+                <p class="events-block-summary">@block.Category.Summary</p>
+                <div class="events-block-actions">
+                    <a class="btn" asp-controller="Events" asp-action="Categorie" asp-route-slug="@block.Category.Slug">En savoir plus</a>
+                    @if (Model.CanManage)
+                    {
+                        <a class="events-manage-link" asp-controller="Events" asp-action="ModifierCategorie" asp-route-id="@block.Category.Id">Modifier le bloc</a>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+</div>

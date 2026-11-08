@@ -1,0 +1,40 @@
+@using Adelys_WebSite.ViewModels;
+@model LawsViewModel
+
+<div class="rules-section">
+    <div class="rules-section-header">
+        <h2 class="card-title">Les lois</h2>
+        @if (Model.CanManage)
+        {
+            <a class="btn" asp-controller="Rules" asp-action="AjouterLoi">Ajouter une loi</a>
+        }
+    </div>
+
+    @if (Model.Laws.Count == 0)
+    {
+        <p class="rules-empty">Aucune loi pour le moment.</p>
+    }
+
+    <ol class="rules-laws">
+        @foreach (LawViewModel item in Model.Laws)
+        {
+            <li class="rules-law" id="loi-@item.Law.Number">
+                <h3 class="rules-law-title">Loi n°@item.Law.Number</h3>
+                <div class="markdown-body">@item.Html</div>
+                @foreach (var amendment in item.Law.Amendments.OrderBy(a => a.AmendedOn))
+                {
+                    <p class="rules-amendment">Modifiée le @amendment.AmendedOn.ToString("dd/MM/yyyy") : @amendment.Note</p>
+                }
+                @if (Model.CanManage)
+                {
+                    <div class="rules-manage">
+                        <a asp-controller="Rules" asp-action="ModifierLoi" asp-route-id="@item.Law.Id">Modifier</a>
+                        <form asp-controller="Rules" asp-action="SupprimerLoi" asp-route-id="@item.Law.Id" method="post" onsubmit="return confirm('Supprimer définitivement la loi n°@item.Law.Number ?');">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </div>
+                }
+            </li>
+        }
+    </ol>
+</div>

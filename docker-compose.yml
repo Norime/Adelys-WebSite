@@ -1,0 +1,33 @@
+# Site Adelys et tunnel Cloudflare sur le Raspberry Pi
+# Démarrage : docker compose up -d --build   (voir DEPLOIEMENT.md)
+services:
+  site:
+    build:
+      context: .
+      dockerfile: Adelys-WebSite/Dockerfile
+    image: adelys-website
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      ReverseProxy__Enabled: "true"
+      DataProtection__KeysPath: /app/App_Data/Keys
+    volumes:
+      - adelys-data:/app/App_Data
+      - ./appsettings.Local.json:/app/appsettings.Local.json:ro
+    # Joignable seulement depuis le Pi lui-même, pour tester avec curl ; le public passe par le tunnel
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.10.3
+    restart: unless-stopped
+    # Même utilisateur que celui qui a créé le tunnel, pour pouvoir lire ses identifiants
+    user: "1000:1000"
+    command: tunnel --no-autoupdate --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./cloudflared:/etc/cloudflared:ro
+    depends_on:
+      - site
+
+volumes:
+  adelys-data:

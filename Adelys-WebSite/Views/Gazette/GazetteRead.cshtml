@@ -1,0 +1,37 @@
+@using Adelys_WebSite.ViewModels;
+@model GazetteReaderViewModel
+@{
+    ViewData["Title"] = Model.Gazette.Title;
+    string fileUrl = Url.Action("Fichier", new { slug = Model.Gazette.Slug })!;
+    string downloadUrl = Url.Action("Fichier", new { slug = Model.Gazette.Slug, download = true })!;
+    <link rel="stylesheet" href="~/css/gazette.css" asp-append-version="true" />
+}
+
+<section class="reader" data-url="@fileUrl">
+    <div class="reader-bar">
+        <a class="reader-back" asp-action="Index">Tous les numéros</a>
+        <h1 class="reader-title">@Model.Gazette.Title</h1>
+        <div class="reader-controls">
+            <button type="button" id="reader-prev" aria-label="Page précédente" disabled>&lsaquo;</button>
+            <span class="reader-position" id="reader-position" aria-live="polite">Chargement</span>
+            <button type="button" id="reader-next" aria-label="Page suivante" disabled>&rsaquo;</button>
+            <button type="button" id="reader-zoom-out" aria-label="Dézoomer" disabled>&minus;</button>
+            <button type="button" id="reader-zoom-in" aria-label="Zoomer" disabled>+</button>
+            <button type="button" id="reader-fullscreen">Plein écran</button>
+            <a class="reader-download" href="@downloadUrl">Télécharger</a>
+            @if (Model.CanManage)
+            {
+                <a class="reader-download" asp-action="Modifier" asp-route-slug="@Model.Gazette.Slug">Modifier</a>
+            }
+        </div>
+    </div>
+    <div class="reader-stage" id="reader-stage" tabindex="0">
+        <div class="reader-pages" id="reader-pages"></div>
+        <p class="reader-message" id="reader-message">Ouverture du numéro…</p>
+    </div>
+    <noscript><p class="reader-message">La lecture en ligne a besoin de JavaScript. Tu peux <a href="@downloadUrl">télécharger ce numéro</a>.</p></noscript>
+</section>
+
+@section Scripts{
+    <script type="module" src="~/js/gazette-reader.js" asp-append-version="true"></script>
+}

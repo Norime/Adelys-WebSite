@@ -1,0 +1,89 @@
+@using Adelys_WebSite.ViewModels;
+@model EventFormViewModel
+@{
+    bool isEdit = Model.Slug != null;
+    string action = isEdit ? "Modifier" : "Ajouter";
+    ViewData["Title"] = isEdit ? "Modifier un event" : "Ajouter un event";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form class="events-form" asp-controller="Events" asp-action="@action" asp-route-slug="@Model.Slug" method="post" enctype="multipart/form-data">
+        <div class="account-field">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" maxlength="150" />
+            <span asp-validation-for="Title" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" asp-items="Model.Categories">
+                <option value="">Choisir une catégorie</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="account-error"></span>
+        </div>
+        <div class="events-form-row">
+            <div class="account-field">
+                <label asp-for="StartsAt"></label>
+                <input asp-for="StartsAt" type="datetime-local" />
+                <span asp-validation-for="StartsAt" class="account-error"></span>
+            </div>
+            <div class="account-field">
+                <label asp-for="EndsAt"></label>
+                <input asp-for="EndsAt" type="datetime-local" />
+                <span asp-validation-for="EndsAt" class="account-error"></span>
+            </div>
+        </div>
+        <div class="account-field">
+            <label asp-for="Location"></label>
+            <input asp-for="Location" maxlength="150" placeholder="Arène d'Adelys, x: 120 z: -340" />
+            <span asp-validation-for="Location" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Summary"></label>
+            <textarea asp-for="Summary" rows="2" maxlength="300"></textarea>
+            <span class="md-hint">Une ou deux phrases, reprises sur les cartes et sur la page d'accueil.</span>
+            <span asp-validation-for="Summary" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Cover"></label>
+            @if (Model.CurrentCoverUrl != null)
+            {
+                <img class="events-form-cover" src="@Model.CurrentCoverUrl" alt="Image de couverture actuelle" />
+                <label class="events-checkbox"><input asp-for="RemoveCover" /> Retirer l'image de couverture</label>
+            }
+            <input asp-for="Cover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" />
+            <span class="md-hint">@(Model.CurrentCoverUrl != null ? "Choisis une image pour remplacer l'actuelle. " : "")JPEG, PNG, GIF ou WebP, 10 Mo maximum.</span>
+            <span asp-validation-for="Cover" class="account-error"></span>
+        </div>
+        <div class="account-field">
+            <label asp-for="Content"></label>
+            <partial name="_MarkdownEditor" model="@(new MarkdownEditorViewModel { Name = nameof(Model.Content), Value = Model.Content, MaxLength = 100000, Rows = 14, UploadUrl = Url.Action("EnvoyerImage", "Events") })" />
+            <span asp-validation-for="Content" class="account-error"></span>
+        </div>
+        <label class="events-checkbox events-featured">
+            <input asp-for="IsFeatured" />
+            <span>
+                Mettre en avant sur la page d'accueil
+                <span class="md-hint">Remplace l'event déjà à la une. Il disparaît de l'accueil une fois terminé.</span>
+            </span>
+        </label>
+        <div class="events-form-actions">
+            <button type="submit" class="account-button">@(isEdit ? "Enregistrer" : "Ajouter l'event")</button>
+            @if (isEdit)
+            {
+                <a class="btn btn-ghost" asp-controller="Events" asp-action="Voir" asp-route-slug="@Model.Slug">Annuler</a>
+            }
+            else
+            {
+                <a class="btn btn-ghost" asp-controller="Events" asp-action="Index">Annuler</a>
+            }
+        </div>
+    </form>
+</section>
+
+@section Scripts{
+    <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,182 @@
+@using Adelys_WebSite.BL;
+@using Adelys_WebSite.ViewModels;
+@model HomeViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewData["Title"] = "Accueil";
+    string? webmap = Configuration["Webmaps:Adelys"];
+    string? eventWebmap = Configuration["Webmaps:AdelysEvent"];
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+}
+
+<section class="hero">
+    <img class="hero-image" src="@Model.Hero.ImageUrl" alt="@Model.Hero.AltText" />
+    @if (Model.CanManage)
+    {
+        <a class="hero-edit" asp-controller="Home" asp-action="ImageDeFond"><i class="fa-solid fa-image" aria-hidden="true"></i> Changer l'image de fond</a>
+    }
+    <div class="hero-content">
+        <p class="eyebrow">Serveur Minecraft entre amis</p>
+        <h1 class="hero-title">Bienvenue sur Adelys</h1>
+        <p class="hero-lead">Des villes bâties à plusieurs, un parlement, des commerces et une gazette tous les trimestres.</p>
+        <div class="hero-actions">
+            @if (!string.IsNullOrEmpty(webmap))
+            {
+                <a class="btn" href="@webmap" target="_blank" rel="noopener">Explorer la carte</a>
+            }
+            <a class="btn btn-ghost" asp-controller="Gazette" asp-action="Index">Lire la gazette</a>
+        </div>
+    </div>
+</section>
+
+@if (Model.FeaturedEvent is { } featured)
+{
+    bool started = featured.StartsAt <= DateTime.Now;
+    <section class="home-section" aria-labelledby="featured-event-title">
+        <a class="featured-event" asp-controller="Events" asp-action="Voir" asp-route-slug="@featured.Slug">
+            @if (featured.CoverFileName != null)
+            {
+                <img class="featured-event-image" src="@(MarkdownBL.ImageRequestPath + featured.CoverFileName)" alt="" />
+            }
+            <div class="featured-event-content">
+                <p class="eyebrow">@(started ? "En ce moment" : "Prochain event") · @featured.Category.Name</p>
+                <h2 class="featured-event-title" id="featured-event-title">@featured.Title</h2>
+                <p class="featured-event-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i> @EventDates.Format(featured)</p>
+                <p>@featured.Summary</p>
+                <span class="btn">Voir l'event</span>
+            </div>
+        </a>
+    </section>
+}
+
+<section class="home-section" aria-labelledby="discover-title">
+    <h2 class="section-title" id="discover-title">Découvrir le serveur</h2>
+    <div class="destination-grid">
+        @if (!string.IsNullOrEmpty(webmap))
+        {
+            <a class="destination" href="@webmap" target="_blank" rel="noopener">
+                <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                <h3>WebMap</h3>
+                <p>Parcourez le monde d'Adelys depuis votre navigateur.</p>
+            </a>
+        }
+        <a class="destination" asp-controller="Players" asp-action="Index">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            <h3>Les joueurs</h3>
+            <p>Les membres du parlement et tous les habitants, avec leur rang.</p>
+        </a>
+        <a class="destination" asp-controller="Shops" asp-action="Index">
+            <i class="fa-solid fa-store" aria-hidden="true"></i>
+            <h3>Les commerces</h3>
+            <p>Les boutiques des joueurs, classées par type et par ville.</p>
+        </a>
+        <a class="destination" asp-controller="Gazette" asp-action="Index">
+            <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
+            <h3>La gazette</h3>
+            <p>Tous les numéros du journal du serveur, à lire en ligne.</p>
+        </a>
+        <a class="destination" asp-controller="Rules" asp-action="Index">
+            <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+            <h3>Le règlement</h3>
+            <p>Les lois et les réunions du parlement.</p>
+        </a>
+        <a class="destination" asp-controller="Events" asp-action="Index">
+            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            <h3>Les events</h3>
+            <p>Les jeux de la mort, les events de saison et les prochains rendez-vous.</p>
+        </a>
+        <a class="destination" asp-controller="ArchiveMaps" asp-action="Index">
+            <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
+            <h3>Archives maps</h3>
+            <p>Les anciennes maps du serveur, à revisiter.</p>
+        </a>
+    </div>
+</section>
+
+@if (Model.Slides.Count > 0 || Model.CanManage)
+{
+    <section class="home-section" id="carrousel" aria-labelledby="cities-title">
+        <div class="carousel-header">
+            <h2 class="section-title" id="cities-title">Un monde bâti par ses joueurs</h2>
+            @if (Model.CanManage)
+            {
+                <a class="btn btn-ghost" asp-controller="Carousel" asp-action="Index">Gérer le carrousel</a>
+            }
+        </div>
+        @if (Model.Slides.Count > 0)
+        {
+            <div class="carousel" data-carousel aria-roledescription="carrousel" aria-label="Constructions des joueurs">
+                <div class="carousel-track" tabindex="0">
+                    @for (int i = 0; i < Model.Slides.Count; i++)
+                    {
+                        var slide = Model.Slides[i];
+                        <figure class="carousel-slide" role="group" aria-roledescription="diapositive" aria-label="@(i + 1) sur @Model.Slides.Count">
+                            <img src="@slide.ImageUrl" alt="@slide.AltText" loading="@(i == 0 ? "eager" : "lazy")" />
+                            <figcaption>
+                                <h3>@slide.Title</h3>
+                                @if (slide.Caption != null)
+                                {
+                                    <p>@slide.Caption</p>
+                                }
+                            </figcaption>
+                        </figure>
+                    }
+                </div>
+                @if (Model.Slides.Count > 1)
+                {
+                    <button type="button" class="carousel-arrow carousel-prev" aria-label="Image précédente"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+                    <button type="button" class="carousel-arrow carousel-next" aria-label="Image suivante"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+                    <div class="carousel-dots">
+                        @for (int i = 0; i < Model.Slides.Count; i++)
+                        {
+                            <button type="button" class="carousel-dot" aria-label="Voir l'image @(i + 1) : @Model.Slides[i].Title"></button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="carousel-empty">Le carrousel est vide et reste masqué pour les visiteurs.</p>
+        }
+    </section>
+}
+
+<section class="gazette-band" aria-labelledby="gazette-title">
+    <div class="gazette-inner">
+        <img class="gazette-portrait" src="/content/Images/Yonderred-Gazette.png" width="935" height="1080" loading="lazy" alt="Yonderred, rédacteur de la gazette" />
+        <div class="gazette-text">
+            <p class="eyebrow">Journal numérique trimestriel</p>
+            <h2 id="gazette-title">La Gazette d'Adelys</h2>
+            <p>Interviews des joueurs, présentations des quartiers, nouveautés de Minecraft et plein d'autres choses. Elle est écrite par Yonderred et sa rédaction se trouve à Ego Ville.</p>
+            <a class="btn" asp-controller="Gazette" asp-action="Index">Lire en ligne</a>
+        </div>
+    </div>
+</section>
+
+<section class="home-section home-duo">
+    <div class="ledger">
+        <p class="eyebrow">Loi n°5</p>
+        <h2>La monnaie du serveur</h2>
+        <ul class="ledger-rates">
+            <li><strong>1</strong> Or Brut</li>
+            <li><strong>9</strong> Fer Brut</li>
+            <li><strong>81</strong> Cuivre Brut</li>
+        </ul>
+        <a asp-controller="Rules" asp-action="Index">Voir toutes les lois</a>
+    </div>
+    <div class="event">
+        <p class="eyebrow">Serveur moddé</p>
+        <h2>Adelys-Event</h2>
+        <p>Un serveur moddé spécialement créé pour offrir une aventure différente du Minecraft classique.</p>
+        @if (!string.IsNullOrEmpty(eventWebmap))
+        {
+            <a href="@eventWebmap" target="_blank" rel="noopener">Voir sa carte</a>
+        }
+    </div>
+</section>
+
+@section Scripts{
+    <script src="~/js/carousel.js" asp-append-version="true"></script>
+}

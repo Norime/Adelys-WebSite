@@ -1,0 +1,58 @@
+/* Mentions légales et politique de confidentialité */
+.legal-page {
+    max-width: 900px;
+}
+
+.legal-page section {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.legal-page h2 {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.legal-page ul {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.legal-missing {
+    padding: 0 0.35rem;
+    background: var(--danger);
+    color: var(--bg);
+    font-weight: 600;
+}
+
+.legal-table-wrapper {
+    overflow-x: auto;
+}
+
+.legal-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.legal-table th,
+.legal-table td {
+    padding: 0.6rem;
+    border-bottom: 1px solid var(--surface-raised);
+    text-align: left;
+    vertical-align: top;
+}
+
+.legal-table th {
+    color: var(--heading);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+}
+
+.legal-updated {
+    color: var(--muted);
+    font-size: 0.9rem;
+}

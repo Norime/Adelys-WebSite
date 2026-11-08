@@ -1,0 +1,41 @@
+@using Adelys_WebSite.ViewModels;
+@model MeetingFormViewModel
+@{
+    bool isEdit = Model.Id != null;
+    string action = isEdit ? "ModifierReunion" : "AjouterReunion";
+    ViewData["Title"] = isEdit ? "Modifier une réunion" : "Ajouter une réunion";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>@ViewData["Title"]</h1>
+    <form class="rules-form" asp-controller="Rules" asp-action="@action" asp-route-id="@Model.Id" method="post">
+        <div class="rules-meeting-fields">
+            <div class="account-field">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" maxlength="150" />
+                <span asp-validation-for="Title" class="account-error"></span>
+            </div>
+            <div class="account-field">
+                <label asp-for="HeldOn"></label>
+                <input asp-for="HeldOn" type="date" />
+                <span asp-validation-for="HeldOn" class="account-error"></span>
+            </div>
+        </div>
+        <div class="account-field">
+            <label asp-for="Content"></label>
+            <partial name="_MarkdownEditor" model="@(new MarkdownEditorViewModel { Name = nameof(Model.Content), Value = Model.Content, MaxLength = 100000, Rows = 18, UploadUrl = Url.Action("EnvoyerImage", "Rules") })" />
+            <span asp-validation-for="Content" class="account-error"></span>
+        </div>
+        <div class="rules-form-actions">
+            <button type="submit" class="account-button">@(isEdit ? "Enregistrer" : "Ajouter la réunion")</button>
+            <a class="btn btn-ghost" href="@Url.Action("Index", "Rules")#reunions">Annuler</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts{
+    <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+}

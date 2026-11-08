@@ -1,0 +1,441 @@
+.shops-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.shops-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.shops-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.shops-filter-search {
+    flex: 1 1 240px;
+}
+
+.shops-filter input,
+.shops-filter select {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.shops-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.shops-layout:has(.shop-map-panel:not([hidden])) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+}
+
+.shops-list,
+.shops-city {
+    display: grid;
+    gap: 1rem;
+}
+
+.shops-list {
+    gap: 1.5rem;
+}
+
+.shops-heading {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+}
+
+.shops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 1rem;
+}
+
+.shops-empty {
+    color: var(--muted);
+}
+
+.shop-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.shop-card .card-title,
+.shop-card .card-text {
+    margin: 0;
+}
+
+.shop-owner {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.shop-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.shop-types li {
+    padding: 0.1rem 0.5rem;
+    background: var(--surface-raised);
+    color: var(--heading);
+    font-size: 0.85rem;
+}
+
+.shop-items {
+    width: 100%;
+    max-height: 14rem;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.shop-items li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid var(--surface-raised);
+}
+
+.shop-card[hidden],
+.shop-items li[hidden],
+.shop-map-panel[hidden] {
+    display: none;
+}
+
+.shop-item-name,
+.shop-item-price {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.shop-item-price {
+    flex-shrink: 0;
+    color: var(--link);
+    font-weight: 600;
+}
+
+.mc-icon {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+}
+
+.mc-icon-small {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Même contour que les cartes joueurs : la carte est découpée par clip-path, son fond sert de contour autour de ce calque */
+.shop-card-map {
+    position: relative;
+    cursor: pointer;
+}
+
+.shop-card-map::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    z-index: -1;
+    background: var(--surface);
+    clip-path: polygon(0 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% 100%, calc(var(--cut) - 1px) 100%, 0 calc(100% - var(--cut) + 1px));
+}
+
+.shop-card-map:hover,
+.shop-card-map:focus-visible,
+.shop-card-selected {
+    background: var(--accent);
+    outline: none;
+}
+
+.shops-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.shop-category-list {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.shop-category-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--surface-raised);
+}
+
+.shop-category-list li > span:first-child {
+    flex: 1 1 auto;
+}
+
+.shop-category-count {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.shop-manage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+.shop-manage button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Carte du commerce sélectionné */
+.shop-map-panel {
+    position: sticky;
+    top: 6rem;
+    display: grid;
+    gap: 0.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.shop-map-label {
+    color: var(--heading);
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.shop-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.shop-map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Bloque la souris sur la carte : la caméra reste centrée sur le commerce, donc sous le repère */
+.shop-map-shield {
+    position: absolute;
+    inset: 0;
+}
+
+.shop-map-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--on-accent);
+    border-radius: 50% 50% 50% 0;
+    background: var(--accent);
+    transform: translate(-50%, calc(-50% - 16px)) rotate(-45deg);
+}
+
+.shop-map-zoom {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.shop-map-zoom button {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.shop-map-zoom button:hover {
+    filter: brightness(1.1);
+}
+
+/* Formulaire d'ajout */
+.shop-form textarea {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    resize: vertical;
+}
+
+.shop-form-group {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+}
+
+.shop-type-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+}
+
+.shop-position {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.shop-position .account-field {
+    margin-bottom: 0;
+}
+
+#shopItems {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.shop-item-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.shop-item-row input,
+.shop-item-row select {
+    min-width: 0;
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.shop-item-number {
+    width: 7.5rem;
+}
+
+/* Sélecteur d'item : champ de recherche avec la liste des items et leur icône */
+.item-picker {
+    position: relative;
+    display: flex;
+    flex: 1 1 220px;
+    align-items: center;
+}
+
+.item-picker-input {
+    flex: 1;
+    padding-left: 2.6rem !important;
+}
+
+.item-picker-icon {
+    position: absolute;
+    left: 0.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    pointer-events: none;
+}
+
+.item-picker-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-height: 18rem;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    border: 1px solid var(--secondary);
+    background: var(--surface-raised);
+    list-style: none;
+}
+
+.item-picker-list[hidden] {
+    display: none;
+}
+
+.item-picker-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+}
+
+.item-picker-list li:hover,
+.item-picker-list li[aria-selected="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.item-picker-list img {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.shop-item-remove {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.shop-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+@media (max-width: 800px) {
+    .shops-layout:has(.shop-map-panel:not([hidden])) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .shop-map-panel {
+        position: static;
+        order: -1;
+    }
+}

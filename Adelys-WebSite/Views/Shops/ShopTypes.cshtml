@@ -1,0 +1,43 @@
+@using Adelys_WebSite.ViewModels;
+@model ShopCategoriesViewModel
+@{
+    ViewData["Title"] = "Types de commerces";
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shopsPage.css" asp-append-version="true" />
+}
+
+<section class="account-panel account-panel-wide">
+    <h1>Types de commerces</h1>
+
+    <form asp-controller="Shops" asp-action="AjouterType" method="post" class="account-inline-form">
+        <div class="account-field">
+            <label asp-for="NewName"></label>
+            <input asp-for="NewName" maxlength="50" autocomplete="off" />
+            <span asp-validation-for="NewName" class="account-error"></span>
+        </div>
+        <button type="submit" class="account-button">Ajouter le type</button>
+    </form>
+
+    @if (Model.Categories.Count == 0)
+    {
+        <p class="shops-empty">Aucun type pour l'instant.</p>
+    }
+    else
+    {
+        <ul class="shop-category-list">
+            @foreach (ShopCategory category in Model.Categories)
+            {
+                int count = Model.ShopCounts.GetValueOrDefault(category.Name);
+                <li>
+                    <span>@category.Name</span>
+                    <span class="shop-category-count">@(count > 1 ? $"{count} commerces" : $"{count} commerce")</span>
+                    <form asp-controller="Shops" asp-action="SupprimerType" asp-route-id="@category.Id" method="post" onsubmit="return confirm('Supprimer ce type ? Il sera retiré des commerces qui l\'ont.');">
+                        <button type="submit" class="shop-item-remove">Supprimer</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+
+    <a class="btn btn-ghost" asp-controller="Shops" asp-action="Index">Retour aux commerces</a>
+</section>

@@ -1,0 +1,364 @@
+/* Events : vitrine par catégorie, page de catégorie, page d'un event et formulaires */
+.events-page {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    width: 100%;
+    max-width: var(--content-wide);
+    margin-inline: auto;
+    padding: 2.5rem var(--gutter) 4rem;
+}
+
+.events-admin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-bottom: -1.5rem;
+}
+
+.events-empty {
+    color: var(--muted);
+}
+
+.events-manage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.events-manage button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--danger);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.events-manage-link {
+    font-size: 0.9rem;
+}
+
+/* Event du moment : grande image centrale, texte centré en dessous */
+.events-current {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.events-current-title {
+    max-width: 22ch;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    text-transform: uppercase;
+}
+
+.events-current-media {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 75vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--secondary), var(--surface));
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.events-current-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.events-current-media i,
+.events-block-media i {
+    color: var(--accent);
+    font-size: clamp(3rem, 8vw, 5rem);
+}
+
+.events-current-text {
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+    max-width: 80ch;
+}
+
+.events-current .event-facts {
+    justify-content: center;
+}
+
+.events-current-lead {
+    max-width: 65ch;
+    font-size: 1.1rem;
+    white-space: pre-line;
+}
+
+/* Blocs des catégories : image à gauche puis à droite, en alternance */
+.events-block {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(1.25rem, 4vw, 3rem);
+    align-items: center;
+}
+
+.events-page > .events-block:nth-of-type(even) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+}
+
+.events-page > .events-block:nth-of-type(even) .events-block-media {
+    order: 2;
+}
+
+.events-block-media {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--secondary), var(--surface));
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.events-block-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.events-block-text {
+    display: grid;
+    justify-items: start;
+    gap: 0.8rem;
+}
+
+.events-block-title {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    text-transform: uppercase;
+}
+
+.events-block-summary {
+    color: var(--muted);
+    font-size: 1.05rem;
+    white-space: pre-line;
+}
+
+.events-block-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 0.4rem;
+}
+
+@media (max-width: 760px) {
+    .events-block,
+    .events-page > .events-block:nth-of-type(even) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .events-page > .events-block:nth-of-type(even) .events-block-media {
+        order: 0;
+    }
+}
+
+/* Page d'une catégorie */
+.events-category-header .events-block-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+}
+
+.events-section {
+    display: grid;
+    gap: 1rem;
+}
+
+.events-section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    text-transform: uppercase;
+}
+
+/* Cartes d'event */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+}
+
+.event-card-wrapper {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+}
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-raised);
+    color: var(--text);
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.event-card:hover {
+    filter: brightness(1.08);
+    transform: translateY(-3px);
+}
+
+.event-card:focus-visible {
+    outline-offset: -4px;
+}
+
+.event-card.is-over {
+    opacity: 0.75;
+}
+
+.event-card-cover {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--secondary), var(--bg));
+}
+
+.event-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-card-cover i {
+    color: var(--accent);
+    font-size: 2.2rem;
+}
+
+.event-badge {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    padding: 0.15rem 0.6rem;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.event-card-body {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem 1.1rem;
+}
+
+.event-card-title {
+    font-size: 1.35rem;
+}
+
+.event-card-date {
+    color: var(--link);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.event-card-summary {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Page d'un event */
+.event-page {
+    max-width: 900px;
+}
+
+.event-page .events-manage button {
+    font-size: 0.9rem;
+}
+
+.event-back {
+    justify-self: start;
+}
+
+.event-page-cover {
+    display: block;
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+.event-page-header {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.event-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--link);
+    font-weight: 600;
+}
+
+.event-facts i {
+    margin-right: 0.35rem;
+}
+
+/* Formulaires */
+.events-form .account-field > textarea {
+    padding: 0.5rem;
+    border: 1px solid var(--secondary);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    resize: vertical;
+}
+
+.events-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 0 1rem;
+}
+
+.events-form-cover {
+    display: block;
+    max-width: 320px;
+    margin-bottom: 0.5rem;
+}
+
+.events-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.events-checkbox input {
+    margin-top: 0.3rem;
+}
+
+.events-featured {
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 1rem;
+    box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.events-featured .md-hint {
+    display: block;
+}
+
+.events-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.events-order-field {
+    max-width: 14rem;
+}

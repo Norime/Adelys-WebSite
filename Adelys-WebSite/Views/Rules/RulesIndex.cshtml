@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Le règlement";
+    <link rel="stylesheet" href="~/css/markdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/rules.css" asp-append-version="true" />
+}
+<div class="page page-wide">
+    <h1 class="page-title">Le règlement</h1>
+    <p class="page-lead">Les règles en vigueur sur le serveur.</p>
+    <div class="split">
+        <div class="split-list">
+            <div class="card">
+                <h2 class="card-title">Les lois</h2>
+                <p class="card-text">Les règles communes à tous les joueurs</p>
+                <a href="#lois" class="btn" data-rules-section="lois" data-url="@Url.Action("GetLawsPartialView", "Rules")">Afficher</a>
+            </div>
+            <div class="card">
+                <h2 class="card-title">Les réunions du parlement</h2>
+                <p class="card-text">L'historique des décisions sur les règles</p>
+                <a href="#reunions" class="btn" data-rules-section="reunions" data-url="@Url.Action("GetMeetingsPartialView", "Rules")">Afficher</a>
+            </div>
+        </div>
+        <div class="panel split-content" id="displayInfo" aria-live="polite">
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/rules.js" asp-append-version="true"></script>
+}

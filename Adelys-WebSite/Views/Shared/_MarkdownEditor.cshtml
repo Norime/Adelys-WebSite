@@ -1,0 +1,33 @@
+@using Adelys_WebSite.ViewModels;
+@model MarkdownEditorViewModel
+
+<div class="md-editor" data-preview-url="@Url.Action("Apercu", "Content")" data-upload-url="@Model.UploadUrl">
+    <div class="md-toolbar" role="toolbar" aria-label="Mise en forme">
+        <div class="md-tabs">
+            <button type="button" class="md-tab is-active" data-md-tab="write">Écrire</button>
+            <button type="button" class="md-tab" data-md-tab="preview">Aperçu</button>
+        </div>
+        <div class="md-actions">
+            <button type="button" data-md="bold" title="Gras"><strong>G</strong></button>
+            <button type="button" data-md="italic" title="Italique"><em>I</em></button>
+            <button type="button" data-md="heading" title="Titre">T</button>
+            <button type="button" data-md="list" title="Liste">&bull;</button>
+            <button type="button" data-md="link" title="Lien">Lien</button>
+            @if (Model.UploadUrl != null)
+            {
+                <button type="button" data-md="image" title="Ajouter une image">Image</button>
+                <input type="file" class="md-file" accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden />
+            }
+        </div>
+    </div>
+    <textarea class="md-input" id="@Model.Name" name="@Model.Name" rows="@Model.Rows" maxlength="@Model.MaxLength">@Model.Value</textarea>
+    <div class="md-preview markdown-body" hidden></div>
+    <p class="md-hint">
+        Markdown : **gras**, *italique*, # titre, - liste, [texte](lien).
+        @if (Model.UploadUrl != null)
+        {
+            <text>Colle ou glisse une image directement dans le texte (10 Mo maximum).</text>
+        }
+    </p>
+    <p class="md-status account-error" role="status"></p>
+</div>
